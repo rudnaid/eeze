@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 public class IncomeService {
@@ -34,5 +33,14 @@ public class IncomeService {
     public IncomeDTO getIncomeById(int incomeId) {
         Income income = incomeRepository.getIncomeById(incomeId).orElseThrow(() -> new NoSuchElementException("Income with id " + incomeId + " not found"));
         return new IncomeDTO(income.getAmount(), income.getDate());
+    }
+
+    public int updateIncome(int incomeId, IncomeDTO income) {
+        int numberOfUpdatedEntries = incomeRepository.updateIncome(incomeId, income);
+        if (numberOfUpdatedEntries > 0) {
+            return numberOfUpdatedEntries;
+        } else {
+            throw new NoSuchElementException("Income with id " + incomeId + " not found");
+        }
     }
 }

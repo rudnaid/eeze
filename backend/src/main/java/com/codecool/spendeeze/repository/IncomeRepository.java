@@ -38,4 +38,15 @@ public class IncomeRepository implements IncomeDAO {
                 .filter(income -> income.getId() == incomeId)
                 .findFirst();
     }
+
+    @Override
+    public int updateIncome(int incomeId, IncomeDTO income) {
+        Income oldIncome = incomes.get(incomeId);
+        if (oldIncome == null) {
+            return -1;
+        }
+        Income newIncome = new Income(incomeId, oldIncome.getUserId(), income.amount(), income.date());
+        incomes.put(incomeId, newIncome);
+        return 1;
+    }
 }

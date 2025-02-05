@@ -29,4 +29,9 @@ public class IncomeController {
     public IncomeDTO getIncomeById(@PathVariable int incomeId){
         return incomeService.getIncomeById(incomeId);
     }
+
+    @PutMapping("/{incomeId}")
+    public int updateIncome(@PathVariable int incomeId, @RequestBody IncomeDTO income){
+        return incomeService.updateIncome(incomeId, income);
+    }
 }

@@ -10,4 +10,5 @@ public interface IncomeDAO {
     int addIncome(IncomeDTO income, int userId);
     List<Income> getAllIncomesByUser(int userId);
     Optional<Income> getIncomeById(int incomeId);
+    int updateIncome(int incomeId, IncomeDTO income);
 }
