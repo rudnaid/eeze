@@ -5,7 +5,9 @@ import com.codecool.spendeeze.model.IncomeDTO;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Repository
 public class IncomeRepository implements IncomeDAO {
@@ -22,4 +24,10 @@ public class IncomeRepository implements IncomeDAO {
         return id;
     }
 
+    @Override
+    public List<Income> getAllIncomesByUser(int userId) {
+        return incomes.values().stream()
+                .filter(income -> income.getUserId() == userId)
+                .collect(Collectors.toList());
+    }
 }
