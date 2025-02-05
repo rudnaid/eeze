@@ -34,4 +34,9 @@ public class IncomeController {
     public int updateIncome(@PathVariable int incomeId, @RequestBody IncomeDTO income){
         return incomeService.updateIncome(incomeId, income);
     }
+
+    @DeleteMapping("/{incomeId}")
+    public int deleteIncome(@PathVariable int incomeId){
+        return incomeService.deleteIncome(incomeId);
+    }
 }

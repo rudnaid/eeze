@@ -43,4 +43,12 @@ public class IncomeService {
             throw new NoSuchElementException("Income with id " + incomeId + " not found");
         }
     }
+
+    public int deleteIncome(int incomeId) {
+        int idOfDeletedIncome = incomeRepository.deleteIncome(incomeId);
+        if (idOfDeletedIncome == -1) {
+            throw new NoSuchElementException("Income with id " + incomeId + " not found");
+        }
+        return idOfDeletedIncome;
+    }
 }

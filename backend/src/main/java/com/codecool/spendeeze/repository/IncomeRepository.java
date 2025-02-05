@@ -49,4 +49,13 @@ public class IncomeRepository implements IncomeDAO {
         incomes.put(incomeId, newIncome);
         return 1;
     }
+
+    @Override
+    public int deleteIncome(int incomeId) {
+        Income income = incomes.remove(incomeId);
+        if (income == null) {
+            return -1;
+        }
+        return income.getId();
+    }
 }
