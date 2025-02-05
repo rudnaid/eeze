@@ -24,4 +24,9 @@ public class IncomeController {
     public List<IncomeDTO> getAllIncomeByUserId(@RequestParam int userId){
         return incomeService.getAllIncomesByUser(userId);
     }
+
+    @GetMapping("/{incomeId}")
+    public IncomeDTO getIncomeById(@PathVariable int incomeId){
+        return incomeService.getIncomeById(incomeId);
+    }
 }

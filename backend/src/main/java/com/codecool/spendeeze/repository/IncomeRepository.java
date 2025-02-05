@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -29,5 +30,12 @@ public class IncomeRepository implements IncomeDAO {
         return incomes.values().stream()
                 .filter(income -> income.getUserId() == userId)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<Income> getIncomeById(int incomeId) {
+        return incomes.values().stream()
+                .filter(income -> income.getId() == incomeId)
+                .findFirst();
     }
 }
