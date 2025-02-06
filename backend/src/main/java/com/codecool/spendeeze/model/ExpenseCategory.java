@@ -1,5 +1,5 @@
 package com.codecool.spendeeze.model;
 
-public enum Categories {
+public enum ExpenseCategory {
     FOOD, REOCCURRING, LEISURE, TRANSPORTATION, CLOTHING
 }
