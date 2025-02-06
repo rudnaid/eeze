@@ -1,0 +1,15 @@
+package com.codecool.spendeeze.repository;
+
+import com.codecool.spendeeze.model.Income;
+import com.codecool.spendeeze.model.IncomeDTO;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface IncomeDAO {
+    int addIncome(IncomeDTO income, int userId);
+    List<Income> getAllIncomesByUser(int userId);
+    Optional<Income> getIncomeById(int incomeId);
+    int updateIncome(int incomeId, IncomeDTO income);
+    int deleteIncome(int incomeId);
+}
