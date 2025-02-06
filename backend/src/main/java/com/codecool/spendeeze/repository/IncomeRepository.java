@@ -4,6 +4,7 @@ import com.codecool.spendeeze.model.Income;
 import com.codecool.spendeeze.model.IncomeDTO;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,9 @@ public class IncomeRepository implements IncomeDAO {
 
     public IncomeRepository() {
         incomes = new HashMap<Integer, Income>();
+        incomes.put(1, new Income(1,1, 1000, LocalDate.now()));
+        incomes.put(2, new Income(2,1, 2000, LocalDate.now()));
+        incomes.put(3, new Income(3,1, 3000, LocalDate.now()));
     }
 
     @Override
