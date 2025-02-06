@@ -1,7 +1,12 @@
-import './App.css';
+// import './App.css';
 
-function App() {
-	return <div className='text-4xl'><span>Spendeeze</span> expense tracking app</div>;
-}
+// function App() {
+// 	return (
+//   <div>
+//     <div className='text-4xl'>
+//       Spendeeze expense tracking app
+//     </div>
+//   </div>);
+// }
 
-export default App;
+// export default App;
