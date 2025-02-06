@@ -6,6 +6,7 @@ import './index.css';
 import Layout from './Pages/Layout.jsx';
 import { Homepage } from './Pages/Homepage.jsx';
 import { Expenses } from './Pages/Expenses.jsx';
+import Income from './Pages/Income.jsx';
 
 const router = createBrowserRouter([
 	{
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
 				path: '/expenses',
 				element: <Expenses />,
 			},
+			{
+				path: '/income',
+				element: <Income />
+			}
 		],
 	},
 ]);

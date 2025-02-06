@@ -7,10 +7,9 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Getter
-@Setter
 public class Income {
-    private final int id;
-    private final int userId;
+    private int id;
+    private int userId;
     private double amount;
     private LocalDate date;
 
@@ -20,4 +19,5 @@ public class Income {
         this.amount = amount;
         this.date = date;
     }
+
 }
