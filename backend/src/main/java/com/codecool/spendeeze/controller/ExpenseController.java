@@ -1,7 +1,7 @@
 package com.codecool.spendeeze.controller;
 
-import com.codecool.spendeeze.dto.ExpenseRequestDTO;
-import com.codecool.spendeeze.dto.ExpenseResponseDTO;
+import com.codecool.spendeeze.model.dto.ExpenseRequestDTO;
+import com.codecool.spendeeze.model.dto.ExpenseResponseDTO;
 import com.codecool.spendeeze.service.ExpenseService;
 import org.springframework.web.bind.annotation.*;
 
