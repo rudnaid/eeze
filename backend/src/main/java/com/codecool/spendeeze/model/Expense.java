@@ -1,25 +1,29 @@
 package com.codecool.spendeeze.model;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
+@Entity
 @Getter
 @Setter
 public class Expense {
-    private final UUID id;
-    private final UUID userId;
-    private final double amount;
-    private final LocalDateTime transactionDate;
-    private final ExpenseCategory expenseCategory;
 
-    public Expense(UUID id, UUID userId, double amount, LocalDateTime transactionDate, ExpenseCategory expenseCategory) {
-        this.id = id;
-        this.userId = userId;
-        this.amount = amount;
-        this.transactionDate = transactionDate;
-        this.expenseCategory = expenseCategory;
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID publicId;
+
+    @ManyToOne
+    private User user;
+
+    private double amount;
+    private LocalDate transactionDate;
+    private ExpenseCategory expenseCategory;
 }
