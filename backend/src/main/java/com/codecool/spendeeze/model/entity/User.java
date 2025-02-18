@@ -1,8 +1,6 @@
 package com.codecool.spendeeze.model.entity;
 
 
-import com.codecool.spendeeze.model.Expense;
-import com.codecool.spendeeze.model.Income;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,6 +22,7 @@ public class User {
 
     private String firstName;
     private String lastName;
+    private String country;
 
     @Column(unique = true)
     private String username;
