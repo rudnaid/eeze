@@ -1,11 +1,15 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 
 const Login = () => {
 	return (
 		<>
-    <div className='bg-[#6a9184]'>
-      <h1 className='ml-7 text-3xl text-white'>Spendeeze</h1>
-    </div>
+			<div className="bg-[#6a9184]">
+				<Link to="/">
+					<h1 className="ml-7 text-3xl text-white">Spendeeze</h1>
+				</Link>
+			</div>
 			<div className="flex justify-center items-center font-[sans-serif] h-full min-h-screen p-4 bg-[#6a9184]">
 				<div className="max-w-md w-full mx-auto">
 					<form className="bg-white bg-opacity-70 shadow-2xl rounded-lg p-6">
@@ -103,12 +107,11 @@ const Login = () => {
 							</button>
 							<p className="text-gray-800 text-sm text-center mt-6">
 								Don't have an account
-								<a
-									href="javascript:void(0);"
+								<Link to="/register"
 									class="text-[#394a51] font-semibold hover:underline ml-1 whitespace-nowrap"
 								>
 									Register here
-								</a>
+								</Link>
 							</p>
 						</div>
 						<hr class="my-6 border-gray-400" />

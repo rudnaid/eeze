@@ -1,6 +1,6 @@
 package com.codecool.spendeeze.model.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
-public record ExpenseRequestDTO(double amount, LocalDateTime transactionDate, String category) {
+public record ExpenseRequestDTO(double amount, LocalDate transactionDate, String category) {
 }
