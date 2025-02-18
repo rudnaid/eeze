@@ -1,5 +1,6 @@
 package com.codecool.spendeeze.model;
 
+import com.codecool.spendeeze.model.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
