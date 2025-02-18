@@ -56,7 +56,7 @@ public class ExpenseService {
         return convertToExpenseResponseDTO(expenseToUpdate);
     }
 
-    public UUID deleteExpenseByPublicId(UUID publicId) {
+    public int deleteExpenseByPublicId(UUID publicId) {
         return expenseRepository.deleteExpenseByPublicId(publicId);
     }
 

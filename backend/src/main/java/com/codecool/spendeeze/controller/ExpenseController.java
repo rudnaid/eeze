@@ -43,7 +43,7 @@ public class ExpenseController {
     }
 
     @DeleteMapping("/{id}")
-    public UUID deleteExpense(@PathVariable UUID id) {
+    public int deleteExpense(@PathVariable UUID id) {
         return expenseService.deleteExpenseByPublicId(id);
     }
 }

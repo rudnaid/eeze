@@ -22,7 +22,7 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     @Transactional
     @Modifying
     @Query("DELETE FROM Expense e WHERE e.publicId = :publicId")
-    UUID deleteExpenseByPublicId(@Param("publicId") UUID publicId);
+    int deleteExpenseByPublicId(@Param("publicId") UUID publicId);
 
     List<Expense> getExpensesByUserPublicId(UUID userId);
 
