@@ -1,47 +1,30 @@
 package com.codecool.spendeeze.repository;
 
-import com.codecool.spendeeze.model.dto.ExpenseRequestDTO;
-import com.codecool.spendeeze.model.Expense;
+import com.codecool.spendeeze.model.ExpenseCategory;
+import com.codecool.spendeeze.model.dto.ExpenseResponseDTO;
+import com.codecool.spendeeze.model.entity.Expense;
+import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public class ExpenseRepository implements ExpenseDAO {
-    private final Map<UUID, Expense> expenses = new HashMap<>();
+public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
-    @Override
-    public List<Expense> getAllExpensesByUserId(UUID userId) {
-        return expenses.values().stream()
-                .filter(expense -> expense.getUserId().equals(userId))
-                .toList();
-    }
+    Optional<Expense> findExpenseByPublicId(UUID id);
 
-    @Override
-    public Expense getExpenseById(UUID id) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM Expense e WHERE e.publicId = :publicId")
+    UUID deleteExpenseByPublicId(@Param("publicId") UUID publicId);
 
-    @Override
-    public List<Expense> getExpensesByCategory(String category) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
+    List<ExpenseResponseDTO> getExpensesByUserPublicId(UUID userId);
 
-    @Override
-    public UUID addExpense(ExpenseRequestDTO expense) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
-    @Override
-    public UUID updateExpense(UUID id, ExpenseRequestDTO expense) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
-    @Override
-    public UUID deleteExpense(UUID id) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
+    List<ExpenseResponseDTO> getExpensesByExpenseCategoryAndUserPublicId(ExpenseCategory category, UUID userPublicId);
 }
