@@ -1,5 +1,6 @@
-package com.codecool.spendeeze.model;
+package com.codecool.spendeeze.model.entity;
 
+import com.codecool.spendeeze.model.ExpenseCategory;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +16,6 @@ public class Expense {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
 
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID publicId;
