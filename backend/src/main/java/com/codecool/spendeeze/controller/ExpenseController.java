@@ -1,5 +1,6 @@
 package com.codecool.spendeeze.controller;
 
+import com.codecool.spendeeze.model.ExpenseCategory;
 import com.codecool.spendeeze.model.dto.ExpenseRequestDTO;
 import com.codecool.spendeeze.model.dto.ExpenseResponseDTO;
 import com.codecool.spendeeze.service.ExpenseService;
@@ -28,7 +29,7 @@ public class ExpenseController {
     }
 
     @GetMapping("/category{category}")
-    public List<ExpenseResponseDTO> getExpensesOfUserByCategory(@PathVariable String category, @RequestParam UUID userPublicId) {
+    public List<ExpenseResponseDTO> getExpensesOfUserByCategory(@PathVariable ExpenseCategory category, @RequestParam UUID userPublicId) {
         return expenseService.getExpensesByExpenseCategoryAndUserPublicId(category, userPublicId);
     }
 
