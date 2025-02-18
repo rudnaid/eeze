@@ -80,12 +80,18 @@ public class ExpenseService {
     }
 
     public List<ExpenseResponseDTO> getAllExpensesByUserPublicId(UUID userPublicId) {
-        return expenseRepository.getExpensesByUserPublicId(userPublicId);
+        List<Expense> expenses = expenseRepository.getExpensesByUserPublicId(userPublicId);
+
+        return expenses.stream()
+                .map(this::convertToExpenseResponseDTO)
+                .toList();
     }
 
-    public List<ExpenseResponseDTO> getExpensesByExpenseCategoryAndUserPublicId(String category, UUID userPublicId) {
-        return expenseRepository.getExpensesByExpenseCategoryAndUserPublicId(category, userPublicId);
+    public List<ExpenseResponseDTO> getExpensesByExpenseCategoryAndUserPublicId(ExpenseCategory category, UUID userPublicId) {
+        List<Expense> expenses = expenseRepository.getExpensesByExpenseCategoryAndUserPublicId(category, userPublicId);
 
-
+        return expenses.stream()
+                .map(this::convertToExpenseResponseDTO)
+                .toList();
     }
 }

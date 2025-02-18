@@ -24,7 +24,7 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     @Query("DELETE FROM Expense e WHERE e.publicId = :publicId")
     UUID deleteExpenseByPublicId(@Param("publicId") UUID publicId);
 
-    List<ExpenseResponseDTO> getExpensesByUserPublicId(UUID userId);
+    List<Expense> getExpensesByUserPublicId(UUID userId);
 
-    List<ExpenseResponseDTO> getExpensesByExpenseCategoryAndUserPublicId(ExpenseCategory category, UUID userPublicId);
+    List<Expense> getExpensesByExpenseCategoryAndUserPublicId(ExpenseCategory category, UUID userPublicId);
 }
