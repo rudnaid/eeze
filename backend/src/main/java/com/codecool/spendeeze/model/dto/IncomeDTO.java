@@ -1,4 +1,4 @@
-package com.codecool.spendeeze.model;
+package com.codecool.spendeeze.model.dto;
 
 import java.time.LocalDate;
 import java.util.UUID;
