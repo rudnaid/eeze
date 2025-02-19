@@ -17,12 +17,13 @@ const Register = () => {
 				<div className="max-w-md w-full mx-auto relative -mt-40 m-4">
 					<form className="bg-white max-w-xl w-full mx-auto shadow-[0_2px_10px_-3px_rgba(182,191,184,0.99)] p-6 sm:p-8 rounded-2xl">
 						<div className="mb-12">
-							<h3 className="text-gray-800 text-3xl font-bold text-center">Register</h3>
+							<h3 className="text-gray-800 text-3xl font-bold text-center">
+								Register
+							</h3>
 						</div>
 
 						<div>
-							<label className="text-gray-800 text-xs block mb-2">
-							</label>
+							<label className="text-gray-800 text-xs block mb-2"></label>
 							<div className="relative flex items-center">
 								<input
 									name="name"
@@ -90,8 +91,7 @@ const Register = () => {
 						</div>
 
 						<div className="mt-8">
-							<label className="text-gray-800 text-xs block mb-2">
-							</label>
+							<label className="text-gray-800 text-xs block mb-2"></label>
 							<div className="relative flex items-center">
 								<input
 									name="password"
@@ -142,15 +142,16 @@ const Register = () => {
 							</button>
 							<p className="text-gray-800 text-sm mt-4 text-center">
 								Already have an account?
-								<Link to="/login"
+								<Link
+									to="/login"
 									className="text-[#6a9184] font-semibold hover:underline ml-1"
 								>
 									Login here
 								</Link>
 							</p>
 						</div>
-            <hr class="my-6 border-gray-400" />
-            <div className="space-x-8 flex justify-center">
+						<hr class="my-6 border-gray-400" />
+						<div className="space-x-8 flex justify-center">
 							<button type="button" className="border-none outline-none">
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
