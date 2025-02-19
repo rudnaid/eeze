@@ -1,6 +1,6 @@
 package com.codecool.spendeeze.controller;
 
-import com.codecool.spendeeze.model.IncomeDTO;
+import com.codecool.spendeeze.model.dto.IncomeDTO;
 import com.codecool.spendeeze.model.entity.Income;
 import com.codecool.spendeeze.service.IncomeService;
 import org.springframework.web.bind.annotation.*;
@@ -33,8 +33,8 @@ public class IncomeController {
     }
 
     @PutMapping("/{incomeId}")
-    public IncomeDTO updateIncome(@RequestBody IncomeDTO incomeDTO){
-        return incomeService.updateIncome(incomeDTO);
+    public IncomeDTO updateIncome(@PathVariable UUID incomeId, @RequestBody IncomeDTO updatedIncome){
+        return incomeService.updateIncome(incomeId, updatedIncome);
     }
 
     @DeleteMapping("/{incomeId}")
