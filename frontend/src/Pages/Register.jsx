@@ -17,7 +17,7 @@ const Register = () => {
 				<div className="max-w-md w-full mx-auto relative -mt-40 m-4">
 					<form className="bg-white max-w-xl w-full mx-auto shadow-[0_2px_10px_-3px_rgba(182,191,184,0.99)] p-6 sm:p-8 rounded-2xl">
 						<div className="mb-12">
-							<h3 className="text-gray-800 text-3xl text-center">Register</h3>
+							<h3 className="text-gray-800 text-3xl font-bold text-center">Register</h3>
 						</div>
 
 						<div>

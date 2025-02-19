@@ -14,7 +14,7 @@ const Login = () => {
 				<div className="max-w-md w-full mx-auto">
 					<form className="bg-white bg-opacity-70 shadow-2xl rounded-lg p-6">
 						<div className="mb-12">
-							<h3 className="text-gray-800 text-3xl font-bold">Sign in</h3>
+							<h3 className="text-gray-800 text-center text-3xl font-bold">Sign in</h3>
 						</div>
 						<div>
 							<div className="relative flex items-center">
