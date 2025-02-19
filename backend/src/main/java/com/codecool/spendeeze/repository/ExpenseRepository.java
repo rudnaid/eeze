@@ -1,7 +1,6 @@
 package com.codecool.spendeeze.repository;
 
 import com.codecool.spendeeze.model.ExpenseCategory;
-import com.codecool.spendeeze.model.dto.ExpenseResponseDTO;
 import com.codecool.spendeeze.model.entity.Expense;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,7 +23,7 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     @Query("DELETE FROM Expense e WHERE e.publicId = :publicId")
     int deleteExpenseByPublicId(@Param("publicId") UUID publicId);
 
-    List<Expense> getExpensesByUserPublicId(UUID userId);
+    List<Expense> getExpensesByMemberPublicId(UUID userId);
 
-    List<Expense> getExpensesByExpenseCategoryAndUserPublicId(ExpenseCategory category, UUID userPublicId);
+    List<Expense> getExpensesByExpenseCategoryAndMemberPublicId(ExpenseCategory category, UUID userPublicId);
 }

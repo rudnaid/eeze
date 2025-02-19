@@ -2,9 +2,9 @@ package com.codecool.spendeeze.service;
 
 import com.codecool.spendeeze.model.entity.Income;
 import com.codecool.spendeeze.model.dto.IncomeDTO;
-import com.codecool.spendeeze.model.entity.User;
+import com.codecool.spendeeze.model.entity.Member;
 import com.codecool.spendeeze.repository.IncomeRepository;
-import com.codecool.spendeeze.repository.UserRepository;
+import com.codecool.spendeeze.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,17 +15,17 @@ import java.util.UUID;
 @Service
 public class IncomeService {
     private final IncomeRepository incomeRepository;
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
 
-    public IncomeService(IncomeRepository incomeRepository, UserRepository userRepository) {
+    public IncomeService(IncomeRepository incomeRepository, MemberRepository memberRepository) {
         this.incomeRepository = incomeRepository;
-        this.userRepository = userRepository;
+        this.memberRepository = memberRepository;
     }
 
-    public Income addIncome(IncomeDTO income, UUID userId) {
-        User user = userRepository.getUserByPublicId(userId).orElseThrow(() -> new NoSuchElementException("User with id " + userId + " not found"));
+    public Income addIncome(IncomeDTO income, UUID memberPublicId) {
+        Member member = memberRepository.getMemberByPublicId(memberPublicId).orElseThrow(() -> new NoSuchElementException("User with id " + memberPublicId + " not found"));
         Income incomeEntity = convertDtoToEntity(income);
-        incomeEntity.setUser(user);
+        incomeEntity.setMember(member);
         return incomeRepository.save(incomeEntity);
     }
 
@@ -36,9 +36,9 @@ public class IncomeService {
         return incomeEntity;
     }
 
-    public List<IncomeDTO> findIncomesByUserId(UUID userId) {
-        User user = userRepository.getUserByPublicId(userId).orElseThrow(() -> new NoSuchElementException("User with id " + userId + " not found"));
-        List<Income> incomes = incomeRepository.findIncomesByUser(user);
+    public List<IncomeDTO> findIncomesByMemberId(UUID memberPublicId) {
+        Member member = memberRepository.getMemberByPublicId(memberPublicId).orElseThrow(() -> new NoSuchElementException("User with id " + memberPublicId + " not found"));
+        List<Income> incomes = incomeRepository.findIncomesByMember(member);
         List<IncomeDTO> incomeDTOs = new ArrayList<>();
         for (Income income : incomes) {
             incomeDTOs.add(new IncomeDTO(income.getPublicId(), income.getAmount(), income.getDate()));

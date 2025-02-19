@@ -11,30 +11,31 @@ import java.util.UUID;
 @Entity
 @Setter
 @Getter
-public class User {
+public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID publicId;
+
+    @PrePersist
+    public void generatePublicId() {
+        this.publicId = UUID.randomUUID();
+    }
 
     private String firstName;
     private String lastName;
     private String country;
 
     @Column(unique = true)
-    private String username;
-
-    @Column(unique = true)
     private String email;
 
     private String password;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Income> incomes;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Expense> expenses;
 }

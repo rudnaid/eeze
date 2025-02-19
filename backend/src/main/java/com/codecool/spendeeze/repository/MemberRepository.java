@@ -1,6 +1,6 @@
 package com.codecool.spendeeze.repository;
 
-import com.codecool.spendeeze.model.entity.User;
+import com.codecool.spendeeze.model.entity.Member;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -12,11 +12,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> getUserByPublicId(UUID publicId);
+public interface MemberRepository extends JpaRepository<Member, Long> {
+    Optional<Member> getMemberByPublicId(UUID publicId);
 
     @Transactional
     @Modifying
-    @Query("DELETE FROM User u WHERE u.publicId = :publicId")
-    int deleteUserByPublicId(@Param("publicId")UUID publicId);
+    @Query("DELETE FROM Member m WHERE m.publicId = :publicId")
+    int deleteMemberByPublicId(@Param("publicId")UUID publicId);
 }

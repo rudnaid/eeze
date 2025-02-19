@@ -17,12 +17,15 @@ public class Expense {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID publicId;
 
+    @PrePersist
+    public void generatePublicId() {
+        this.publicId = UUID.randomUUID();
+    }
+
     @ManyToOne
-    private User user;
+    private Member member;
 
     private double amount;
     private LocalDate transactionDate;

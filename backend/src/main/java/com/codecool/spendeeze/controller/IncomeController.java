@@ -23,8 +23,8 @@ public class IncomeController {
     }
 
     @GetMapping("/")
-    public List<IncomeDTO> findIncomesByUser(@RequestParam UUID userId){
-        return incomeService.findIncomesByUserId(userId);
+    public List<IncomeDTO> findIncomesByMember(@RequestParam UUID userId){
+        return incomeService.findIncomesByMemberId(userId);
     }
 
     @GetMapping("/{incomeId}")
