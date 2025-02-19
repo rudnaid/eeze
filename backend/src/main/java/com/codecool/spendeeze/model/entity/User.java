@@ -2,7 +2,6 @@ package com.codecool.spendeeze.model.entity;
 
 
 import com.codecool.spendeeze.model.Expense;
-import com.codecool.spendeeze.model.Income;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

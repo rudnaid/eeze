@@ -1,65 +1,18 @@
 package com.codecool.spendeeze.repository;
 
-import com.codecool.spendeeze.model.Income;
+import com.codecool.spendeeze.model.entity.Income;
 import com.codecool.spendeeze.model.IncomeDTO;
+import com.codecool.spendeeze.model.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 @Repository
-public class IncomeRepository implements IncomeDAO {
-    private final Map<Integer, Income> incomes;
+public interface IncomeRepository extends JpaRepository<Income, Long> {
+    List<Income> findIncomesByUser(User user);
+    Optional<Income> findIncomeByPublicId(UUID publicId);
 
-    public IncomeRepository() {
-        incomes = new HashMap<Integer, Income>();
-        incomes.put(1, new Income(1,1, 1000, LocalDate.now()));
-        incomes.put(2, new Income(2,1, 2000, LocalDate.now()));
-        incomes.put(3, new Income(3,1, 3000, LocalDate.now()));
-    }
-
-    @Override
-    public int addIncome(IncomeDTO income, int userId) {
-        int id = incomes.keySet().stream().max(Integer::compareTo).orElse(0) + 1;
-        incomes.put(id, new Income(id, userId, income.amount(), income.date()));
-        return id;
-    }
-
-    @Override
-    public List<Income> getAllIncomesByUser(int userId) {
-        return incomes.values().stream()
-                .filter(income -> income.getUserId() == userId)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public Optional<Income> getIncomeById(int incomeId) {
-        return incomes.values().stream()
-                .filter(income -> income.getId() == incomeId)
-                .findFirst();
-    }
-
-    @Override
-    public int updateIncome(int incomeId, IncomeDTO income) {
-        Income oldIncome = incomes.get(incomeId);
-        if (oldIncome == null) {
-            return -1;
-        }
-        Income newIncome = new Income(incomeId, oldIncome.getUserId(), income.amount(), income.date());
-        incomes.put(incomeId, newIncome);
-        return 1;
-    }
-
-    @Override
-    public int deleteIncome(int incomeId) {
-        Income income = incomes.remove(incomeId);
-        if (income == null) {
-            return -1;
-        }
-        return income.getId();
-    }
 }

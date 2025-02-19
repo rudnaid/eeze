@@ -1,10 +1,12 @@
 package com.codecool.spendeeze.controller;
 
 import com.codecool.spendeeze.model.IncomeDTO;
+import com.codecool.spendeeze.model.entity.Income;
 import com.codecool.spendeeze.service.IncomeService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/income")
@@ -16,27 +18,27 @@ public class IncomeController {
     }
 
     @PostMapping("/")
-    public int addIncome(@RequestBody IncomeDTO income, @RequestParam int userId){
+    public Income addIncome(@RequestBody IncomeDTO income, @RequestParam UUID userId){
         return incomeService.addIncome(income, userId);
     }
 
     @GetMapping("/")
-    public List<IncomeDTO> getAllIncomeByUserId(@RequestParam int userId){
-        return incomeService.getAllIncomesByUser(userId);
+    public List<IncomeDTO> findIncomesByUser(@RequestParam UUID userId){
+        return incomeService.findIncomesByUserId(userId);
     }
 
     @GetMapping("/{incomeId}")
-    public IncomeDTO getIncomeById(@PathVariable int incomeId){
-        return incomeService.getIncomeById(incomeId);
+    public IncomeDTO findIncomeById(@PathVariable UUID incomeId){
+        return incomeService.findIncomeById(incomeId);
     }
 
     @PutMapping("/{incomeId}")
-    public int updateIncome(@PathVariable int incomeId, @RequestBody IncomeDTO income){
-        return incomeService.updateIncome(incomeId, income);
+    public IncomeDTO updateIncome(@RequestBody IncomeDTO incomeDTO){
+        return incomeService.updateIncome(incomeDTO);
     }
 
     @DeleteMapping("/{incomeId}")
-    public int deleteIncome(@PathVariable int incomeId){
-        return incomeService.deleteIncome(incomeId);
+    public void deleteIncome(@PathVariable UUID incomeId){
+        incomeService.deleteIncome(incomeId);
     }
 }
