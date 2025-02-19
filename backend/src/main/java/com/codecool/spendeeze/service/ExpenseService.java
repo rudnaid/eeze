@@ -4,9 +4,9 @@ import com.codecool.spendeeze.model.ExpenseCategory;
 import com.codecool.spendeeze.model.dto.ExpenseRequestDTO;
 import com.codecool.spendeeze.model.dto.ExpenseResponseDTO;
 import com.codecool.spendeeze.model.entity.Expense;
-import com.codecool.spendeeze.model.entity.User;
+import com.codecool.spendeeze.model.entity.Member;
 import com.codecool.spendeeze.repository.ExpenseRepository;
-import com.codecool.spendeeze.repository.UserRepository;
+import com.codecool.spendeeze.repository.MemberRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -21,11 +21,11 @@ import java.util.UUID;
 public class ExpenseService {
     private final ExpenseRepository expenseRepository;
 
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
 
-    public ExpenseService(ExpenseRepository expenseRepository, UserRepository userRepository) {
+    public ExpenseService(ExpenseRepository expenseRepository, MemberRepository memberRepository) {
         this.expenseRepository = expenseRepository;
-        this.userRepository = userRepository;
+        this.memberRepository = memberRepository;
     }
 
     public ExpenseResponseDTO getExpenseDTOByPublicId(UUID id) {
@@ -38,11 +38,11 @@ public class ExpenseService {
         return expense.orElseThrow(NoSuchElementException::new);
     }
 
-    public ExpenseResponseDTO addExpense(UUID userPublicId, ExpenseRequestDTO expenseDTO) {
-        User user = userRepository.getUserByPublicId(userPublicId).orElseThrow(NoSuchElementException::new);
+    public ExpenseResponseDTO addExpense(UUID memberPublicId, ExpenseRequestDTO expenseDTO) {
+        Member member = memberRepository.getMemberByPublicId(memberPublicId).orElseThrow(NoSuchElementException::new);
         Expense expense = convertToExpense(expenseDTO);
 
-        expense.setUser(user);
+        expense.setMember(member);
         expenseRepository.save(expense);
 
         return convertToExpenseResponseDTO(expense);
@@ -83,16 +83,16 @@ public class ExpenseService {
         }
     }
 
-    public List<ExpenseResponseDTO> getAllExpensesByUserPublicId(UUID userPublicId) {
-        List<Expense> expenses = expenseRepository.getExpensesByUserPublicId(userPublicId);
+    public List<ExpenseResponseDTO> getAllExpensesByMemberPublicId(UUID memberPublicId) {
+        List<Expense> expenses = expenseRepository.getExpensesByMemberPublicId(memberPublicId);
 
         return expenses.stream()
                 .map(this::convertToExpenseResponseDTO)
                 .toList();
     }
 
-    public List<ExpenseResponseDTO> getExpensesByExpenseCategoryAndUserPublicId(ExpenseCategory category, UUID userPublicId) {
-        List<Expense> expenses = expenseRepository.getExpensesByExpenseCategoryAndUserPublicId(category, userPublicId);
+    public List<ExpenseResponseDTO> getExpensesByExpenseCategoryAndMemberPublicId(ExpenseCategory category, UUID memberPublicId) {
+        List<Expense> expenses = expenseRepository.getExpensesByExpenseCategoryAndMemberPublicId(category, memberPublicId);
 
         return expenses.stream()
                 .map(this::convertToExpenseResponseDTO)

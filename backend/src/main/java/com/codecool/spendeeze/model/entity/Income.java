@@ -15,20 +15,24 @@ public class Income {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private long id;
 
-    @GeneratedValue (strategy = GenerationType.UUID)
     private UUID publicId;
 
+    @PrePersist
+    public void generatePublicId() {
+        this.publicId = UUID.randomUUID();
+    }
+
     @ManyToOne
-    private User user;
+    private Member member;
 
     private double amount;
     private LocalDate date;
 
     public Income() {}
 
-    public Income(int id, User user, double amount, LocalDate date) {
+    public Income(int id, Member member, double amount, LocalDate date) {
         this.id = id;
-        this.user = user;
+        this.member = member;
         this.amount = amount;
         this.date = date;
     }

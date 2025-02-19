@@ -19,8 +19,8 @@ public class ExpenseController {
     }
 
     @GetMapping()
-    public List<ExpenseResponseDTO> getAllExpensesByUserPublicId(@RequestParam("userPublicId") UUID userPublicId) {
-        return expenseService.getAllExpensesByUserPublicId(userPublicId);
+    public List<ExpenseResponseDTO> getAllExpensesByMemberPublicId(@RequestParam("memberPublicId") UUID memberPublicId) {
+        return expenseService.getAllExpensesByMemberPublicId(memberPublicId);
     }
 
     @GetMapping("/{id}")
@@ -29,13 +29,13 @@ public class ExpenseController {
     }
 
     @GetMapping("/category{category}")
-    public List<ExpenseResponseDTO> getExpensesOfUserByCategory(@PathVariable ExpenseCategory category, @RequestParam UUID userPublicId) {
-        return expenseService.getExpensesByExpenseCategoryAndUserPublicId(category, userPublicId);
+    public List<ExpenseResponseDTO> getExpensesOfMemberByCategory(@PathVariable ExpenseCategory category, @RequestParam UUID memberPublicId) {
+        return expenseService.getExpensesByExpenseCategoryAndMemberPublicId(category, memberPublicId);
     }
 
     @PostMapping()
-    public ExpenseResponseDTO addExpense(@RequestParam UUID userPublicId, @RequestBody ExpenseRequestDTO expenseDTO) {
-        return expenseService.addExpense(userPublicId, expenseDTO);
+    public ExpenseResponseDTO addExpense(@RequestParam UUID memberPublicId, @RequestBody ExpenseRequestDTO expenseDTO) {
+        return expenseService.addExpense(memberPublicId, expenseDTO);
     }
 
     @PutMapping("/{id}")
