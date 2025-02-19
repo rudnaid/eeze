@@ -18,32 +18,32 @@ public class ExpenseController {
     }
 
     @GetMapping()
-    public List<ExpenseResponseDTO> getAllExpensesByUserId(@RequestParam("userId") UUID userId) {
-        return expenseService.getAllExpensesByUserId(userId);
+    public List<ExpenseResponseDTO> getAllExpensesByUserPublicId(@RequestParam("userPublicId") UUID userPublicId) {
+        return expenseService.getAllExpensesByUserPublicId(userPublicId);
     }
 
     @GetMapping("/{id}")
     public ExpenseResponseDTO getExpenseById(@PathVariable UUID id) {
-        return expenseService.getExpenseById(id);
+        return expenseService.getExpenseDTOByPublicId(id);
     }
 
     @GetMapping("/category{category}")
-    public List<ExpenseResponseDTO> getExpensesByCategory(@PathVariable String category) {
-        return expenseService.getExpensesByCategory(category);
+    public List<ExpenseResponseDTO> getExpensesOfUserByCategory(@PathVariable String category, @RequestParam UUID userPublicId) {
+        return expenseService.getExpensesByExpenseCategoryAndUserPublicId(category, userPublicId);
     }
 
     @PostMapping()
-    public UUID addExpense(@RequestBody ExpenseRequestDTO expenseDTO) {
-        return expenseService.addExpense(expenseDTO);
+    public ExpenseResponseDTO addExpense(@RequestParam UUID userPublicId, @RequestBody ExpenseRequestDTO expenseDTO) {
+        return expenseService.addExpense(userPublicId, expenseDTO);
     }
 
     @PutMapping("/{id}")
-    public UUID updateExpense(@PathVariable UUID id, @RequestBody ExpenseRequestDTO expenseDTO) {
+    public ExpenseResponseDTO updateExpense(@PathVariable UUID id, @RequestBody ExpenseResponseDTO expenseDTO) {
         return expenseService.updateExpense(id, expenseDTO);
     }
 
     @DeleteMapping("/{id}")
     public UUID deleteExpense(@PathVariable UUID id) {
-        return expenseService.deleteExpense(id);
+        return expenseService.deleteExpenseByPublicId(id);
     }
 }
