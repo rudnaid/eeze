@@ -6,6 +6,7 @@ import com.codecool.spendeeze.model.dto.ExpenseResponseDTO;
 import com.codecool.spendeeze.model.entity.Expense;
 import com.codecool.spendeeze.model.entity.User;
 import com.codecool.spendeeze.repository.ExpenseRepository;
+import com.codecool.spendeeze.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,11 @@ import java.util.UUID;
 public class ExpenseService {
     private final ExpenseRepository expenseRepository;
 
-    public ExpenseService(ExpenseRepository expenseRepository) {
+    private final UserRepository userRepository;
+
+    public ExpenseService(ExpenseRepository expenseRepository, UserRepository userRepository) {
         this.expenseRepository = expenseRepository;
+        this.userRepository = userRepository;
     }
 
     public ExpenseResponseDTO getExpenseDTOByPublicId(UUID id) {
@@ -35,7 +39,7 @@ public class ExpenseService {
     }
 
     public ExpenseResponseDTO addExpense(UUID userPublicId, ExpenseRequestDTO expenseDTO) {
-        User user = userRepository.findUserByPublicId(userPublicId);
+        User user = userRepository.getUserByPublicId(userPublicId).orElseThrow(NoSuchElementException::new);
         Expense expense = convertToExpense(expenseDTO);
 
         expense.setUser(user);
@@ -56,7 +60,7 @@ public class ExpenseService {
         return convertToExpenseResponseDTO(expenseToUpdate);
     }
 
-    public UUID deleteExpenseByPublicId(UUID publicId) {
+    public int deleteExpenseByPublicId(UUID publicId) {
         return expenseRepository.deleteExpenseByPublicId(publicId);
     }
 
