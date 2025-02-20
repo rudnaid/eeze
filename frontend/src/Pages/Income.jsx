@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import IncomeTable from "../Components/Tables/IncomeTable";
 import Loading from "../Components/Loading/Loading";
 
-
 const Income = () => {
     const userId = 1;
     const [loading, setLoading] = useState(true);
