@@ -8,7 +8,6 @@ import com.codecool.spendeeze.model.entity.TransactionCategory;
 import com.codecool.spendeeze.repository.ExpenseRepository;
 import com.codecool.spendeeze.repository.MemberRepository;
 import com.codecool.spendeeze.repository.TransactionCategoryRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -77,10 +76,11 @@ public class ExpenseService {
     }
 
     private Expense convertToExpense(ExpenseRequestDTO expenseRequestDTO) {
-        ObjectMapper objectMapper = new ObjectMapper();
-
         try {
-            Expense expense = objectMapper.convertValue(expenseRequestDTO, Expense.class);
+            Expense expense = new Expense();
+            expense.setAmount(expenseRequestDTO.amount());
+            expense.setTransactionDate(expenseRequestDTO.transactionDate());
+
             TransactionCategory category = transactionCategoryRepository.findByName(expenseRequestDTO.category());
             expense.setTransactionCategory(category);
             return expense;
