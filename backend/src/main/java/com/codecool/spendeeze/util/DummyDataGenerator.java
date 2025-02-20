@@ -67,11 +67,15 @@ public class DummyDataGenerator {
 
         for (int j = 0; j < months + 1; j++) {
             LocalDate incomeDate = startDate.plusMonths(j);
-            Income income = new Income();
-            income.setMember(member);
-            income.setAmount(random.nextInt(incomeUpperBound) + minimumIncome);
-            income.setDate(incomeDate);
-            incomeRepository.save(income);
+            try {
+                Income income = new Income();
+                income.setMember(member);
+                income.setAmount(random.nextInt(incomeUpperBound) + minimumIncome);
+                income.setDate(incomeDate);
+                incomeRepository.save(income);
+            } catch (Exception e) {
+                System.out.println("Error generating incomes: " + e.getMessage());
+            }
         }
     }
 
@@ -83,18 +87,22 @@ public class DummyDataGenerator {
             int numExpenses = random.nextInt(20) + 10;
 
             for (int k = 0; k < numExpenses; k++) {
-                Expense expense = new Expense();
-                expense.setMember(member);
-                expense.setAmount(random.nextDouble() * 100 + 10);
-                expense.setTransactionDate(currentDate.plusDays(random.nextInt(28)));
-                expense.setTransactionCategory(getRandomTransactionCategory());
-                expenseRepository.save(expense);
+                try {
+                    Expense expense = new Expense();
+                    expense.setMember(member);
+                    expense.setAmount(random.nextDouble() * 100 + 10);
+                    expense.setTransactionDate(currentDate.plusDays(random.nextInt(28)));
+                    expense.setTransactionCategory(getRandomTransactionCategory());
+                    expenseRepository.save(expense);
+                } catch (Exception e) {
+                    System.out.println("Error generating expenses: " + e.getMessage());
+                }
             }
         }
     }
 
     private TransactionCategory getRandomTransactionCategory() {
-        List<TransactionCategory> allTransactionCategories = transactionCategoryRepository.getAllTransactionCategories();
+        List<TransactionCategory> allTransactionCategories = transactionCategoryRepository.findAll();
         return allTransactionCategories.get(random.nextInt(allTransactionCategories.size()));
     }
 }
