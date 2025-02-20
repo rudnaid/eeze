@@ -1,7 +1,7 @@
 package com.codecool.spendeeze.repository;
 
-import com.codecool.spendeeze.model.ExpenseCategory;
 import com.codecool.spendeeze.model.entity.Expense;
+import com.codecool.spendeeze.model.entity.TransactionCategory;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
