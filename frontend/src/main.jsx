@@ -9,6 +9,8 @@ import { Expenses } from './Pages/Expenses.jsx';
 import Income from './Pages/Income.jsx';
 import Login from './Pages/Login.jsx';
 import Register from './Pages/Register.jsx';
+import IncomeCreator from './Pages/IncomeCreator.jsx';
+import ExpenseCreator from './Pages/ExpenseCreator.jsx';
 import Homepage2 from './Pages/Homepage2.jsx';
 import Login2 from './Pages/Login2.jsx';
 import Register2 from './Pages/Register2.jsx';
@@ -27,9 +29,17 @@ const router = createBrowserRouter([
 				element: <Expenses />,
 			},
 			{
+				path: '/expenses/create',
+				element: <ExpenseCreator />,
+			},
+			{
 				path: '/income',
 				element: <Income />
-			}
+			},
+			{
+				path: '/income/create',
+				element: <IncomeCreator />
+			},
 		],
 	},
 	{
