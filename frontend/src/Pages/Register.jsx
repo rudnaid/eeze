@@ -4,17 +4,15 @@ import { Link } from 'react-router-dom';
 const Register = () => {
 	return (
 		<>
-			<div className="bg-[#6a9184]">
-				<Link to="/">
-					<h1 className="ml-7 text-3xl text-white">Spendeeze</h1>
-				</Link>
-			</div>
 			<div className="font-[sans-serif] relative">
-				<div className="h-[240px] font-[sans-serif] bg-[#6a9184]">
+				<div className="h-[400px] font-[sans-serif] bg-[url(/hero-bg-image.png)] bg-no-repeat bg-cover bg-center">
+					<Link to="/home">
+						<h1 className="ml-7 text-5xl pt-8 text-[#fdc57b]">eeze</h1>
+					</Link>
 					{/* <img className="w-full h-full bg-[#6a9184]" /> */}
 				</div>
 
-				<div className="max-w-md w-full mx-auto relative -mt-40 m-4">
+				<div className="max-w-md w-full mx-auto relative -mt-60 m-4">
 					<form className="bg-white max-w-xl w-full mx-auto shadow-[0_2px_10px_-3px_rgba(182,191,184,0.99)] p-6 sm:p-8 rounded-2xl">
 						<div className="mb-12">
 							<h3 className="text-gray-800 text-3xl font-bold text-center">
