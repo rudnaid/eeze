@@ -26,4 +26,8 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     List<Expense> getExpensesByMemberPublicId(UUID userId);
 
     List<Expense> getExpensesByExpenseCategoryAndMemberPublicId(ExpenseCategory category, UUID userPublicId);
+
+    @Query("SELECT COALESCE(SUM(e.amount), 0) FROM Expense e WHERE e.member.publicId = :memberPublicId")
+    Optional<Double> getTotalExpensesByMemberPublicId(@Param("memberPublicId") UUID memberPublicId);
+
 }
