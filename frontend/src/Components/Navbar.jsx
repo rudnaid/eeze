@@ -18,7 +18,7 @@ const [isMobileMenuShown, setIsMobileMenuShown] = useState(false);
 
   return (
     <nav ref={navbarRef} className='fixed top-0 left-0 w-full bg-[#7fa99b] shadow-md p-4 flex flex-wrap justify-between items-center z-50'>
-      <a href="#" className="text-2xl font-bold text-white">Spendeeze logo</a>
+      <a href="#" className="text-4xl text-white font-[sans-serif]">eeze</a>
 
       {/* Hamburger button */}
       <button
