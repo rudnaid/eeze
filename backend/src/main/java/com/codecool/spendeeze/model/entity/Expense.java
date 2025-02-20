@@ -1,6 +1,5 @@
 package com.codecool.spendeeze.model.entity;
 
-import com.codecool.spendeeze.model.ExpenseCategory;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,5 +28,7 @@ public class Expense {
 
     private double amount;
     private LocalDate transactionDate;
-    private ExpenseCategory expenseCategory;
+
+    @ManyToOne
+    private TransactionCategory transactionCategory;
 }
