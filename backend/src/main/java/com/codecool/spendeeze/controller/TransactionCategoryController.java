@@ -1,6 +1,6 @@
 package com.codecool.spendeeze.controller;
 
-import com.codecool.spendeeze.model.entity.TransactionCategory;
+import com.codecool.spendeeze.model.dto.TransactionCategoryDTO;
 import com.codecool.spendeeze.service.TransactionCategoryService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,8 +18,8 @@ public class TransactionCategoryController {
     }
 
     @GetMapping
-    public List<TransactionCategory> getAllTransactionCategories() {
-        return transactionCategoryService.getAllTransactionCategories();
+    public List<TransactionCategoryDTO> getAllTransactionCategories() {
+        return transactionCategoryService.getAllTransactionCategoryDTOs();
     }
 
 }
