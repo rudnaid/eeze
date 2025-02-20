@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import IncomeForm from "../Components/Forms/IncomeForm";
 
 const createIncome = (income) => {
-    return fetch("/api/income/", {
+  // change to your own generated database-s no1 members public id!
+  
+    return fetch("/api/income/?memberPublicId=03204898-c76f-45c1-8d50-6a022bdb0355", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
