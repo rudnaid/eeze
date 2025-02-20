@@ -1,6 +1,4 @@
-import { Link } from "react-router-dom";
-
-const IncomeTable = ({ incomes, onDelete }) => {
+const IncomeTable = ({ incomes }) => {
     return (
         <div className="IncomeTable flex flex-col justify-start min-h-screen">
             <table className="mx-auto border-collapse border border-gray-300 bg-white w-2xl">
