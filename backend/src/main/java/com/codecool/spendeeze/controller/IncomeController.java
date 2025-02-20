@@ -18,13 +18,13 @@ public class IncomeController {
     }
 
     @PostMapping("/")
-    public Income addIncome(@RequestBody IncomeDTO income, @RequestParam UUID userId){
-        return incomeService.addIncome(income, userId);
+    public Income addIncome(@RequestBody IncomeDTO income, @RequestParam UUID memberPublicId){
+        return incomeService.addIncome(income, memberPublicId);
     }
 
     @GetMapping("/")
-    public List<IncomeDTO> findIncomesByMember(@RequestParam UUID userId){
-        return incomeService.findIncomesByMemberId(userId);
+    public List<IncomeDTO> findIncomesByMember(@RequestParam UUID memberPublicId){
+        return incomeService.findIncomesByMemberId(memberPublicId);
     }
 
     @GetMapping("/{incomeId}")
