@@ -1,8 +1,8 @@
 package com.codecool.spendeeze.controller;
 
-import com.codecool.spendeeze.model.ExpenseCategory;
 import com.codecool.spendeeze.model.dto.ExpenseRequestDTO;
 import com.codecool.spendeeze.model.dto.ExpenseResponseDTO;
+import com.codecool.spendeeze.model.entity.TransactionCategory;
 import com.codecool.spendeeze.service.ExpenseService;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +29,7 @@ public class ExpenseController {
     }
 
     @GetMapping("/category{category}")
-    public List<ExpenseResponseDTO> getExpensesOfMemberByCategory(@PathVariable ExpenseCategory category, @RequestParam UUID memberPublicId) {
+    public List<ExpenseResponseDTO> getExpensesOfMemberByCategory(@PathVariable TransactionCategory category, @RequestParam UUID memberPublicId) {
         return expenseService.getExpensesByExpenseCategoryAndMemberPublicId(category, memberPublicId);
     }
 

@@ -1,13 +1,13 @@
 package com.codecool.spendeeze.service;
 
-import com.codecool.spendeeze.model.ExpenseCategory;
 import com.codecool.spendeeze.model.dto.ExpenseRequestDTO;
 import com.codecool.spendeeze.model.dto.ExpenseResponseDTO;
 import com.codecool.spendeeze.model.entity.Expense;
 import com.codecool.spendeeze.model.entity.Member;
+import com.codecool.spendeeze.model.entity.TransactionCategory;
 import com.codecool.spendeeze.repository.ExpenseRepository;
 import com.codecool.spendeeze.repository.MemberRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.codecool.spendeeze.repository.TransactionCategoryRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +20,13 @@ import java.util.UUID;
 @Transactional
 public class ExpenseService {
     private final ExpenseRepository expenseRepository;
-
     private final MemberRepository memberRepository;
+    private final TransactionCategoryRepository transactionCategoryRepository;
 
-    public ExpenseService(ExpenseRepository expenseRepository, MemberRepository memberRepository) {
+    public ExpenseService(ExpenseRepository expenseRepository, MemberRepository memberRepository, TransactionCategoryRepository transactionCategoryRepository) {
         this.expenseRepository = expenseRepository;
         this.memberRepository = memberRepository;
+        this.transactionCategoryRepository = transactionCategoryRepository;
     }
 
     public ExpenseResponseDTO getExpenseDTOByPublicId(UUID id) {
@@ -50,10 +51,11 @@ public class ExpenseService {
 
     public ExpenseResponseDTO updateExpense(UUID publicId, ExpenseResponseDTO expenseDTO) {
         Expense expenseToUpdate = getExpenseByPublicId(publicId);
+        TransactionCategory category = transactionCategoryRepository.getTransactionCategoryByName(expenseDTO.expenseCategory());
 
         expenseToUpdate.setAmount(expenseDTO.amount());
         expenseToUpdate.setTransactionDate(expenseDTO.transactionDate());
-        expenseToUpdate.setExpenseCategory(ExpenseCategory.valueOf(expenseDTO.expenseCategory()));
+        expenseToUpdate.setTransactionCategory(category);
 
         expenseRepository.save(expenseToUpdate);
 
@@ -70,14 +72,18 @@ public class ExpenseService {
                 expense.getPublicId(),
                 expense.getAmount(),
                 expense.getTransactionDate(),
-                expense.getExpenseCategory().name());
+                expense.getTransactionCategory().getName());
     }
 
     private Expense convertToExpense(ExpenseRequestDTO expenseRequestDTO) {
-        ObjectMapper objectMapper = new ObjectMapper();
-
         try {
-            return objectMapper.convertValue(expenseRequestDTO, Expense.class);
+            Expense expense = new Expense();
+            expense.setAmount(expenseRequestDTO.amount());
+            expense.setTransactionDate(expenseRequestDTO.transactionDate());
+
+            TransactionCategory category = transactionCategoryRepository.findByName(expenseRequestDTO.category());
+            expense.setTransactionCategory(category);
+            return expense;
         } catch (Exception e) {
             throw new RuntimeException("Could not convert expense requestDTO to Expense", e.getCause());
         }
@@ -91,8 +97,8 @@ public class ExpenseService {
                 .toList();
     }
 
-    public List<ExpenseResponseDTO> getExpensesByExpenseCategoryAndMemberPublicId(ExpenseCategory category, UUID memberPublicId) {
-        List<Expense> expenses = expenseRepository.getExpensesByExpenseCategoryAndMemberPublicId(category, memberPublicId);
+    public List<ExpenseResponseDTO> getExpensesByExpenseCategoryAndMemberPublicId(TransactionCategory category, UUID memberPublicId) {
+        List<Expense> expenses = expenseRepository.getExpensesByTransactionCategoryAndMemberPublicId(category, memberPublicId);
 
         return expenses.stream()
                 .map(this::convertToExpenseResponseDTO)

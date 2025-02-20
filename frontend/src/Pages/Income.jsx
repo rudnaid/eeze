@@ -3,7 +3,7 @@ import IncomeTable from "../Components/Tables/IncomeTable";
 import Loading from "../Components/Loading/Loading";
 
 const Income = () => {
-    const userId = 1;
+    const userId = "2ad88a0d-0873-4892-8e54-52ee42bdb68b";
     const [loading, setLoading] = useState(true);
     const [incomes, setIncomes] = useState([]);
 

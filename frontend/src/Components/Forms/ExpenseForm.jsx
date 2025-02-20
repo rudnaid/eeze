@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 
 const ExpenseForm = ({ onSave, disabled, expense, onCancel }) => {
     const [amount, setAmount] = useState(expense?.amount ?? "");
-    const [date, setDate] = useState(expense?.date ?? "");
+    const [transactionDate, setTransactionDate] = useState(expense?.transactionDate ?? "");
     const [category, setCategory] = useState(expense?.category ?? "");
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch("/api/categories/");
+                const response = await fetch("/api/categories");
                 const categories = await response.json();
                 setCategories(categories);
             } catch (error) {
@@ -26,13 +26,15 @@ const ExpenseForm = ({ onSave, disabled, expense, onCancel }) => {
             return onSave({
                 ...expense,
                 amount: amount,
-                date: date,
+                transactionDate: transactionDate,
+                category: category
             });
         }
 
         return onSave({
             amount: amount,
-            date: date,
+            transactionDate: transactionDate,
+            category: category
         });
     };
 
@@ -68,9 +70,9 @@ const ExpenseForm = ({ onSave, disabled, expense, onCancel }) => {
                             <label className="text-gray-800 text-xs block mb-2"></label>
                             <div className="relative flex items-center">
                                 <input
-                                    value={date}
+                                    value={transactionDate}
                                     type="date"
-                                    onChange={(e) => setDate(e.target.value)}
+                                    onChange={(e) => setTransactionDate(e.target.value)}
                                     name="date"
                                     id="date"
                                     className="w-full bg-transparent text-sm text-gray-800 border-b border-gray-300 focus:border-gray-500 pl-2 pr-8 py-3 outline-none"
@@ -88,7 +90,7 @@ const ExpenseForm = ({ onSave, disabled, expense, onCancel }) => {
                                     id="category"
                                 >
                                     <option value="">Select a category</option>
-                                    {categories.map((category) => (<option key={category.id} value={category.id}>{category.name}</option>))}
+                                    {categories.map((category, idx) => (<option key={idx} value={category.name}>{category.name}</option>))}
                                 </select>
                             </div>
                         </div>
