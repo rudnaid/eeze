@@ -18,11 +18,9 @@ public class ReportService {
     }
 
     public ReportDTO generateReport(UUID memberPublicId) {
-        double totalIncome = incomeRepository.getTotalIncomeByMemberPublicId(memberPublicId)
-                .orElse(0.0);
+        double totalIncome = incomeRepository.getTotalIncomeByMemberPublicId(memberPublicId);
 
-        double totalExpenses = expenseRepository.getTotalExpensesByMemberPublicId(memberPublicId)
-                .orElse(0.0);
+        double totalExpenses = expenseRepository.getTotalExpensesByMemberPublicId(memberPublicId);
 
         double currentBalance = totalIncome - totalExpenses;
 

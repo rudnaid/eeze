@@ -17,6 +17,6 @@ public interface IncomeRepository extends JpaRepository<Income, Long> {
     Optional<Income> findIncomeByPublicId(UUID publicId);
 
     @Query("SELECT COALESCE(SUM(i.amount), 0) FROM Income i WHERE i.member.publicId = :memberPublicId")
-    Optional<Double> getTotalIncomeByMemberPublicId(@Param("memberPublicId") UUID memberPublicId);
+    double getTotalIncomeByMemberPublicId(@Param("memberPublicId") UUID memberPublicId);
 
 }
