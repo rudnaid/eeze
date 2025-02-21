@@ -1,16 +1,14 @@
 package com.codecool.spendeeze.model.dto;
 
-import java.util.UUID;
-
-public class TotalExpenseByTransactionCategoryDTO {
+public class ExpenseCategorySummaryDTO {
     private long categoryPublicId;
     private String categoryName;
     private double totalByCategory;
 
-    public TotalExpenseByTransactionCategoryDTO() {
+    public ExpenseCategorySummaryDTO() {
     }
 
-    public TotalExpenseByTransactionCategoryDTO(long categoryPublicId, String categoryName, double totalByCategory) {
+    public ExpenseCategorySummaryDTO(long categoryPublicId, String categoryName, double totalByCategory) {
         this.categoryPublicId = categoryPublicId;
         this.categoryName = categoryName;
         this.totalByCategory = totalByCategory;

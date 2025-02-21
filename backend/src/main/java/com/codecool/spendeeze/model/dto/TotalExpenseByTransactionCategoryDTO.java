@@ -1,6 +1,6 @@
 package com.codecool.spendeeze.model.dto;
 
-public interface TestDTO {
+public interface TotalExpenseByTransactionCategoryDTO {
 
     String getCategoryName();
     double getTotalByCategory();
