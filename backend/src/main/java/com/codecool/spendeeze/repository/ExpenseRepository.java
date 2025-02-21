@@ -1,5 +1,6 @@
 package com.codecool.spendeeze.repository;
 
+import com.codecool.spendeeze.model.dto.TotalExpenseByTransactionCategoryDTO;
 import com.codecool.spendeeze.model.entity.Expense;
 import com.codecool.spendeeze.model.entity.TransactionCategory;
 import jakarta.transaction.Transactional;
@@ -26,4 +27,11 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     List<Expense> getExpensesByMemberPublicId(UUID userId);
 
     List<Expense> getExpensesByTransactionCategoryAndMemberPublicId(TransactionCategory category, UUID userPublicId);
+
+    @Query("SELECT COALESCE(SUM(e.amount), 0) FROM Expense e WHERE e.member.publicId = :memberPublicId")
+    double getTotalExpensesByMemberPublicId(@Param("memberPublicId") UUID memberPublicId);
+
+    @Query("SELECT SUM(e.amount) as totalByCategory, e.transactionCategory.name as categoryName, e.transactionCategory.id as categoryPublicId FROM Expense e WHERE e.member.publicId = :memberPublicId GROUP BY e.transactionCategory.id, e.transactionCategory.name")
+    List<TotalExpenseByTransactionCategoryDTO> getExpensesByTransactionCategory(UUID memberPublicId);
+
 }
