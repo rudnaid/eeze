@@ -103,6 +103,9 @@ const ExpenseForm = ({ onSave, disabled, expense, onCancel }) => {
                                 {expense ? "Update Expense" : "Create Expense"}
                             </button>
 
+                            <br />
+                            <br />
+
                             <button
                                 type="button"
                                 onClick={onCancel}

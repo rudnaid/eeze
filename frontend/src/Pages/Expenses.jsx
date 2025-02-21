@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+
 
 export const Expenses = () => {
 	const [summary, setSummary] = useState({});
@@ -87,6 +89,14 @@ export const Expenses = () => {
 					</div>
 				</div>
 			</div>
+			<div className="mt-6 flex justify-center">
+                <Link
+                    to="/expenses/create"
+                    className="text-white bg-[#7e8283] hover:bg-[#7fa99b] font-semibold py-2 px-4 rounded transition"
+                >
+                    Add New Expense
+                </Link>
+            </div>
 		</>
 	);
 };
