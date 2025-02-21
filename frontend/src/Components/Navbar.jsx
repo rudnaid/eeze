@@ -18,7 +18,7 @@ const [isMobileMenuShown, setIsMobileMenuShown] = useState(false);
 
   return (
     <nav ref={navbarRef} className='fixed top-0 left-0 w-full bg-[#7fa99b] shadow-md p-4 flex flex-wrap justify-between items-center z-50'>
-      <a href="#" className="text-4xl text-white font-[sans-serif]">eeze</a>
+      <Link to="/home" className="text-4xl text-[#fdc57b] font-[sans-serif]">eeze</Link>
 
       {/* Hamburger button */}
       <button
@@ -33,7 +33,7 @@ const [isMobileMenuShown, setIsMobileMenuShown] = useState(false);
         <ul className="flex flex-col lg:flex-row rounded-lg border border-gray-100 bg-gray-50 p-4 text-lg lg:space-x-8 lg:border-none lg:bg-transparent">
           {ROUTES.map((route, i) => (
             <li key={route} className={`cursor-pointer rounded px-3 py-2 
-              ${i === 0 ? "bg-[#7fa99b] text-white lg:bg-transparent lg:text-white hover:bg-gray-500" : "hover:bg-gray-300"}`}>
+              ${i === 0 ? "border border-[#fdc57b] text-[#fdc57b] lg:bg-transparent lg:text-[#febd68] hover:text-gray-800" : "hover:border border-[#fdc57b]"}`}>
               <Link to={route.path}>{route.name}</Link> 
             </li>
           ))}

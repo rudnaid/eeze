@@ -5,12 +5,10 @@ const Login = () => {
 	return (
 		<>
 			<div className="relative">
-				
-
 				<div className="flex justify-center items-center font-[sans-serif] h-full min-h-screen p-4 bg-[url(/hero-bg-image.png)] bg-no-repeat bg-cover bg-center">
-				<Link to="/home">
-					<h1 className="absolute top-0 left-0 p-7 text-5xl text-[#fdc57b] ">eeze</h1>
-				</Link>
+					<h1 className="absolute top-0 left-0 p-7 text-5xl text-[#fdc57b] ">
+						eezee
+					</h1>
 					<div className="max-w-md w-full mx-auto">
 						<form className="bg-white bg-opacity-70 shadow-2xl rounded-lg p-6">
 							<div className="mb-12">
@@ -18,6 +16,7 @@ const Login = () => {
 									Sign in
 								</h3>
 							</div>
+
 							<div>
 								<div className="relative flex items-center">
 									<input
@@ -92,12 +91,9 @@ const Login = () => {
 									</label>
 								</div>
 								<div>
-									<a
-										href=""
-										className="text-gray-800 text-sm font-semibold hover:underline"
-									>
+									<Link className="text-gray-800 text-sm font-semibold hover:underline">
 										Forgot Password?
-									</a>
+									</Link>
 								</div>
 							</div>
 							<div className="mt-12">
