@@ -1,16 +1,16 @@
 package com.codecool.spendeeze.controller;
 
 import com.codecool.spendeeze.model.dto.ReportDTO;
-import com.codecool.spendeeze.repository.ReportService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.codecool.spendeeze.model.dto.TotalExpenseByTransactionCategoryDTO;
+import com.codecool.spendeeze.service.ReportService;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/reports")
+@CrossOrigin("*")
 public class ReportController {
     private final ReportService reportService;
 
@@ -19,7 +19,12 @@ public class ReportController {
     }
 
     @GetMapping("/{memberPublicId}")
-    public ReportDTO getReport(@PathVariable UUID memberPublicId) {
+    public ReportDTO getSummaryReport(@PathVariable UUID memberPublicId) {
         return reportService.generateReport(memberPublicId);
+    }
+
+    @GetMapping("/by-category/{memberPublicId}")
+    public List<TotalExpenseByTransactionCategoryDTO> getExpensesByCategory(@PathVariable UUID memberPublicId) {
+        return reportService.getTotalExpenseByTransactionCategory(memberPublicId);
     }
 }

@@ -1,8 +1,12 @@
-package com.codecool.spendeeze.repository;
+package com.codecool.spendeeze.service;
 
 import com.codecool.spendeeze.model.dto.ReportDTO;
+import com.codecool.spendeeze.model.dto.TotalExpenseByTransactionCategoryDTO;
+import com.codecool.spendeeze.repository.ExpenseRepository;
+import com.codecool.spendeeze.repository.IncomeRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 
@@ -25,5 +29,9 @@ public class ReportService {
         double currentBalance = totalIncome - totalExpenses;
 
         return new ReportDTO(memberPublicId, totalIncome, totalExpenses, currentBalance);
+    }
+
+    public List<TotalExpenseByTransactionCategoryDTO> getTotalExpenseByTransactionCategory(UUID memberPublicId) {
+        return expenseRepository.getExpensesByTransactionCategory(memberPublicId);
     }
 }
