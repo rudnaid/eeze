@@ -17,26 +17,18 @@ const Homepage2 = () => {
 								<h1 className="ml-7 text-5xl text-[#fdc57b]">eeze</h1>
 							</Link>
 							<div className="hidden h-10 text-2xl md:flex md:space-x-8">
-								<div className="group text-[#fdc57b]">
-									<a
-										href="#about"
-										className="text-[#fdc57b] transition-all duration-300"
-									>
-										About
-									</a>
-									<div className="mx-2 group-hover:border-b group-hover:border-blue-50"></div>
+								<div className="border border-transparent text-[#fdc57b] hover:border-[#fdc57b] hover:text-[#fdc57b] px-3 py-1 rounded transition-all duration-300">
+									<a href="#about">About</a>
 								</div>
-								<div className="group text-[#fdc57b]">
+								<div className="border border-transparent text-[#fdc57b] hover:border-[#fdc57b] hover:text-[#fdc57b] px-3 py-1 rounded transition-all duration-300 ">
 									<Link to="/login">
-										<h3>Login</h3>
+										<h3 className="">Login</h3>
 									</Link>
-									<div className="mx-2 group-hover:border-b group-hover:border-blue-50"></div>
 								</div>
-								<div className="group text-[#fdc57b]">
+								<div className="border border-transparent text-[#fdc57b] hover:border-[#fdc57b] hover:text-[#fdc57b] px-3 py-1 rounded transition-all duration-300">
 									<Link to="/register">
 										<h3>Register</h3>
 									</Link>
-									<div className="mx-2 group-hover:border-b group-hover:border-blue-50"></div>
 								</div>
 							</div>
 							<div className="md:hidden">
