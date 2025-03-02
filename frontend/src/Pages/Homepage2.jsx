@@ -12,7 +12,7 @@ const Homepage2 = () => {
 					{/* Hero container */}
 					<div className="container max-w-6xl mx-auto px-6 py-12">
 						{/* Menu/Logo container */}
-						<nav className="flex igems-center justify-between font-bold text-white">
+						<nav className="flex items-center justify-between font-bold text-white">
 							<Link to="/home">
 								<h1 className="ml-7 text-5xl text-[#fdc57b]">eeze</h1>
 							</Link>
