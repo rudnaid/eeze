@@ -72,7 +72,7 @@ export const Expenses = () => {
 							<div className="table-cell px-6 py-3 text-right">Amount</div>
 						</div>
 					</div>
-					<div className="table-row-group text-gray-800">
+					<div className="table-row-group text-gray-800 ">
 						{categories.map((category, index) => (
 							<div className="table-row even:bg-gray-50" key={index}>
 								<div className="table-cell px-6 py-3">

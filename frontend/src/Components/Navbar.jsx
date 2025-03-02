@@ -3,7 +3,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { Link } from "react-router-dom";
 
 const ROUTES = [
-  { name: "Home", path: "/" },
+  { name: "Home", path: "/home" },
   { name: "Balance", path: "/" },
   { name: "Income", path: "/income" },
   { name: "Expenses", path: "/expenses" },
