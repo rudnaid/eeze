@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { RxHamburgerMenu } from "react-icons/rx";
 import { Link } from "react-router-dom";
+import { ROUTES } from "./NavbarLinks";
 
-const ROUTES = [
-  { name: "Home", path: "/" },
-  { name: "Balance", path: "/" },
-  { name: "Income", path: "/income" },
-  { name: "Expenses", path: "/expenses" },
-];
 
 const Navbar = ({ navbarRef, updateNavbarHeight }) => {
 const [isMobileMenuShown, setIsMobileMenuShown] = useState(false);

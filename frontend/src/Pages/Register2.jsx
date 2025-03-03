@@ -24,11 +24,11 @@ const Register2 = () => {
 							<label className="text-gray-800 text-xs block mb-2"></label>
 							<div className="relative flex items-center">
 								<input
-									name="name"
+									name="firstname"
 									type="text"
 									required
 									className="w-full bg-transparent text-sm text-gray-800 border-b border-gray-300 focus:border-gray-500 pl-2 pr-8 py-3 outline-none"
-									placeholder="Enter name"
+									placeholder="Enter first name"
 								/>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
@@ -43,6 +43,58 @@ const Register2 = () => {
 										data-original="#000000"
 									></path>
 								</svg>
+							</div>
+						</div>
+
+						<div className="mt-8">
+							<label className="text-gray-800 text-xs block mb-2"></label>
+							<div className="relative flex items-center">
+								<input
+									name="lastname"
+									type="text"
+									required
+									className="w-full bg-transparent text-sm text-gray-800 border-b border-gray-300 focus:border-gray-500 pl-2 pr-8 py-3 outline-none"
+									placeholder="Enter last name"
+								/>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									fill="#bbb"
+									stroke="#bbb"
+									className="w-[18px] h-[18px] absolute right-2"
+									viewBox="0 0 24 24"
+								>
+									<circle cx="10" cy="7" r="6" data-original="#000000"></circle>
+									<path
+										d="M14 15H6a5 5 0 0 0-5 5 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 5 5 0 0 0-5-5zm8-4h-2.59l.3-.29a1 1 0 0 0-1.42-1.42l-2 2a1 1 0 0 0 0 1.42l2 2a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42l-.3-.29H22a1 1 0 0 0 0-2z"
+										data-original="#000000"
+									></path>
+								</svg>
+							</div>
+						</div>
+
+						<div className="mt-8">
+							<label className="text-gray-800 text-xs block mb-2"></label>
+							<div className="relative flex items-center">
+								<input
+									name="country"
+									type="text"
+									required
+									className="w-full bg-transparent text-sm text-gray-800 border-b border-gray-300 focus:border-gray-500 pl-2 pr-8 py-3 outline-none"
+									placeholder="Enter country"
+								/>
+								{/* <svg
+									xmlns="http://www.w3.org/2000/svg"
+									fill="#bbb"
+									stroke="#bbb"
+									className="w-[18px] h-[18px] absolute right-2"
+									viewBox="0 0 24 24"
+								>
+									<circle cx="10" cy="7" r="6" data-original="#000000"></circle>
+									<path
+										d="M14 15H6a5 5 0 0 0-5 5 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 5 5 0 0 0-5-5zm8-4h-2.59l.3-.29a1 1 0 0 0-1.42-1.42l-2 2a1 1 0 0 0 0 1.42l2 2a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42l-.3-.29H22a1 1 0 0 0 0-2z"
+										data-original="#000000"
+									></path>
+								</svg> */}
 							</div>
 						</div>
 
