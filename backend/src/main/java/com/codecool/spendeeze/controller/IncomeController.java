@@ -3,28 +3,36 @@ package com.codecool.spendeeze.controller;
 import com.codecool.spendeeze.model.dto.IncomeDTO;
 import com.codecool.spendeeze.model.entity.Income;
 import com.codecool.spendeeze.service.IncomeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/income")
+@RequestMapping("/api/incomes")
 public class IncomeController {
     private final IncomeService incomeService;
 
+    @Autowired
     public IncomeController(IncomeService incomeService) {
         this.incomeService = incomeService;
     }
 
-    @PostMapping("/")
-    public Income addIncome(@RequestBody IncomeDTO income, @RequestParam UUID memberPublicId){
-        return incomeService.addIncome(income, memberPublicId);
+    @PostMapping
+    public Income addIncome(@RequestBody IncomeDTO income){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        return incomeService.addIncome(income, username);
     }
 
-    @GetMapping("/")
-    public List<IncomeDTO> findIncomesByMember(@RequestParam UUID memberPublicId){
-        return incomeService.findIncomesByMemberId(memberPublicId);
+    @GetMapping
+    public List<IncomeDTO> findIncomesByMember(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        return incomeService.findIncomesByMemberUsername(username);
     }
 
     @GetMapping("/{incomeId}")
