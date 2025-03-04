@@ -1,32 +1,48 @@
 package com.codecool.spendeeze.service;
 
+import com.codecool.spendeeze.model.dto.JwtResponse;
+import com.codecool.spendeeze.model.dto.LoginMemberRequestDTO;
 import com.codecool.spendeeze.model.dto.MemberRequestDTO;
 import com.codecool.spendeeze.model.dto.MemberResponseDTO;
 import com.codecool.spendeeze.model.entity.Member;
+import com.codecool.spendeeze.model.entity.MemberRole;
 import com.codecool.spendeeze.repository.MemberRepository;
+import com.codecool.spendeeze.security.jwt.JwtUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final PasswordEncoder encoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtils jwtUtils;
 
-    public MemberService(MemberRepository memberRepository) {
+    @Autowired
+    public MemberService(MemberRepository memberRepository, PasswordEncoder encoder, AuthenticationManager authenticationManager, JwtUtils jwtUtils) {
         this.memberRepository = memberRepository;
+        this.encoder = encoder;
+        this.authenticationManager = authenticationManager;
+        this.jwtUtils = jwtUtils;
     }
 
-    public MemberResponseDTO getUserResponseDTOByPublicId(UUID memberPublicId) {
-        Optional<Member> member = memberRepository.getMemberByPublicId(memberPublicId);
+    public MemberResponseDTO getUserResponseDTOByUsername(String username) {
+        Optional<Member> member = memberRepository.findMemberByUsername(username);
         return member.map(this::convertToUserResponseDTO).orElseThrow(NoSuchElementException::new);
     }
 
     private MemberResponseDTO convertToUserResponseDTO(Member member) {
         return new MemberResponseDTO(
-                member.getPublicId(),
                 member.getFirstName(),
                 member.getLastName(),
                 member.getCountry(),
@@ -38,7 +54,10 @@ public class MemberService {
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
-            return objectMapper.convertValue(memberRequestDTO, Member.class);
+            Member member = objectMapper.convertValue(memberRequestDTO, Member.class);
+            member.setRoles(Set.of(MemberRole.ROLE_USER));
+            member.setPassword(encoder.encode(member.getPassword()));
+            return member;
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -52,13 +71,13 @@ public class MemberService {
         return convertToUserResponseDTO(member);
     }
 
-    private Member getUserByPublicId(UUID memberPublicId) {
-        Optional<Member> member = memberRepository.getMemberByPublicId(memberPublicId);
+    private Member getUserByUsername(String username) {
+        Optional<Member> member = memberRepository.findMemberByUsername(username);
         return member.orElseThrow(NoSuchElementException::new);
     }
 
-    public MemberResponseDTO updateMember(UUID memberPublicId, MemberRequestDTO memberRequestDTO) {
-        Member member = getUserByPublicId(memberPublicId);
+    public MemberResponseDTO updateMember(MemberRequestDTO memberRequestDTO) {
+        Member member = getUserByUsername(memberRequestDTO.username());
 
         member.setFirstName(memberRequestDTO.firstName());
         member.setLastName(memberRequestDTO.lastName());
@@ -70,7 +89,17 @@ public class MemberService {
         return convertToUserResponseDTO(member);
     }
 
-    public int deleteMemberByPublicId(UUID memberPublicId) {
-        return memberRepository.deleteMemberByPublicId(memberPublicId);
+    public int deleteMemberByUsername(String username) {
+        return memberRepository.deleteMemberByUsername(username);
+    }
+
+    public JwtResponse authenticateUser(LoginMemberRequestDTO loginRequest) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.username(), loginRequest.password()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication);
+        User userDetails = (User)authentication.getPrincipal();
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority).toList();
+        return new JwtResponse(jwt, userDetails.getUsername(), roles);
     }
 }

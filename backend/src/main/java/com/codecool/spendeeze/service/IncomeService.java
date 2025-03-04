@@ -5,6 +5,7 @@ import com.codecool.spendeeze.model.dto.IncomeDTO;
 import com.codecool.spendeeze.model.entity.Member;
 import com.codecool.spendeeze.repository.IncomeRepository;
 import com.codecool.spendeeze.repository.MemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,13 +18,14 @@ public class IncomeService {
     private final IncomeRepository incomeRepository;
     private final MemberRepository memberRepository;
 
+    @Autowired
     public IncomeService(IncomeRepository incomeRepository, MemberRepository memberRepository) {
         this.incomeRepository = incomeRepository;
         this.memberRepository = memberRepository;
     }
 
-    public Income addIncome(IncomeDTO income, UUID memberPublicId) {
-        Member member = memberRepository.getMemberByPublicId(memberPublicId).orElseThrow(() -> new NoSuchElementException("User with id " + memberPublicId + " not found"));
+    public Income addIncome(IncomeDTO income, String username) {
+        Member member = memberRepository.findMemberByUsername(username).orElseThrow(() -> new NoSuchElementException("User with username " + username + " not found"));
         Income incomeEntity = convertDtoToEntity(income);
         incomeEntity.setMember(member);
         return incomeRepository.save(incomeEntity);
@@ -36,8 +38,8 @@ public class IncomeService {
         return incomeEntity;
     }
 
-    public List<IncomeDTO> findIncomesByMemberId(UUID memberPublicId) {
-        Member member = memberRepository.getMemberByPublicId(memberPublicId).orElseThrow(() -> new NoSuchElementException("User with id " + memberPublicId + " not found"));
+    public List<IncomeDTO> findIncomesByMemberUsername(String username) {
+        Member member = memberRepository.findMemberByUsername(username).orElseThrow(() -> new NoSuchElementException("User with username " + username + " not found"));
         List<Income> incomes = incomeRepository.findIncomesByMember(member);
         List<IncomeDTO> incomeDTOs = new ArrayList<>();
         for (Income income : incomes) {

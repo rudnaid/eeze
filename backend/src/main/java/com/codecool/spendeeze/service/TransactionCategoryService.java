@@ -3,6 +3,7 @@ package com.codecool.spendeeze.service;
 import com.codecool.spendeeze.model.dto.TransactionCategoryDTO;
 import com.codecool.spendeeze.model.entity.TransactionCategory;
 import com.codecool.spendeeze.repository.TransactionCategoryRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 public class TransactionCategoryService {
     private final TransactionCategoryRepository transactionCategoryRepository;
 
+    @Autowired
     public TransactionCategoryService(TransactionCategoryRepository transactionCategoryRepository) {
         this.transactionCategoryRepository = transactionCategoryRepository;
     }

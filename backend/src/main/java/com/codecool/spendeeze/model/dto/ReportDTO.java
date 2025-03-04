@@ -1,8 +1,6 @@
 package com.codecool.spendeeze.model.dto;
 
-import java.util.UUID;
-
-public record ReportDTO(UUID memberPublicId,
+public record ReportDTO(String memberUsername,
                         double totalIncome,
                         double totalExpenses,
                         double currentBalance) {
