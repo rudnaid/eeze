@@ -5,18 +5,19 @@ const Login = () => {
 	return (
 		<>
 			<div className="relative">
-				<div className="flex justify-center items-center font-[sans-serif] h-full min-h-screen p-4 bg-[url(/hero-bg-image.png)] bg-no-repeat bg-cover bg-center">
-					<h1 className="absolute top-0 left-0 p-7 text-5xl text-[#fdc57b] ">
-						eezee
-					</h1>
+				<div className="flex justify-center items-center font-[sans-serif] h-full min-h-screen p-4 bg-[url(/green-circles.png)] bg-no-repeat bg-cover bg-center">
+					<Link to="/home">
+						<h1 className="absolute top-0 left-0 p-7 text-5xl text-[#fdc57b] ">
+							eeze
+						</h1>
+					</Link>
 					<div className="max-w-md w-full mx-auto">
 						<form className="bg-white bg-opacity-70 shadow-2xl rounded-lg p-6">
 							<div className="mb-12">
 								<h3 className="text-gray-800 text-center text-3xl font-bold">
-									Sign in
+									<Link to="/income">Sign in</Link>
 								</h3>
 							</div>
-
 							<div>
 								<div className="relative flex items-center">
 									<input
@@ -91,9 +92,12 @@ const Login = () => {
 									</label>
 								</div>
 								<div>
-									<Link className="text-gray-800 text-sm font-semibold hover:underline">
+									<a
+										href=""
+										className="text-gray-800 text-sm font-semibold hover:underline"
+									>
 										Forgot Password?
-									</Link>
+									</a>
 								</div>
 							</div>
 							<div className="mt-12">
