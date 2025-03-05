@@ -15,6 +15,8 @@ import java.util.UUID;
 public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> getMemberByPublicId(UUID publicId);
 
+    Optional<Member> getMemberByUsername(String username);
+
     @Transactional
     @Modifying
     @Query("DELETE FROM Member m WHERE m.publicId = :publicId")
