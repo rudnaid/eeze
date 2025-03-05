@@ -1,10 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AiFillEye } from 'react-icons/ai';
 import { FaApple, FaFacebook, FaUser } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { Link } from 'react-router-dom';
 
+const logInUser = async (userEntity) => {
+    const response = await fetch("/api/users/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userEntity),
+    });
+    const data = await response.json();
+    localStorage.setItem("jwt", data.jwt);
+};
+
 const Login = () => {
+	const [username, setUsername] = useState("");
+	const [password, setPassword] = useState("");
+
+	const onSubmit = async (e) => {
+		e.preventDefault();
+		await logInUser({username, password});
+		window.location.href = "/home";
+	}
+
 	return (
 		<>
 			<div className="relative">
@@ -15,7 +36,7 @@ const Login = () => {
 						</h1>
 					</Link>
 					<div className="max-w-md w-full mx-auto">
-						<form className="bg-white bg-opacity-70 shadow-2xl rounded-lg p-6">
+						<form className="bg-white bg-opacity-70 shadow-2xl rounded-lg p-6" onSubmit={onSubmit}>
 							<div className="mb-12">
 								<h3 className="text-gray-800 text-center text-3xl font-bold">
 									<Link to="/home/income">Sign in</Link>
@@ -27,6 +48,8 @@ const Login = () => {
 										name="username"
 										type="text"
 										required
+										value={username}
+                                    	onChange={(e) => setUsername(e.target.value)}
 										className="bg-transparent w-full text-sm text-gray-800 border-b border-gray-400 focus:border-gray-800 pl-2 pr-8 py-3 outline-none placeholder:text-gray-800"
 										placeholder="Enter username"
 									/>
@@ -39,6 +62,8 @@ const Login = () => {
 										name="password"
 										type="password"
 										required
+										value={password}
+                                    	onChange={(e) => setPassword(e.target.value)}
 										className="bg-transparent w-full text-sm text-gray-800 border-b border-gray-400 focus:border-gray-800 pl-2 pr-8 py-3 outline-none placeholder:text-gray-800"
 										placeholder="Enter password"
 									/>
@@ -71,13 +96,13 @@ const Login = () => {
 							</div>
 							<div className="mt-12">
 								<button
-									type="button"
+									type="submit"
 									className="cursor-pointer w-full py-2.5 px-4 text-sm font-semibold tracking-wider rounded text-white bg-gray-800 hover:bg-gray-500 focus:outline-none"
 								>
 									Sign in
 								</button>
 								<p className="text-gray-800 text-sm text-center mt-6">
-									Don't have an account
+									Don't have an account?
 									<Link
 										to="/register"
 										className="text-[#394a51] font-semibold hover:underline ml-1 whitespace-nowrap"
