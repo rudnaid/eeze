@@ -13,6 +13,7 @@ import java.util.UUID;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
+
     @Transactional
     @Modifying
     @Query("DELETE FROM Member m WHERE m.username = :username")

@@ -2,12 +2,14 @@ package com.codecool.spendeeze.controller;
 
 import com.codecool.spendeeze.model.dto.ReportDTO;
 import com.codecool.spendeeze.model.dto.TotalExpenseByTransactionCategoryDTO;
+import com.codecool.spendeeze.model.dto.reports.CategoryReport;
 import com.codecool.spendeeze.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -33,5 +35,14 @@ public class ReportController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String memberUsername = authentication.getName();
         return reportService.getTotalExpenseByTransactionCategory(memberUsername);
+    }
+
+    @GetMapping("/monthly")
+    public List<CategoryReport> getMonthlyReport(
+            @RequestParam int month,
+            @RequestParam int year,
+            Principal principal) {
+
+        return reportService.getMonthlyReport(principal.getName(), month, year);
     }
 }
