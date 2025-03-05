@@ -43,7 +43,7 @@ public class ReportService {
     }
 
     public List<CategoryReport> getMonthlyReport(String username, int month, int year) {
-        Member member = memberRepository.getMemberByUsername(username)
+        Member member = memberRepository.findMemberByUsername(username)
                 .orElseThrow(() -> new NoSuchElementException("Member not found"));
 
 
