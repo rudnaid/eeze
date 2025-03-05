@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, Outlet } from 'react-router-dom';
 import { isUserLoggedIn } from '../Utils/Util';
-import Navbar from '../Components/Navbar';
+import Navbar from '../Components/Navbar/Navbar';
 
 
 const AuthenticatedLayout = () => {
