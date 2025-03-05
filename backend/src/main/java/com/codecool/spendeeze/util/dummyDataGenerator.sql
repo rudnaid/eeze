@@ -3,11 +3,11 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 -- Insert a Member with USER_ROLE
 INSERT INTO member (username, password, first_name, last_name, country, email)
-VALUES ('john_doe', 'password123', 'John', 'Doe', 'USA', 'john_doe@example.com');
+VALUES ('john_doe', crypt('user', gen_salt('bf', 10)), 'John', 'Doe', 'USA', 'john_doe@example.com');
 
 -- Insert a Member with ADMIN_ROLE
 INSERT INTO member (username, password, first_name, last_name, country, email)
-VALUES ('admin', 'admin1234', 'Johnny', 'Admin', 'USA', 'johnny_admin@example.com');
+VALUES ('admin', crypt('admin', gen_salt('bf', 10)), 'Johnny', 'Admin', 'USA', 'johnny_admin@example.com');
 
 -- Insert Member Roles
 INSERT INTO member_roles (member_id, role)
