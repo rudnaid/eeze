@@ -38,11 +38,11 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
     @Query("SELECT new com.codecool.spendeeze.model.dto.reports.CategoryReport(tc.name, SUM(e.amount)) " +
             "FROM Expense e " +
-            "JOIN TransactionCategory tc " +
-            "ON e.transactionCategory " +
+            "JOIN e.transactionCategory tc " +
             "WHERE e.member = :member " +
             "AND FUNCTION('MONTH', e.transactionDate) = :month " +
-            "AND FUNCTION('YEAR', e.transactionDate) = :year")
+            "AND FUNCTION('YEAR', e.transactionDate) = :year " +
+            "GROUP BY tc.name")
 
     List<CategoryReport> getMonthlyExpenses(@Param("member") Member member, @Param("month") int month, @Param("year") int year);
 }
