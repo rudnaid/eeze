@@ -3,70 +3,61 @@ import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import './index.css';
-import Layout from './Pages/Layout.jsx';
-import { Homepage } from './Pages/Homepage.jsx';
 import { Expenses } from './Pages/Expenses.jsx';
 import Income from './Pages/Income.jsx';
-import Login from './Pages/Login.jsx';
-import Register from './Pages/Register.jsx';
 import IncomeCreator from './Pages/IncomeCreator.jsx';
 import ExpenseCreator from './Pages/ExpenseCreator.jsx';
-import Homepage2 from './Pages/Homepage2.jsx';
-import Login2 from './Pages/Login2.jsx';
-import Register2 from './Pages/Register2.jsx';
+import Homepage from './Pages/Homepage.jsx';
+import Login from './Pages/Login.jsx';
+import Register from './Pages/Register.jsx';
+import PublicLayout from './Layouts/PublicLayout.jsx';
+import AuthenticatedLayout from './Layouts/AuthenticatedLayout.jsx';
 
 const router = createBrowserRouter([
 	{
 		path: '/',
-		element: <Layout />,
+		element: <PublicLayout />, 
 		children: [
-			// {
-			// 	path: '/home',
-			// 	element: <Homepage />,
-			// },
 			{
-				path: '/expenses',
-				element: <Expenses />,
+				index: true,
+				element: <Homepage />,
 			},
 			{
-				path: '/expenses/create',
-				element: <ExpenseCreator />,
+				path: 'login',
+				element: <Login />,
 			},
 			{
-				path: '/income',
-				element: <Income />
-			},
-			{
-				path: '/income/create',
-				element: <IncomeCreator />
+				path: 'register',
+				element: <Register />,
 			},
 		],
 	},
-	{
-		path: '/home1',
-		element: <Homepage />
 
-	},
 	{
 		path: '/home',
-		element: <Homepage2 />
-
-	},
-	{
-		path: '/login1',
-		element: <Login />,
-	},
-	{
-		path: '/login',
-		element: <Login2 />,
-	},
-	{
-		path: '/register1',
-		element: <Register />,
-	},
-	{
-		path: '/register',
-		element: <Register2 />,
+		element: <AuthenticatedLayout />, 
+		children: [
+			{
+				index: true,
+				element: <Expenses />,
+			},
+			{
+				path: 'expenses',
+				element: <Expenses />,
+			},
+			{
+				path: 'expenses/create',
+				element: <ExpenseCreator />,
+			},
+			{
+				path: 'income',
+				element: <Income />,
+			},
+			{
+				path: 'income/create',
+				element: <IncomeCreator />,
+			},
+		],
 	},
 ]);
 

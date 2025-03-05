@@ -9,7 +9,7 @@ const Income = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const incomesResponse = await fetch(`/api/income/?memberPublicId=${userId}`)
+            const incomesResponse = await fetch(`/api/incomes/?memberPublicId=${userId}`)
             const incomes = await incomesResponse.json();
             setIncomes(incomes)
             setLoading(false)
