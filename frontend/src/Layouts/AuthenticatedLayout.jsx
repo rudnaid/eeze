@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, Outlet } from 'react-router-dom';
 import { isUserLoggedIn } from '../Utils/Util';
 import Navbar from '../Components/Navbar/Navbar';
-
+import Footer from "../Components/Footer/Footer";
 
 const AuthenticatedLayout = () => {
 	const navigate = useNavigate();
@@ -13,8 +13,6 @@ const AuthenticatedLayout = () => {
 		}
 	}, [navigate]);
 
-
-
 	const navbarRef = useRef(null);
 	const [navbarHeight, setNavbarHeight] = useState(0);
 
@@ -23,23 +21,22 @@ const AuthenticatedLayout = () => {
 			setNavbarHeight(navbarRef.current.offsetHeight);
 		}
 	};
+
 	useEffect(() => {
 		updateNavbarHeight();
-
 		window.addEventListener('resize', updateNavbarHeight);
 		return () => window.removeEventListener('resize', updateNavbarHeight);
 	}, []);
 
 	return (
-		<div>
+		<div className="flex flex-col min-h-screen">
 			<Navbar updateNavbarHeight={updateNavbarHeight} navbarRef={navbarRef} />
-
-			<div
-				style={{ paddingTop: `${navbarHeight + 0}px` }}
-				className="bg-[fbf2d5]"
-			>
+			
+			<main style={{ paddingTop: `${navbarHeight}px` }} className="flex-grow">
 				<Outlet />
-			</div>
+			</main>
+
+			<Footer />
 		</div>
 	);
 };
