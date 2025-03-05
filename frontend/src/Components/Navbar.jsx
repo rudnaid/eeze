@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { RxHamburgerMenu } from "react-icons/rx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "./NavbarLinks";
 
 
 const Navbar = ({ navbarRef, updateNavbarHeight }) => {
+  const navigate = useNavigate();
 const [isMobileMenuShown, setIsMobileMenuShown] = useState(false);
+
+const handleLogout = () => {
+  localStorage.removeItem("jwt");
+  console.log("Ez a jwt: ", localStorage.getItem("jwt"));
+  navigate("/");
+}
 
   useEffect(() => {
     updateNavbarHeight()
@@ -33,6 +40,7 @@ const [isMobileMenuShown, setIsMobileMenuShown] = useState(false);
             </li>
           ))}
         </ul>
+        <button onClick={() => handleLogout()}>Log out</button>
       </div>
     </nav>
   );
