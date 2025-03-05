@@ -3,16 +3,15 @@ package com.codecool.spendeeze.service;
 import com.codecool.spendeeze.model.dto.ReportDTO;
 import com.codecool.spendeeze.model.dto.TotalExpenseByTransactionCategoryDTO;
 import com.codecool.spendeeze.model.dto.reports.CategoryReport;
+import com.codecool.spendeeze.model.dto.reports.MonthlyIncomeExpenseReportDTO;
 import com.codecool.spendeeze.model.entity.Member;
 import com.codecool.spendeeze.repository.ExpenseRepository;
 import com.codecool.spendeeze.repository.IncomeRepository;
 import com.codecool.spendeeze.repository.MemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.UUID;
 
 
 @Service
@@ -46,7 +45,14 @@ public class ReportService {
         Member member = memberRepository.findMemberByUsername(username)
                 .orElseThrow(() -> new NoSuchElementException("Member not found"));
 
-
         return expenseRepository.getMonthlyExpenses(member, month, year);
+    }
+
+
+    public List<MonthlyIncomeExpenseReportDTO> getYearlyReport(String username, int year) {
+        Member member = memberRepository.findMemberByUsername(username)
+                .orElseThrow(() -> new NoSuchElementException("Member not found"));
+
+        return expenseRepository.getMonthlyIncomeExpenseReports(member, year);
     }
 }
