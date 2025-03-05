@@ -2,9 +2,11 @@ package com.codecool.spendeeze.controller;
 
 import com.codecool.spendeeze.model.dto.ReportDTO;
 import com.codecool.spendeeze.model.dto.TotalExpenseByTransactionCategoryDTO;
+import com.codecool.spendeeze.model.dto.reports.CategoryReport;
 import com.codecool.spendeeze.service.ReportService;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,5 +28,14 @@ public class ReportController {
     @GetMapping("/by-category/{memberPublicId}")
     public List<TotalExpenseByTransactionCategoryDTO> getExpensesByCategory(@PathVariable UUID memberPublicId) {
         return reportService.getTotalExpenseByTransactionCategory(memberPublicId);
+    }
+
+    @GetMapping("/monthly")
+    public List<CategoryReport> getMonthlyReport(
+            @RequestParam int month,
+            @RequestParam int year,
+            Principal principal) {
+
+        return reportService.getMonthlyReport(principal.getName(), month, year);
     }
 }
