@@ -2,6 +2,7 @@ package com.codecool.spendeeze.repository;
 
 import com.codecool.spendeeze.model.dto.TotalExpenseByTransactionCategoryDTO;
 import com.codecool.spendeeze.model.dto.reports.CategoryReport;
+import com.codecool.spendeeze.model.dto.reports.MonthlyIncomeExpenseReportDTO;
 import com.codecool.spendeeze.model.entity.Expense;
 import com.codecool.spendeeze.model.entity.Member;
 import com.codecool.spendeeze.model.entity.TransactionCategory;
@@ -45,4 +46,18 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
             "GROUP BY tc.name")
 
     List<CategoryReport> getMonthlyExpenses(@Param("member") Member member, @Param("month") int month, @Param("year") int year);
+
+    @Query("SELECT new com.codecool.spendeeze.model.dto.reports.MonthlyIncomeExpenseReportDTO(" +
+            "   TO_CHAR(expenseSub.month, 'FMMonth'), " +
+            "   incomeSub.monthlyIncome, " +
+            "   expenseSub.monthlyExpense" +
+            ") " +
+            "FROM (SELECT e.member AS member, TO_CHAR(e.transactionDate, 'YYYY-MM') AS month, SUM(e.amount) AS monthlyExpense FROM Expense e WHERE e.member = :member AND FUNCTION('DATE_PART', 'year', e.transactionDate) = :year GROUP BY e.member, month) expenseSub " +
+            "LEFT JOIN (SELECT i.member AS member, TO_CHAR(i.date, 'YYYY-MM') AS month, SUM(i.amount) AS monthlyIncome FROM Income i WHERE i.member = :member AND FUNCTION('DATE_PART', 'year', i.date) = :year GROUP BY i.member, month) incomeSub " +
+            "ON expenseSub.member = incomeSub.member AND expenseSub.month = incomeSub.month " +
+            "GROUP BY expenseSub.month, incomeSub.monthlyIncome, expenseSub.monthlyExpense " +
+            "ORDER BY MIN(expenseSub.month)")
+
+    List<MonthlyIncomeExpenseReportDTO> getMonthlyIncomeExpenseReports(@Param("member") Member member, @Param("year") int year);
+
 }
