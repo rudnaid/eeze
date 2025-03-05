@@ -2,9 +2,9 @@ import axios from 'axios';
 
 export const fetchMonthlyExpenseReport = async (month, year) => {
   try {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('jwt');
 
-    const response = await axios.get("/api/reports/", {
+    const response = await axios.get("/api/reports/monthly", {
       params: {
         month: month,
         year: year,
