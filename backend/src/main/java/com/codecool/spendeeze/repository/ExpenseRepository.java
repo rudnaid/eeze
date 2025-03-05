@@ -40,8 +40,8 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
             "FROM Expense e " +
             "JOIN e.transactionCategory tc " +
             "WHERE e.member = :member " +
-            "AND FUNCTION('MONTH', e.transactionDate) = :month " +
-            "AND FUNCTION('YEAR', e.transactionDate) = :year " +
+            "AND FUNCTION('DATE_PART', 'month', e.transactionDate) = :month " +
+            "AND FUNCTION('DATE_PART', 'year', e.transactionDate) = :year " +
             "GROUP BY tc.name")
 
     List<CategoryReport> getMonthlyExpenses(@Param("member") Member member, @Param("month") int month, @Param("year") int year);
