@@ -1,7 +1,9 @@
 package com.codecool.spendeeze.repository;
 
 import com.codecool.spendeeze.model.dto.TotalExpenseByTransactionCategoryDTO;
+import com.codecool.spendeeze.model.dto.reports.CategoryReport;
 import com.codecool.spendeeze.model.entity.Expense;
+import com.codecool.spendeeze.model.entity.Member;
 import com.codecool.spendeeze.model.entity.TransactionCategory;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -34,4 +36,13 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     @Query("SELECT SUM(e.amount) as totalByCategory, e.transactionCategory.name as categoryName, e.transactionCategory.id as categoryPublicId FROM Expense e WHERE e.member.publicId = :memberPublicId GROUP BY e.transactionCategory.id, e.transactionCategory.name")
     List<TotalExpenseByTransactionCategoryDTO> getExpensesByTransactionCategory(UUID memberPublicId);
 
+    @Query("SELECT new com.codecool.spendeeze.model.dto.reports.CategoryReport(tc.name, SUM(e.amount)) " +
+            "FROM Expense e " +
+            "JOIN TransactionCategory tc " +
+            "ON e.transactionCategory " +
+            "WHERE e.member = :member " +
+            "AND FUNCTION('MONTH', e.transactionDate) = :month " +
+            "AND FUNCTION('YEAR', e.transactionDate) = :year")
+
+    List<CategoryReport> getMonthlyExpenses(@Param("member") Member member, @Param("month") int month, @Param("year") int year);
 }
