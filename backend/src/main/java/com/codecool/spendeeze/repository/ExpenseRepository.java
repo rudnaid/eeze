@@ -26,15 +26,15 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     @Query("DELETE FROM Expense e WHERE e.publicId = :publicId")
     int deleteExpenseByPublicId(@Param("publicId") UUID publicId);
 
-    List<Expense> getExpensesByMemberPublicId(UUID userId);
+    List<Expense> getExpensesByMemberUsername(String username);
 
-    List<Expense> getExpensesByTransactionCategoryAndMemberPublicId(TransactionCategory category, UUID userPublicId);
+    List<Expense> getExpensesByTransactionCategoryAndMemberUsername(TransactionCategory category, String username);
 
-    @Query("SELECT COALESCE(SUM(e.amount), 0) FROM Expense e WHERE e.member.publicId = :memberPublicId")
-    double getTotalExpensesByMemberPublicId(@Param("memberPublicId") UUID memberPublicId);
+    @Query("SELECT COALESCE(SUM(e.amount), 0) FROM Expense e WHERE e.member.username = :username")
+    double getTotalExpensesByMemberUsername(@Param("username") String username);
 
-    @Query("SELECT SUM(e.amount) as totalByCategory, e.transactionCategory.name as categoryName, e.transactionCategory.id as categoryPublicId FROM Expense e WHERE e.member.publicId = :memberPublicId GROUP BY e.transactionCategory.id, e.transactionCategory.name")
-    List<TotalExpenseByTransactionCategoryDTO> getExpensesByTransactionCategory(UUID memberPublicId);
+    @Query("SELECT SUM(e.amount) as totalByCategory, e.transactionCategory.name as categoryName, e.transactionCategory.id as categoryPublicId FROM Expense e WHERE e.member.username = :username GROUP BY e.transactionCategory.id, e.transactionCategory.name")
+    List<TotalExpenseByTransactionCategoryDTO> getExpensesByTransactionCategory(String username);
 
     @Query("SELECT new com.codecool.spendeeze.model.dto.reports.CategoryReport(tc.name, SUM(e.amount)) " +
             "FROM Expense e " +

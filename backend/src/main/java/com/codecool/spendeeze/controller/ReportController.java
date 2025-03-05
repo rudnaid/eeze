@@ -4,11 +4,13 @@ import com.codecool.spendeeze.model.dto.ReportDTO;
 import com.codecool.spendeeze.model.dto.TotalExpenseByTransactionCategoryDTO;
 import com.codecool.spendeeze.model.dto.reports.CategoryReport;
 import com.codecool.spendeeze.service.ReportService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/reports")
@@ -16,18 +18,23 @@ import java.util.UUID;
 public class ReportController {
     private final ReportService reportService;
 
+    @Autowired
     public ReportController(ReportService reportService) {
         this.reportService = reportService;
     }
 
-    @GetMapping("/{memberPublicId}")
-    public ReportDTO getSummaryReport(@PathVariable UUID memberPublicId) {
-        return reportService.generateReport(memberPublicId);
+    @GetMapping
+    public ReportDTO getSummaryReport() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String memberUsername = authentication.getName();
+        return reportService.generateReport(memberUsername);
     }
 
-    @GetMapping("/by-category/{memberPublicId}")
-    public List<TotalExpenseByTransactionCategoryDTO> getExpensesByCategory(@PathVariable UUID memberPublicId) {
-        return reportService.getTotalExpenseByTransactionCategory(memberPublicId);
+    @GetMapping("/by-category")
+    public List<TotalExpenseByTransactionCategoryDTO> getExpensesByCategory() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String memberUsername = authentication.getName();
+        return reportService.getTotalExpenseByTransactionCategory(memberUsername);
     }
 
     @GetMapping("/monthly")

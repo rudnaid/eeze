@@ -7,6 +7,7 @@ import com.codecool.spendeeze.model.entity.Member;
 import com.codecool.spendeeze.repository.ExpenseRepository;
 import com.codecool.spendeeze.repository.IncomeRepository;
 import com.codecool.spendeeze.repository.MemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,24 +22,24 @@ public class ReportService {
     private final ExpenseRepository expenseRepository;
     private final MemberRepository memberRepository;
 
-    public ReportService(IncomeRepository incomeRepository, ExpenseRepository expenseRepository, MemberService memberService, MemberRepository memberRepository) {
+    public ReportService(IncomeRepository incomeRepository, ExpenseRepository expenseRepository, MemberRepository memberRepository) {
         this.incomeRepository = incomeRepository;
         this.expenseRepository = expenseRepository;
         this.memberRepository = memberRepository;
     }
 
-    public ReportDTO generateReport(UUID memberPublicId) {
-        double totalIncome = incomeRepository.getTotalIncomeByMemberPublicId(memberPublicId);
+    public ReportDTO generateReport(String username) {
+        double totalIncome = incomeRepository.getTotalIncomeByMemberUsername(username);
 
-        double totalExpenses = expenseRepository.getTotalExpensesByMemberPublicId(memberPublicId);
+        double totalExpenses = expenseRepository.getTotalExpensesByMemberUsername(username);
 
         double currentBalance = totalIncome - totalExpenses;
 
-        return new ReportDTO(memberPublicId, totalIncome, totalExpenses, currentBalance);
+        return new ReportDTO(username, totalIncome, totalExpenses, currentBalance);
     }
 
-    public List<TotalExpenseByTransactionCategoryDTO> getTotalExpenseByTransactionCategory(UUID memberPublicId) {
-        return expenseRepository.getExpensesByTransactionCategory(memberPublicId);
+    public List<TotalExpenseByTransactionCategoryDTO> getTotalExpenseByTransactionCategory(String memberUsername) {
+        return expenseRepository.getExpensesByTransactionCategory(memberUsername);
     }
 
     public List<CategoryReport> getMonthlyReport(String username, int month, int year) {

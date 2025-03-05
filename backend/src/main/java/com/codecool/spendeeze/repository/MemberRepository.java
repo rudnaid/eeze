@@ -13,12 +13,11 @@ import java.util.UUID;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
-    Optional<Member> getMemberByPublicId(UUID publicId);
-
-    Optional<Member> getMemberByUsername(String username);
 
     @Transactional
     @Modifying
-    @Query("DELETE FROM Member m WHERE m.publicId = :publicId")
-    int deleteMemberByPublicId(@Param("publicId")UUID publicId);
+    @Query("DELETE FROM Member m WHERE m.username = :username")
+    int deleteMemberByUsername(@Param("username")String username);
+
+    Optional<Member> findMemberByUsername(String username);
 }
