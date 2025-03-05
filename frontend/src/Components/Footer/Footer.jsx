@@ -4,11 +4,9 @@ import { FaFacebook, FaLinkedin, FaArrowUp } from 'react-icons/fa';
 import { FaYoutube } from 'react-icons/fa';
 
 const Footer = () => {
-
 	const scrollToTop = () => {
 		window.scrollTo({ top: 0, behavior: 'smooth' });
 	};
-
 
 	return (
 		<footer className="bg-[#394a51] text-[#fbf2d5] p-10 pb-10 flex flex-col items-center">
