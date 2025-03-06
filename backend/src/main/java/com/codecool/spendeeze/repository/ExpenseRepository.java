@@ -45,7 +45,7 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
             "AND FUNCTION('DATE_PART', 'year', e.transactionDate) = :year " +
             "GROUP BY tc.name")
 
-    List<CategoryReport> getMonthlyExpenses(@Param("member") Member member, @Param("month") int month, @Param("year") int year);
+    List<CategoryReport> getMonthlyExpensesByCategory(@Param("member") Member member, @Param("month") int month, @Param("year") int year);
 
     @Query("SELECT new com.codecool.spendeeze.model.dto.reports.MonthlyIncomeExpenseReportDTO(" +
             "   TO_CHAR(expenseSub.month, 'FMMonth'), " +
