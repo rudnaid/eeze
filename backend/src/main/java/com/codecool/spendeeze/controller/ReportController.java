@@ -3,6 +3,7 @@ package com.codecool.spendeeze.controller;
 import com.codecool.spendeeze.model.dto.ReportDTO;
 import com.codecool.spendeeze.model.dto.TotalExpenseByTransactionCategoryDTO;
 import com.codecool.spendeeze.model.dto.reports.CategoryReport;
+import com.codecool.spendeeze.model.dto.reports.MonthlyIncomeExpenseReportDTO;
 import com.codecool.spendeeze.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -44,5 +45,13 @@ public class ReportController {
             Principal principal) {
 
         return reportService.getMonthlyReport(principal.getName(), month, year);
+    }
+
+    @GetMapping("/yearly")
+    public List<MonthlyIncomeExpenseReportDTO> getMonthlyIncomeExpenseReport(
+            @RequestParam int year,
+            Principal principal) {
+
+        return reportService.getYearlyReport(principal.getName(), year);
     }
 }
