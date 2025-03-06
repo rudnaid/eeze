@@ -53,6 +53,7 @@ const LandingPage = () => {
           <ThemeToggle />
         </div>
 
+
         <div className="w-full flex justify-center mb-8">
           <BarChartComponent chartData={yearlyIncomeExpenseReportData} year={barYear} />
         </div>
@@ -66,6 +67,7 @@ const LandingPage = () => {
             <IncomeButton />
             <ExpenseButton />
           </div>
+
         </div>
       </div>
 
