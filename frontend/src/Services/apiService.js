@@ -64,3 +64,21 @@ export const fetchExpensesByCategory = async () => {
     console.error('Error getting expenses by category:', error);
   }
 };
+
+export const fetchYearlyIncomeExpenseReport = async (year) => {
+  try {
+    const token = localStorage.getItem('jwt');
+
+    const response = await axios.get("/api/reports/yearly", {
+      params: {
+        year: year,
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error getting yearly expense report:', error);
+  }
+}
