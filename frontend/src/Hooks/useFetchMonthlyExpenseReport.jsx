@@ -32,5 +32,5 @@ export const useFetchMonthlyExpenseReport = (selectedMonth = null, selectedYear 
     fetchData();
   }, [month, year]);
 
-  return { loading, error, monthlyExpenseReportData };
+  return { loading, error, monthlyExpenseReportData, month, year };
 }

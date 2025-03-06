@@ -27,7 +27,7 @@ const useFetchYearlyIncomeExpenseReport = (selectedYear = null) => {
     fetchData();
   }, [year]);
 
-  return {loading, error, yearlyIncomeExpenseReportData};
+  return {loading, error, yearlyIncomeExpenseReportData, year};
 }
 
 export default useFetchYearlyIncomeExpenseReport;

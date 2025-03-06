@@ -1,28 +1,41 @@
 import PieChartComponent from "../Components/Charts/PieChartComponent.jsx";
 import Loading from "../Components/Loading/Loading.jsx";
 import ErrorComponent from "../Components/Util/ErrorComponent.jsx";
-import Modal from "../Components/Util/Modal.jsx";
-import IncomeCreator from "./IncomeCreator.jsx";
-import ExpenseCreator from "./ExpenseCreator.jsx";
 import BarChartComponent from "../Components/Charts/BarChartComponent.jsx";
 import {useFetchMonthlyExpenseReport} from "../Hooks/useFetchMonthlyExpenseReport.jsx";
 import useFetchYearlyIncomeExpenseReport from "../Hooks/useFetchYearlyIncomeExpenseReport.jsx";
-import {useState} from "react";
+import {useEffect} from "react";
+import ExpenseButton from "../Components/Buttons/ExpenseButton.jsx";
+import IncomeButton from "../Components/Buttons/IncomeButton.jsx";
+import "./landingPage.css";
+import ThemeToggle from "../Components/Buttons/ThemeToggle.jsx";
 
 const LandingPage = () => {
-  const [incomeModal, setIncomeModal] = useState(false);
-  const [expenseModal, setExpenseModal] = useState(false);
-  
+
+  // useEffect needed temporarily to let DaisyUI theme affect this page
+  // TODO need to remove if DaisyUI is applied to whole frontend
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", "cupcake");
+
+    return () => {
+      document.documentElement.removeAttribute("data-theme");
+    };
+  }, []);
+
   const {
     loading: monthlyLoading,
     error: monthlyError,
     monthlyExpenseReportData,
+    month: pieMonth,
+    year: pieYear,
   } = useFetchMonthlyExpenseReport();
 
   const {
     loading: yearlyLoading,
     error: yearlyError,
     yearlyIncomeExpenseReportData,
+    year: barYear,
   } = useFetchYearlyIncomeExpenseReport();
 
   const loading = monthlyLoading || yearlyLoading;
@@ -31,37 +44,33 @@ const LandingPage = () => {
   if (loading) return <Loading />;
   if (error) return <ErrorComponent message={error} />;
 
+
   return (
     <>
-    
-      <div>
-        <BarChartComponent chartData={yearlyIncomeExpenseReportData} />
-      </div>
 
-      <div>
-        <PieChartComponent chartData={monthlyExpenseReportData} />
-      </div>
-
-      <div>
-        <div>
-          <button onClick={() => setIncomeModal(true)} className="w-full shadow-xl py-2.5 px-4 text-sm font-semibold tracking-wider rounded-md text-white bg-gray-800 hover:bg-gray-500 focus:outline-none transition-all">
-            Add new income
-          </button>
-
-          <Modal openModal={incomeModal} closeModal={() => setIncomeModal(false)}>
-          {(handleClose) => <IncomeCreator onCancel={handleClose} />}
-          </Modal>
+      <div className="relative min-h-screen p-6 flex flex-col items-center">
+        <div className="absolute top-4 right-4">
+          <ThemeToggle />
         </div>
-        <div>
-          <button onClick={() => setExpenseModal(true)} className="w-full shadow-xl py-2.5 px-4 text-sm font-semibold tracking-wider rounded-md text-white bg-gray-800 hover:bg-gray-500 focus:outline-none transition-all">
-            Add new expense
-          </button>
 
-          <Modal openModal={expenseModal} closeModal={() => setExpenseModal(false)}>
-          {(handleClose) => <ExpenseCreator onCancel={handleClose} />}
-          </Modal>
+
+        <div className="w-full flex justify-center mb-8">
+          <BarChartComponent chartData={yearlyIncomeExpenseReportData} year={barYear} />
+        </div>
+
+        <div className="flex justify-center items-start gap-8 w-full max-w-4xl">
+          <div className="w-1/2">
+            <PieChartComponent chartData={monthlyExpenseReportData} month={pieMonth} year={pieYear} />
+          </div>
+
+          <div className="flex flex-col space-y-4">
+            <IncomeButton />
+            <ExpenseButton />
+          </div>
+
         </div>
       </div>
+
     </>
   );
 };
