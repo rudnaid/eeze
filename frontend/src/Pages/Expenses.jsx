@@ -1,24 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-
+import { useFetchSummary } from '../Hooks/useFetchSummary';
+import { useFetchExpensesByCategory } from '../Hooks/useFetchExpensesByCategory';
+import Loading from "../Components/Loading/Loading";
+import ErrorComponent from "../Components/Util/ErrorComponent.jsx";
 
 export const Expenses = () => {
-	const [summary, setSummary] = useState({});
-	const [categories, setCategories] = useState([]);
+	const {loading: summaryLoading, error: summaryError, summary} = useFetchSummary();
+	const {loading: categoriesLoading, error: categoriesError, categories} = useFetchExpensesByCategory();
 
-	useEffect(() => {
-		fetch(
-			`http://localhost:8080/api/reports/7c873e71-164b-42f8-a6d9-3aa350172c2f`
-		)
-			.then((res) => res.json())
-			.then((summaryResult) => setSummary(summaryResult));
-
-		fetch(
-			`http://localhost:8080/api/reports/by-category/7c873e71-164b-42f8-a6d9-3aa350172c2f`
-		)
-			.then((res) => res.json())
-			.then((categoryList) => setCategories(categoryList));
-	}, []);
+	if (summaryLoading || categoriesLoading) return <Loading />;
+    if (summaryError || categoriesError) return <ErrorComponent message={error} />;
 
 	return (
 		<>
@@ -90,13 +82,13 @@ export const Expenses = () => {
 				</div>
 			</div>
 			<div className="mt-6 flex justify-center">
-                <Link
-                    to="/expenses/create"
-                    className="text-white bg-[#7e8283] hover:bg-[#7fa99b] font-semibold py-2 px-4 rounded transition"
-                >
-                    Add New Expense
-                </Link>
-            </div>
+				<Link
+					to="/expenses/create"
+					className="text-white bg-[#7e8283] hover:bg-[#7fa99b] font-semibold py-2 px-4 rounded transition"
+				>
+					Add New Expense
+				</Link>
+			</div>
 		</>
 	);
 };
