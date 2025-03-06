@@ -1,10 +1,13 @@
-import { useNavigate } from "react-router-dom";
+import jwtDecode from 'jwt-decode';
 
-export const isUserLoggedIn = () => {
+export const isUserAuthenticated = () => {
+	const token = localStorage.getItem('jwt');
+	if (!token) return false;
 
-    const token = localStorage.getItem('jwt');
-
-    return token == null ? false : true;
-}
-
-
+	try {
+		const decoded = jwtDecode(token);
+		return decoded.exp * 1000 > Date.now();
+	} catch {
+		return false;
+	}
+};
