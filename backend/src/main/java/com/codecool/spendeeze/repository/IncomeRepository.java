@@ -1,5 +1,6 @@
 package com.codecool.spendeeze.repository;
 
+import com.codecool.spendeeze.model.dto.reports.MonthlyIncomeTotal;
 import com.codecool.spendeeze.model.entity.Income;
 import com.codecool.spendeeze.model.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,4 +20,14 @@ public interface IncomeRepository extends JpaRepository<Income, Long> {
     @Query("SELECT COALESCE(SUM(i.amount), 0) FROM Income i WHERE i.member.username = :username")
     double getTotalIncomeByMemberUsername(@Param("username") String username);
 
+    @Query("SELECT new com.codecool.spendeeze.model.dto.reports.MonthlyIncomeTotal(" +
+            "EXTRACT(MONTH FROM i.date) AS month, " +
+            "ROUND(SUM(i.amount), 2)) AS incomeTotal " +
+            "FROM Income i " +
+            "WHERE i.member = :member " +
+            "AND EXTRACT(YEAR FROM i.date) = :year " +
+            "GROUP BY EXTRACT(MONTH FROM i.date) " +
+            "ORDER BY EXTRACT(MONTH FROM i.date)")
+
+    List<MonthlyIncomeTotal> getMonthlyTotalIncomes(Member member, int year);
 }
