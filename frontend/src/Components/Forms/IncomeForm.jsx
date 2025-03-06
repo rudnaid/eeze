@@ -27,7 +27,7 @@ const IncomeForm = ({ onSave, disabled, income, onCancel }) => {
 				<div className="h-[240px] font-[sans-serif] bg-[#7fa99b]">
 					{/* <img className="w-full h-full bg-[#6a9184]" /> */}
 				</div>
-				<div className="bg-[#fbf2d5] max-w-md w-full mx-auto relative -mt-40 m-4">
+				<div className="bg-[#fbf2d5] max-w-md w-full mx-auto relative -mt-60 m-4">
 					<form
 						className="bg-white max-w-xl w-full mx-auto shadow-[0_2px_10px_-3px_rgba(182,191,184,0.99)] p-6 sm:p-8 rounded-2xl"
 						onSubmit={onSubmit}

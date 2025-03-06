@@ -4,17 +4,18 @@ import IncomeForm from "../Components/Forms/IncomeForm";
 
 const createIncome = (income) => {
   // change to your own generated database-s no1 members public id!
-  
-    return fetch("/api/income/?memberPublicId=7c873e71-164b-42f8-a6d9-3aa350172c2f", {
+    const token = localStorage.getItem('jwt');
+    return fetch("/api/incomes", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
       },
       body: JSON.stringify(income),
     }).then((res) => res.json());
   };
 
-const IncomeCreator = () => {
+const IncomeCreator = ({onCancel}) => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
   
@@ -24,13 +25,13 @@ const IncomeCreator = () => {
       createIncome(income)
         .then(() => {
           setLoading(false);
-          navigate("/income");
+          navigate("/incomes");
         })
     };
   
     return (
       <IncomeForm
-        onCancel={() => navigate("/")}
+        onCancel={onCancel}
         disabled={loading}
         onSave={handleCreateIncome}
       />
