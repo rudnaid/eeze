@@ -40,11 +40,11 @@ const router = createBrowserRouter([
 		children: [
 			{
 				index: true,
-				element: <Expenses />,
+				element: <LandingPage />,
 			},
 			{
 				path: 'expenses',
-				element: <LandingPage />,
+				element: <Expenses />,
 			},
 			{
 				path: 'expenses/create',
