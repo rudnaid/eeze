@@ -15,9 +15,6 @@ const Modal = ({ openModal, closeModal, children, redirectTo }) => {
 
     const handleClose = () => {
         closeModal();
-        if (redirectTo) {
-            navigate(redirectTo);
-        }
     };
 
     return ( 
