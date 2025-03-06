@@ -1,15 +1,28 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ExpenseForm = ({ onSave, disabled, expense, onCancel }) => {
+    const navigate = useNavigate();
     const [amount, setAmount] = useState(expense?.amount ?? "");
     const [transactionDate, setTransactionDate] = useState(expense?.transactionDate ?? "");
     const [category, setCategory] = useState(expense?.category ?? "");
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
+        const token = localStorage.getItem("jwt");
+        const headers = {
+            "Content-Type": "application/json"
+        };
+
+        if (token) {
+            headers["Authorization"] = `Bearer ${token}`;
+        } else {
+            navigate("/login");
+            return;
+        }
         const fetchData = async () => {
             try {
-                const response = await fetch("/api/categories");
+                const response = await fetch("/api/categories", {headers});
                 const categories = await response.json();
                 setCategories(categories);
             } catch (error) {
@@ -44,7 +57,7 @@ const ExpenseForm = ({ onSave, disabled, expense, onCancel }) => {
                 <div className="h-[240px] font-[sans-serif] bg-[#6a9184]">
                     {/* <img className="w-full h-full bg-[#6a9184]" /> */}
                 </div>
-                <div className="max-w-md w-full mx-auto relative -mt-40 m-4">
+                <div className="bg-[#fbf2d5] max-w-md w-full mx-auto relative -mt-60 m-4">
                     <form className="bg-white max-w-xl w-full mx-auto shadow-[0_2px_10px_-3px_rgba(182,191,184,0.99)] p-6 sm:p-8 rounded-2xl" onSubmit={onSubmit}>
                         <div className="mb-12">
                             <h3 className="text-gray-800 text-3xl font-bold text-center">

@@ -12,7 +12,7 @@ import Login from './Pages/Login.jsx';
 import Register from './Pages/Register.jsx';
 import PublicLayout from './Layouts/PublicLayout.jsx';
 import AuthenticatedLayout from './Layouts/AuthenticatedLayout.jsx';
-import LandingPage from "./Pages/LandingPage.jsx";
+import LandingPage from './Pages/LandingPage.jsx';
 
 const router = createBrowserRouter([
 	{
