@@ -38,7 +38,7 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     @Query("SELECT SUM(e.amount) as totalByCategory, e.transactionCategory.name as categoryName, e.transactionCategory.id as categoryPublicId FROM Expense e WHERE e.member.username = :username GROUP BY e.transactionCategory.id, e.transactionCategory.name")
     List<TotalExpenseByTransactionCategoryDTO> getExpensesByTransactionCategory(String username);
 
-    @Query("SELECT new com.codecool.spendeeze.model.dto.reports.CategoryReport(tc.name, SUM(e.amount)) " +
+    @Query("SELECT new com.codecool.spendeeze.model.dto.reports.CategoryReport(tc.name, ROUND(SUM(e.amount), 2)) " +
             "FROM Expense e " +
             "JOIN e.transactionCategory tc " +
             "WHERE e.member = :member " +
@@ -48,16 +48,14 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
     List<CategoryReport> getMonthlyExpensesByCategory(@Param("member") Member member, @Param("month") int month, @Param("year") int year);
 
-    @Query("SELECT new com.codecool.spendeeze.model.dto.reports.MonthlyIncomeExpenseReportDTO(" +
-            "   TO_CHAR(expenseSub.month, 'FMMonth'), " +
-            "   incomeSub.monthlyIncome, " +
-            "   expenseSub.monthlyExpense" +
-            ") " +
-            "FROM (SELECT e.member AS member, TO_CHAR(e.transactionDate, 'YYYY-MM') AS month, SUM(e.amount) AS monthlyExpense FROM Expense e WHERE e.member = :member AND FUNCTION('DATE_PART', 'year', e.transactionDate) = :year GROUP BY e.member, month) expenseSub " +
-            "LEFT JOIN (SELECT i.member AS member, TO_CHAR(i.date, 'YYYY-MM') AS month, SUM(i.amount) AS monthlyIncome FROM Income i WHERE i.member = :member AND FUNCTION('DATE_PART', 'year', i.date) = :year GROUP BY i.member, month) incomeSub " +
-            "ON expenseSub.member = incomeSub.member AND expenseSub.month = incomeSub.month " +
-            "GROUP BY expenseSub.month, incomeSub.monthlyIncome, expenseSub.monthlyExpense " +
-            "ORDER BY MIN(expenseSub.month)")
+    @Query("SELECT new com.codecool.spendeeze.model.dto.reports.MonthlyExpenseTotal(" +
+            "EXTRACT(MONTH FROM e.transactionDate) AS month, " +
+            "ROUND(SUM(e.amount), 2)) AS expenseTotal " +
+            "FROM Expense e " +
+            "WHERE e.member = :member " +
+            "AND EXTRACT(YEAR FROM e.transactionDate) = :year " +
+            "GROUP BY EXTRACT(MONTH FROM e.transactionDate) " +
+            "ORDER BY EXTRACT(MONTH FROM e.transactionDate)")
 
     List<MonthlyExpenseTotal> getMonthlyTotalExpenses(@Param("member") Member member, @Param("year") int year);
 
