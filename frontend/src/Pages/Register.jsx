@@ -9,29 +9,34 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaUser } from 'react-icons/fa';
 
 const createUser = (userEntity) => {
-	return fetch("/api/users/register", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userEntity),
-    }).then((res) => res.json());
-}
+	return fetch('/api/users/register', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify(userEntity),
+	}).then((res) => res.json());
+};
 
 const Register = () => {
 	const navigate = useNavigate();
-	const [firstName, setFirstName] = useState("");
-	const [lastName, setLastName] = useState("");
-	const [username, setUsername] = useState("");
-	const [country, setCountry] = useState("");
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
+	const [firstName, setFirstName] = useState('');
+	const [lastName, setLastName] = useState('');
+	const [username, setUsername] = useState('');
+	const [country, setCountry] = useState('');
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [showPassword, setShowPassword] = useState(false);
+
+	const togglePasswordVisibility = () => {
+		setShowPassword(!showPassword);
+	};
 
 	const onSubmit = (e) => {
 		e.preventDefault();
-		createUser({firstName, lastName, country, email, username, password});
-		navigate("/login"); 
-	}
+		createUser({ firstName, lastName, country, email, username, password });
+		navigate('/login');
+	};
 
 	return (
 		<>
@@ -44,8 +49,10 @@ const Register = () => {
 				</div>
 
 				<div className="max-w-md w-full mx-auto relative -mt-60 m-4">
-					<form className="bg-white max-w-xl w-full mx-auto shadow-[0_2px_10px_-3px_rgba(182,191,184,0.99)] p-6 sm:p-8 rounded-2xl"
-					onSubmit={onSubmit}>
+					<form
+						className="bg-white max-w-xl w-full mx-auto shadow-[0_2px_10px_-3px_rgba(182,191,184,0.99)] p-6 sm:p-8 rounded-2xl"
+						onSubmit={onSubmit}
+					>
 						<div className="mb-12">
 							<h3 className="text-gray-800 text-3xl font-bold text-center">
 								<Link to="/home/income">Register</Link>
@@ -137,14 +144,24 @@ const Register = () => {
 							<div className="relative flex items-center">
 								<input
 									name="password"
-									type="password"
+									type={showPassword ? 'text' : 'password'}
 									required
 									value={password}
 									onChange={(e) => setPassword(e.target.value)}
 									className="w-full bg-transparent text-sm text-gray-800 border-b border-gray-300 focus:border-gray-500 pl-2 pr-8 py-3 outline-none"
 									placeholder="Enter password"
 								/>
-								<AiFillEye className="w-5 h-5 text-gray-400 absolute right-2 cursor-pointer" />{' '}
+								<button
+									type="button"
+									onClick={togglePasswordVisibility}
+									className="absolute right-2"
+								>
+									{showPassword ? (
+										<AiFillEye className="w-5 h-5 text-gray-400 cursor-pointer" />
+									) : (
+										<AiFillEye className="w-5 h-5 text-gray-400 cursor-pointer" />
+									)}
+								</button>{' '}
 							</div>
 						</div>
 
