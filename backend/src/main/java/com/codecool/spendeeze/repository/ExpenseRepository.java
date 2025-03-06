@@ -2,6 +2,8 @@ package com.codecool.spendeeze.repository;
 
 import com.codecool.spendeeze.model.dto.TotalExpenseByTransactionCategoryDTO;
 import com.codecool.spendeeze.model.dto.reports.CategoryReport;
+import com.codecool.spendeeze.model.dto.reports.MonthlyExpenseTotal;
+import com.codecool.spendeeze.model.dto.reports.MonthlyIncomeExpenseReportDTO;
 import com.codecool.spendeeze.model.entity.Expense;
 import com.codecool.spendeeze.model.entity.Member;
 import com.codecool.spendeeze.model.entity.TransactionCategory;
@@ -36,7 +38,7 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     @Query("SELECT SUM(e.amount) as totalByCategory, e.transactionCategory.name as categoryName, e.transactionCategory.id as categoryPublicId FROM Expense e WHERE e.member.username = :username GROUP BY e.transactionCategory.id, e.transactionCategory.name")
     List<TotalExpenseByTransactionCategoryDTO> getExpensesByTransactionCategory(String username);
 
-    @Query("SELECT new com.codecool.spendeeze.model.dto.reports.CategoryReport(tc.name, SUM(e.amount)) " +
+    @Query("SELECT new com.codecool.spendeeze.model.dto.reports.CategoryReport(tc.name, ROUND(SUM(e.amount), 2)) " +
             "FROM Expense e " +
             "JOIN e.transactionCategory tc " +
             "WHERE e.member = :member " +
@@ -44,5 +46,17 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
             "AND FUNCTION('DATE_PART', 'year', e.transactionDate) = :year " +
             "GROUP BY tc.name")
 
-    List<CategoryReport> getMonthlyExpenses(@Param("member") Member member, @Param("month") int month, @Param("year") int year);
+    List<CategoryReport> getMonthlyExpensesByCategory(@Param("member") Member member, @Param("month") int month, @Param("year") int year);
+
+    @Query("SELECT new com.codecool.spendeeze.model.dto.reports.MonthlyExpenseTotal(" +
+            "EXTRACT(MONTH FROM e.transactionDate) AS month, " +
+            "ROUND(SUM(e.amount), 2)) AS expenseTotal " +
+            "FROM Expense e " +
+            "WHERE e.member = :member " +
+            "AND EXTRACT(YEAR FROM e.transactionDate) = :year " +
+            "GROUP BY EXTRACT(MONTH FROM e.transactionDate) " +
+            "ORDER BY EXTRACT(MONTH FROM e.transactionDate)")
+
+    List<MonthlyExpenseTotal> getMonthlyTotalExpenses(@Param("member") Member member, @Param("year") int year);
+
 }
