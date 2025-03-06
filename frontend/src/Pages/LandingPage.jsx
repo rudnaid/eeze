@@ -4,9 +4,10 @@ import ErrorComponent from "../Components/Util/ErrorComponent.jsx";
 import Modal from "../Components/Util/Modal.jsx";
 import IncomeCreator from "./IncomeCreator.jsx";
 import ExpenseCreator from "./ExpenseCreator.jsx";
-import BarChartComponent from "../Components/Charts/BarCharComponent.jsx";
+import BarChartComponent from "../Components/Charts/BarChartComponent.jsx";
 import {useFetchMonthlyExpenseReport} from "../Hooks/useFetchMonthlyExpenseReport.jsx";
 import useFetchYearlyIncomeExpenseReport from "../Hooks/useFetchYearlyIncomeExpenseReport.jsx";
+import {useState} from "react";
 
 const LandingPage = () => {
   const [incomeModal, setIncomeModal] = useState(false);
