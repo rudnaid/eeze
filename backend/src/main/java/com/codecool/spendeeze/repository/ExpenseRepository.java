@@ -2,6 +2,7 @@ package com.codecool.spendeeze.repository;
 
 import com.codecool.spendeeze.model.dto.TotalExpenseByTransactionCategoryDTO;
 import com.codecool.spendeeze.model.dto.reports.CategoryReport;
+import com.codecool.spendeeze.model.dto.reports.MonthlyExpenseTotal;
 import com.codecool.spendeeze.model.dto.reports.MonthlyIncomeExpenseReportDTO;
 import com.codecool.spendeeze.model.entity.Expense;
 import com.codecool.spendeeze.model.entity.Member;
@@ -58,6 +59,6 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
             "GROUP BY expenseSub.month, incomeSub.monthlyIncome, expenseSub.monthlyExpense " +
             "ORDER BY MIN(expenseSub.month)")
 
-    List<MonthlyIncomeExpenseReportDTO> getMonthlyIncomeExpenseReports(@Param("member") Member member, @Param("year") int year);
+    List<MonthlyExpenseTotal> getMonthlyTotalExpenses(@Param("member") Member member, @Param("year") int year);
 
 }
