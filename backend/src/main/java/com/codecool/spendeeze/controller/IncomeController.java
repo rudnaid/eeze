@@ -22,7 +22,7 @@ public class IncomeController {
     }
 
     @PostMapping
-    public Income addIncome(@RequestBody IncomeDTO income){
+    public IncomeDTO addIncome(@RequestBody IncomeDTO income){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         return incomeService.addIncome(income, username);

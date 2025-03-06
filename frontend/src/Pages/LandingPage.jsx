@@ -48,7 +48,7 @@ const LandingPage = () => {
             Add new income
           </button>
 
-          <Modal openModal={incomeModal} closeModal={() => setIncomeModal(false)} redirectTo={"/home"}>
+          <Modal openModal={incomeModal} closeModal={() => setIncomeModal(false)}>
           {(handleClose) => <IncomeCreator onCancel={handleClose} />}
           </Modal>
         </div>
@@ -57,7 +57,7 @@ const LandingPage = () => {
             Add new expense
           </button>
 
-          <Modal openModal={expenseModal} closeModal={() => setExpenseModal(false)} redirectTo={"/home"}>
+          <Modal openModal={expenseModal} closeModal={() => setExpenseModal(false)}>
           {(handleClose) => <ExpenseCreator onCancel={handleClose} />}
           </Modal>
         </div>

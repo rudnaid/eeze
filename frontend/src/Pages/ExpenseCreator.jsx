@@ -16,7 +16,7 @@ const createExpense = (expense) => {
   };
 
 const ExpenseCreator = ({onCancel}) => {
-    const navigate = useNavigate();
+    
     const [loading, setLoading] = useState(false);
   
     const handleCreateExpense = (expense) => {
@@ -25,7 +25,7 @@ const ExpenseCreator = ({onCancel}) => {
       createExpense(expense)
         .then(() => {
           setLoading(false);
-          navigate("/expenses");
+          onCancel();
         })
     };
   
