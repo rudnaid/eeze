@@ -24,11 +24,12 @@ public class IncomeService {
         this.memberRepository = memberRepository;
     }
 
-    public Income addIncome(IncomeDTO income, String username) {
+    public IncomeDTO addIncome(IncomeDTO income, String username) {
         Member member = memberRepository.findMemberByUsername(username).orElseThrow(() -> new NoSuchElementException("User with username " + username + " not found"));
         Income incomeEntity = convertDtoToEntity(income);
         incomeEntity.setMember(member);
-        return incomeRepository.save(incomeEntity);
+        incomeRepository.save(incomeEntity);
+        return new IncomeDTO(incomeEntity.getPublicId(), incomeEntity.getAmount(), incomeEntity.getDate());
     }
 
     private Income convertDtoToEntity(IncomeDTO incomeDto) {

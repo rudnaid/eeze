@@ -14,11 +14,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -37,6 +40,7 @@ public class IncomeServiceTest {
     private Member member;
     private Income income;
     private IncomeDTO incomeDTO;
+    private UUID incomePublicId;
 
     @BeforeEach
     void setUp() {
@@ -54,8 +58,14 @@ public class IncomeServiceTest {
         member.setCountry("testCountry");
         member.setRoles(memberRoles);
 
+        incomePublicId = UUID.randomUUID(); // Generate a random UUID for the test
+
+        // Initialize DTO with the generated publicId
+        incomeDTO = new IncomeDTO(incomePublicId, 100.50, LocalDate.of(2024, 3, 6));
+
         income = new Income();
         income.setId(1L);
+        income.setPublicId(incomePublicId);
         income.setAmount(incomeDTO.amount());
         income.setDate(incomeDTO.date());
         income.setMember(member);
@@ -68,15 +78,17 @@ public class IncomeServiceTest {
         //GIVEN
         String username = "testUsername";
         given(memberRepository.findMemberByUsername(username)).willReturn(Optional.of(member));
-        given(incomeRepository.save(income)).willReturn(income);
+        given(incomeRepository.save(any(Income.class))).willReturn(income);
 
         //WHEN
-        Income savedIncome = incomeService.addIncome(incomeDTO, username);
+        IncomeDTO savedIncomeDTO = incomeService.addIncome(incomeDTO, username);
 
         //THEN
-        assertThat(savedIncome).isNotNull();
-        assertThat(savedIncome).isEqualTo(incomeDTO.amount());
-        assertThat(savedIncome.getDate()).isEqualTo(incomeDTO.date());
-        assertThat(savedIncome.getMember().getUsername()).isEqualTo(username); //or member?
+        assertThat(savedIncomeDTO).isNotNull();
+        //assertThat(savedIncomeDTO.publicId()).isEqualTo(incomeDTO.publicId());
+        assertThat(savedIncomeDTO.amount()).isEqualTo(incomeDTO.amount());
+        assertThat(savedIncomeDTO.date()).isEqualTo(incomeDTO.date());
+
     }
+
 }
