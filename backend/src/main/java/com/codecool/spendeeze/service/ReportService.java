@@ -3,15 +3,17 @@ package com.codecool.spendeeze.service;
 import com.codecool.spendeeze.model.dto.ReportDTO;
 import com.codecool.spendeeze.model.dto.TotalExpenseByTransactionCategoryDTO;
 import com.codecool.spendeeze.model.dto.reports.CategoryReport;
+import com.codecool.spendeeze.model.dto.reports.MonthlyExpenseTotal;
 import com.codecool.spendeeze.model.dto.reports.MonthlyIncomeExpenseReportDTO;
+import com.codecool.spendeeze.model.dto.reports.MonthlyIncomeTotal;
 import com.codecool.spendeeze.model.entity.Member;
 import com.codecool.spendeeze.repository.ExpenseRepository;
 import com.codecool.spendeeze.repository.IncomeRepository;
 import com.codecool.spendeeze.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.time.Month;
+import java.util.*;
 
 
 @Service
@@ -45,14 +47,47 @@ public class ReportService {
         Member member = memberRepository.findMemberByUsername(username)
                 .orElseThrow(() -> new NoSuchElementException("Member not found"));
 
-        return expenseRepository.getMonthlyExpenses(member, month, year);
+        return expenseRepository.getMonthlyExpensesByCategory(member, month, year);
     }
 
+    private String getMonthName(int month) {
+        return Month.of(month).toString();
+    }
+
+    private List<MonthlyIncomeExpenseReportDTO> createMonthlyIncomeExpenseReportDTOs(List<MonthlyExpenseTotal> expenseTotals, List<MonthlyIncomeTotal> incomeTotals) {
+        Map<Integer, MonthlyIncomeExpenseReportDTO> reportMap = new HashMap<>();
+
+        for (MonthlyExpenseTotal expense : expenseTotals) {
+            int month = expense.getMonth();
+            reportMap.put(month, new MonthlyIncomeExpenseReportDTO(
+                    getMonthName(month),
+                    0,
+                    expense.getTotalExpense()
+            ));
+        }
+
+        for (MonthlyIncomeTotal income : incomeTotals) {
+            int month = income.getMonth();
+            reportMap.merge(month,
+                    new MonthlyIncomeExpenseReportDTO(getMonthName(month), income.getTotalIncome(), 0),
+                    (existing, newValue) -> new MonthlyIncomeExpenseReportDTO(
+                            existing.month(),
+                            existing.totalIncome() + newValue.totalIncome(),
+                            existing.totalExpense()
+                    ));
+        }
+
+        return new ArrayList<>(reportMap.values());
+    }
 
     public List<MonthlyIncomeExpenseReportDTO> getYearlyReport(String username, int year) {
         Member member = memberRepository.findMemberByUsername(username)
                 .orElseThrow(() -> new NoSuchElementException("Member not found"));
 
-        return expenseRepository.getMonthlyIncomeExpenseReports(member, year);
+        List<MonthlyExpenseTotal> totalExpenses = expenseRepository.getMonthlyTotalExpenses(member, year);
+
+        List<MonthlyIncomeTotal> totalIncomes = incomeRepository.getMonthlyTotalIncomes(member, year);
+
+        return createMonthlyIncomeExpenseReportDTOs(totalExpenses, totalIncomes);
     }
 }
