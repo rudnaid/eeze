@@ -10,7 +10,7 @@ export const Expenses = () => {
 	const {loading: categoriesLoading, error: categoriesError, categories} = useFetchExpensesByCategory();
 
 	if (summaryLoading || categoriesLoading) return <Loading />;
-    if (summaryError || categoriesError) return <ErrorComponent message={error} />;
+    if (summaryError || categoriesError) return <ErrorComponent message={summaryError || categoriesError} />;
 
 	return (
 		<>
