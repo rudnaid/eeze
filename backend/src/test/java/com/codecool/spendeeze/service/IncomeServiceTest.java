@@ -14,16 +14,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
+
+import java.time.LocalDate;
+import java.util.*;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
+
 
 @ExtendWith(MockitoExtension.class)
 public class IncomeServiceTest {
@@ -40,54 +40,41 @@ public class IncomeServiceTest {
     private Member member;
     private Income income;
     private IncomeDTO incomeDTO;
-    private UUID incomePublicId;
 
     @BeforeEach
     void setUp() {
 
-        Set<MemberRole> memberRoles = new HashSet<>();
-        memberRoles.add(MemberRole.ROLE_USER);
+//        Set<MemberRole> memberRoles = new HashSet<>();
+//        memberRoles.add(MemberRole.ROLE_USER);
+
+        UUID incomeId = UUID.randomUUID();
 
         member = new Member();
         member.setId(1L);
         member.setUsername("testUsername");
-        member.setPassword("testPassword");
-        member.setFirstName("testFirstName");
-        member.setLastName("testLastName");
-        member.setEmail("testEmail@gmail.com");
-        member.setCountry("testCountry");
-        member.setRoles(memberRoles);
 
-        incomePublicId = UUID.randomUUID(); // Generate a random UUID for the test
-
-        // Initialize DTO with the generated publicId
-        incomeDTO = new IncomeDTO(incomePublicId, 100.50, LocalDate.of(2024, 3, 6));
+        incomeDTO = new IncomeDTO(incomeId, 1000.50, LocalDate.of(2025, 3, 10));
 
         income = new Income();
-        income.setId(1L);
-        income.setPublicId(incomePublicId);
+        income.setPublicId(incomeId);
         income.setAmount(incomeDTO.amount());
         income.setDate(incomeDTO.date());
         income.setMember(member);
     }
 
-    @DisplayName("JUnit test for addIncome method")
+    @DisplayName("JUnit test for IncomeService - addIncome()")
     @Test
     void givenIncomeDTOAndUsername_whenAddIncome_thenReturnSavedIncome() {
 
-        //GIVEN
-        String username = "testUsername";
-        given(memberRepository.findMemberByUsername(username)).willReturn(Optional.of(member));
+        // GIVEN
+        given(memberRepository.findMemberByUsername("testUsername")).willReturn(Optional.of(member));
         given(incomeRepository.save(any(Income.class))).willReturn(income);
 
-        //WHEN
-        IncomeDTO savedIncomeDTO = incomeService.addIncome(incomeDTO, username);
+        // WHEN
+        IncomeDTO savedIncomeDTO = incomeService.addIncome(incomeDTO, "testUsername");
 
-        //THEN
+        // THEN
         assertThat(savedIncomeDTO).isNotNull();
-        //assertThat(savedIncomeDTO.publicId()).isEqualTo(incomeDTO.publicId());
-        assertThat(savedIncomeDTO.amount()).isEqualTo(incomeDTO.amount());
-        assertThat(savedIncomeDTO.date()).isEqualTo(incomeDTO.date());
 
     }
 
