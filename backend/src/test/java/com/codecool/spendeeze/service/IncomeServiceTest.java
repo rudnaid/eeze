@@ -90,7 +90,7 @@ public class IncomeServiceTest {
         assertThat(foundIncomes.get(0).amount()).isEqualTo(1000.50);
         assertThat(foundIncomes.get(0).date()).isEqualTo(LocalDate.of(2025, 3, 6));
 
-        // Verify repository calls
+        // Verify output
         verify(memberRepository, times(1)).findMemberByUsername("testUsername");
         verify(incomeRepository, times(1)).findIncomesByMember(member);
     }
@@ -106,7 +106,7 @@ public class IncomeServiceTest {
             incomeService.findIncomesByMemberUsername("invalidUsername");
         });
 
-        // Verify repository calls
+        // Verify output
         verify(memberRepository, times(1)).findMemberByUsername("invalidUsername");
         verify(incomeRepository, never()).findIncomesByMember(any());
     }
@@ -143,7 +143,7 @@ public class IncomeServiceTest {
         assertThat(foundIncome.amount()).isEqualTo(1000.50);
         assertThat(foundIncome.date()).isEqualTo(LocalDate.of(2025, 3, 6));
 
-        // Verify repository calls
+        // Verify output
         verify(incomeRepository, times(1)).findIncomeByPublicId(incomeId);
     }
 
@@ -159,7 +159,7 @@ public class IncomeServiceTest {
             incomeService.findIncomeById(invalidIncomeId);
         });
 
-        // Verify repository call
+        // Verify output
         verify(incomeRepository, times(1)).findIncomeByPublicId(invalidIncomeId);
     }
 
@@ -182,7 +182,7 @@ public class IncomeServiceTest {
         assertThat(result.amount()).isEqualTo(2000.70);
         assertThat(result.date()).isEqualTo(LocalDate.of(2025, 3, 6));
 
-        //Verify repository calls
+        //Verify output
         verify(incomeRepository, times(1)).findIncomeByPublicId(incomeId);
         verify(incomeRepository, times(1)).save(any(Income.class));
 
@@ -203,9 +203,33 @@ public class IncomeServiceTest {
             incomeService.updateIncome(invalidIncomeId, updatedIncomeDTO);
         });
 
-        //Verify repository calls
+        //Verify output
         verify(incomeRepository, times(1)).findIncomeByPublicId(invalidIncomeId);
         verify(incomeRepository, never()).save(any(Income.class));
+    }
+
+    @DisplayName("JUnit test for IncomeService - updateIncome() should update and return updated income")
+    @Test
+    void givenValidIncomeIdAndUpdatedIncomeDTO_whenUpdateIncome_thenReturnUpdatedIncome() {
+
+        //GIVEN
+        UUID validIncomeId = income.getPublicId();
+        IncomeDTO updatedIncomeDTO = new IncomeDTO(validIncomeId, 2000.70, LocalDate.of(2025, 3, 4));
+
+        given(incomeRepository.findIncomeByPublicId(validIncomeId)).willReturn(Optional.of(income));
+        given(incomeRepository.save(any(Income.class))).willReturn(income);
+
+        //WHEN
+        IncomeDTO updatedIncome = incomeService.updateIncome(validIncomeId, updatedIncomeDTO);
+
+        //THEN
+        assertThat(updatedIncome).isNotNull();
+        assertThat(updatedIncome.amount()).isEqualTo(2000.70);
+        assertThat(updatedIncome.date()).isEqualTo(LocalDate.of(2025, 3, 4));
+
+        //Verify output
+        verify(incomeRepository, times(1)).findIncomeByPublicId(validIncomeId);
+        verify(incomeRepository, times(1)).save(any(Income.class));
     }
 
 }
