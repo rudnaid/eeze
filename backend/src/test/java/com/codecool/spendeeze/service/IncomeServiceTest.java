@@ -151,4 +151,20 @@ public class IncomeServiceTest {
         verify(incomeRepository, times(1)).findIncomeByPublicId(incomeId);
     }
 
+    @DisplayName("JUnit test for IncomeService - findIncomeById() should throw exception if income not found")
+    @Test
+    void givenInvalidIncomeId_whenFindIncomeById_thenThrowException() {
+        // GIVEN
+        UUID invalidIncomeId = UUID.randomUUID();
+        given(incomeRepository.findIncomeByPublicId(invalidIncomeId)).willReturn(Optional.empty());
+
+        // WHEN & THEN
+        assertThrows(NoSuchElementException.class, () -> {
+            incomeService.findIncomeById(invalidIncomeId);
+        });
+
+        // Verify repository call
+        verify(incomeRepository, times(1)).findIncomeByPublicId(invalidIncomeId);
+    }
+
 }
