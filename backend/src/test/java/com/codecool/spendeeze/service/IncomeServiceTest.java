@@ -232,4 +232,23 @@ public class IncomeServiceTest {
         verify(incomeRepository, times(1)).save(any(Income.class));
     }
 
+    @DisplayName("JUnit test for IncomeService - deleteIncome() should remove income if found")
+    @Test
+    void givenValidIncomeId_whenDeleteIncome_thenIncomeShouldBeRemoved() {
+
+        // GIVEN
+        UUID validIncomeId = income.getPublicId();
+
+        given(incomeRepository.findIncomeByPublicId(validIncomeId)).willReturn(Optional.of(income));
+        doNothing().when(incomeRepository).delete(income);
+
+        // WHEN
+        incomeService.deleteIncome(validIncomeId);
+
+        // THEN
+        // Verify output
+        verify(incomeRepository, times(1)).findIncomeByPublicId(validIncomeId);
+        verify(incomeRepository, times(1)).delete(income);
+    }
+
 }
