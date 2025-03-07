@@ -3,7 +3,6 @@ package com.codecool.spendeeze.service;
 import com.codecool.spendeeze.model.dto.IncomeDTO;
 import com.codecool.spendeeze.model.entity.Income;
 import com.codecool.spendeeze.model.entity.Member;
-import com.codecool.spendeeze.model.entity.MemberRole;
 import com.codecool.spendeeze.repository.IncomeRepository;
 import com.codecool.spendeeze.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,16 +43,13 @@ public class IncomeServiceTest {
     @BeforeEach
     void setUp() {
 
-//        Set<MemberRole> memberRoles = new HashSet<>();
-//        memberRoles.add(MemberRole.ROLE_USER);
-
         UUID incomeId = UUID.randomUUID();
 
         member = new Member();
         member.setId(1L);
         member.setUsername("testUsername");
 
-        incomeDTO = new IncomeDTO(incomeId, 1000.50, LocalDate.of(2025, 3, 10));
+        incomeDTO = new IncomeDTO(incomeId, 1000.50, LocalDate.of(2025, 3, 6));
 
         income = new Income();
         income.setPublicId(incomeId);
@@ -92,7 +88,7 @@ public class IncomeServiceTest {
         assertThat(foundIncomes).isNotEmpty();
         assertThat(foundIncomes.size()).isEqualTo(1);
         assertThat(foundIncomes.get(0).amount()).isEqualTo(1000.50);
-        assertThat(foundIncomes.get(0).date()).isEqualTo(LocalDate.of(2025, 3, 10));
+        assertThat(foundIncomes.get(0).date()).isEqualTo(LocalDate.of(2025, 3, 6));
 
         // Verify repository calls
         verify(memberRepository, times(1)).findMemberByUsername("testUsername");
@@ -145,7 +141,7 @@ public class IncomeServiceTest {
         // THEN
         assertThat(foundIncome).isNotNull();
         assertThat(foundIncome.amount()).isEqualTo(1000.50);
-        assertThat(foundIncome.date()).isEqualTo(LocalDate.of(2025, 3, 10));
+        assertThat(foundIncome.date()).isEqualTo(LocalDate.of(2025, 3, 6));
 
         // Verify repository calls
         verify(incomeRepository, times(1)).findIncomeByPublicId(incomeId);
@@ -165,6 +161,31 @@ public class IncomeServiceTest {
 
         // Verify repository call
         verify(incomeRepository, times(1)).findIncomeByPublicId(invalidIncomeId);
+    }
+
+    @DisplayName("JUnit test for IncomeService - updateIncome()")
+    @Test
+    void givenIncomeIdAndUpdatedIncome_whenUpdateIncome_thenReturnUpdatedIncomeDTO() {
+
+        //GIVEN
+        UUID incomeId = income.getPublicId();
+        IncomeDTO updatedIncomeDTO = new IncomeDTO(incomeId, 2000.70, LocalDate.of(2025, 3, 6));
+
+        given(incomeRepository.findIncomeByPublicId(incomeId)).willReturn(Optional.of(income));
+        given(incomeRepository.save(any(Income.class))).willReturn(income);
+
+        //WHEN
+        IncomeDTO result = incomeService.updateIncome(incomeId, updatedIncomeDTO);
+
+        //THEN
+        assertThat(result).isNotNull();
+        assertThat(result.amount()).isEqualTo(2000.70);
+        assertThat(result.date()).isEqualTo(LocalDate.of(2025, 3, 6));
+
+        //Verify repository calls
+        verify(incomeRepository, times(1)).findIncomeByPublicId(incomeId);
+        verify(incomeRepository, times(1)).save(any(Income.class));
+
     }
 
 }
