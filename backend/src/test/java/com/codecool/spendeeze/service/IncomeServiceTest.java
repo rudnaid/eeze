@@ -188,4 +188,24 @@ public class IncomeServiceTest {
 
     }
 
+    @DisplayName("JUnit test for IncomeService - updateIncome() should throw exception if income not found")
+    @Test
+    void givenInvalidIncomeId_whenUpdateIncome_thenThrowException() {
+
+        //GIVEN
+        UUID invalidIncomeId = UUID.randomUUID();
+        IncomeDTO updatedIncomeDTO = new IncomeDTO(invalidIncomeId, 2000.70, LocalDate.of(2025, 3, 4));
+
+        given(incomeRepository.findIncomeByPublicId(invalidIncomeId)).willReturn(Optional.empty());
+
+        //WHEN & THEN
+        assertThrows(NoSuchElementException.class, () -> {
+            incomeService.updateIncome(invalidIncomeId, updatedIncomeDTO);
+        });
+
+        //Verify repository calls
+        verify(incomeRepository, times(1)).findIncomeByPublicId(invalidIncomeId);
+        verify(incomeRepository, never()).save(any(Income.class));
+    }
+
 }
