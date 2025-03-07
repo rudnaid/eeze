@@ -99,5 +99,20 @@ public class IncomeServiceTest {
         verify(incomeRepository, times(1)).findIncomesByMember(member);
     }
 
+    @DisplayName("JUnit test for IncomeService - empty income list scenario")
+    @Test
+    void givenInvalidUsername_whenFindIncomesByMemberUsername_thenThrowException() {
+        // GIVEN
+        given(memberRepository.findMemberByUsername("invalidUsername")).willReturn(Optional.empty());
+
+        // WHEN & THEN
+        assertThrows(NoSuchElementException.class, () -> {
+            incomeService.findIncomesByMemberUsername("invalidUsername");
+        });
+
+        // Verify repository calls
+        verify(memberRepository, times(1)).findMemberByUsername("invalidUsername");
+        verify(incomeRepository, never()).findIncomesByMember(any());
+    }
 
 }
