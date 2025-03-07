@@ -93,4 +93,20 @@ public class ExpenseServiceTest {
         verify(transactionCategoryRepository, times(1)).getTransactionCategoryByName("Food");
         verify(expenseRepository, times(1)).save(any(Expense.class));
     }
+
+    @DisplayName("JUnit test for ExpenseService - addExpense() should throw exception if member not found")
+    @Test
+    void givenInvalidUsername_whenAddExpense_thenThrowException() {
+        // GIVEN
+        given(memberRepository.findMemberByUsername("invalidUser")).willReturn(Optional.empty());
+
+        // WHEN & THEN
+        assertThrows(NoSuchElementException.class, () -> {
+            expenseService.addExpense("invalidUser", expenseRequestDTO);
+        });
+
+        // Verify repository calls
+        verify(memberRepository, times(1)).findMemberByUsername("invalidUser");
+        verify(expenseRepository, never()).save(any(Expense.class));
+    }
 }
