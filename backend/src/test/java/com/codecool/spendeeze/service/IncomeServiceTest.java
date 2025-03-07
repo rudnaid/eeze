@@ -251,4 +251,22 @@ public class IncomeServiceTest {
         verify(incomeRepository, times(1)).delete(income);
     }
 
+    @DisplayName("JUnit test for IncomeService - deleteIncome() should throw exception if income not found")
+    @Test
+    void givenInvalidIncomeId_whenDeleteIncome_thenThrowException() {
+
+        // GIVEN
+        UUID invalidIncomeId = UUID.randomUUID();
+        given(incomeRepository.findIncomeByPublicId(invalidIncomeId)).willReturn(Optional.empty());
+
+        // WHEN & THEN
+        assertThrows(NoSuchElementException.class, () -> {
+            incomeService.deleteIncome(invalidIncomeId);
+        });
+
+        // Verify output
+        verify(incomeRepository, times(1)).findIncomeByPublicId(invalidIncomeId);
+        verify(incomeRepository, never()).delete(any(Income.class));
+    }
+
 }
