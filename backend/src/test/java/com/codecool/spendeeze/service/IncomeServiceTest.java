@@ -78,4 +78,26 @@ public class IncomeServiceTest {
 
     }
 
+    @DisplayName("JUnit test for IncomeService - findIncomesByMemberUsername()")
+    @Test
+    void givenUsername_whenFindIncomesByMemberUsername_thenReturnIncomeDTOList() {
+        // GIVEN
+        given(memberRepository.findMemberByUsername("testUsername")).willReturn(Optional.of(member));
+        given(incomeRepository.findIncomesByMember(member)).willReturn(List.of(income));
+
+        // WHEN
+        List<IncomeDTO> foundIncomes = incomeService.findIncomesByMemberUsername("testUsername");
+
+        // THEN
+        assertThat(foundIncomes).isNotEmpty();
+        assertThat(foundIncomes.size()).isEqualTo(1);
+        assertThat(foundIncomes.get(0).amount()).isEqualTo(1000.50);
+        assertThat(foundIncomes.get(0).date()).isEqualTo(LocalDate.of(2025, 3, 10));
+
+        // Verify repository calls
+        verify(memberRepository, times(1)).findMemberByUsername("testUsername");
+        verify(incomeRepository, times(1)).findIncomesByMember(member);
+    }
+
+
 }
