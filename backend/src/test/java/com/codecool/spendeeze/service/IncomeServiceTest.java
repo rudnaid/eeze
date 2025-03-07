@@ -115,4 +115,40 @@ public class IncomeServiceTest {
         verify(incomeRepository, never()).findIncomesByMember(any());
     }
 
+    @DisplayName("JUnit test for IncomeService - return empty list when user has no incomes")
+    @Test
+    void givenUsernameWithNoIncomes_whenFindIncomesByMemberUsername_thenReturnEmptyList() {
+        // GIVEN
+        String username = "testUser";
+        given(memberRepository.findMemberByUsername(username)).willReturn(Optional.of(member));
+        given(incomeRepository.findIncomesByMember(member)).willReturn(Collections.emptyList());
+
+        // WHEN
+        List<IncomeDTO> result = incomeService.findIncomesByMemberUsername(username);
+
+        // THEN
+        assertThat(result).isEmpty();
+        verify(memberRepository, times(1)).findMemberByUsername(username);
+        verify(incomeRepository, times(1)).findIncomesByMember(member);
+    }
+
+    @DisplayName("JUnit test for IncomeService - findIncomeById()")
+    @Test
+    void givenIncomeId_whenFindIncomeById_thenReturnIncomeDTO() {
+        // GIVEN
+        UUID incomeId = income.getPublicId();
+        given(incomeRepository.findIncomeByPublicId(incomeId)).willReturn(Optional.of(income));
+
+        // WHEN
+        IncomeDTO foundIncome = incomeService.findIncomeById(incomeId);
+
+        // THEN
+        assertThat(foundIncome).isNotNull();
+        assertThat(foundIncome.amount()).isEqualTo(1000.50);
+        assertThat(foundIncome.date()).isEqualTo(LocalDate.of(2025, 3, 10));
+
+        // Verify repository calls
+        verify(incomeRepository, times(1)).findIncomeByPublicId(incomeId);
+    }
+
 }
