@@ -1,5 +1,6 @@
 package com.codecool.spendeeze.service;
 
+import com.codecool.spendeeze.model.dto.JwtResponse;
 import com.codecool.spendeeze.model.dto.LoginMemberRequestDTO;
 import com.codecool.spendeeze.model.dto.MemberRequestDTO;
 import com.codecool.spendeeze.model.dto.MemberResponseDTO;
@@ -15,16 +16,19 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class MemberServiceTest {
@@ -88,4 +92,31 @@ public class MemberServiceTest {
         verify(passwordEncoder, times(1)).encode(anyString());
         verify(memberRepository, times(1)).save(any(Member.class));
     }
+
+    @DisplayName("JUnit test for MemberService - authenticateUser()")
+    @Test
+    void givenLoginRequestDTO_whenAuthenticateUser_thenReturnJwtResponse() {
+        // GIVEN
+        Authentication authentication = mock(Authentication.class);
+        User userDetails = new User("testUser", "encodedPassword", List.of(() -> "ROLE_USER"));
+
+        given(authenticationManager.authenticate(any())).willReturn(authentication);
+        given(authentication.getPrincipal()).willReturn(userDetails);
+        given(jwtUtils.generateJwtToken(authentication)).willReturn("mocked-jwt-token");
+
+        // WHEN
+        JwtResponse jwtResponse = memberService.authenticateUser(loginRequestDTO);
+
+        // THEN
+        assertThat(jwtResponse).isNotNull();
+        assertThat(jwtResponse.jwt()).isEqualTo("mocked-jwt-token");
+        assertThat(jwtResponse.username()).isEqualTo("testUser");
+        assertThat(jwtResponse.roles()).contains("ROLE_USER");
+
+        // Verify interactions
+        verify(authenticationManager, times(1)).authenticate(any());
+        verify(jwtUtils, times(1)).generateJwtToken(authentication);
+    }
+
+
 }
