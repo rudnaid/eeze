@@ -152,12 +152,19 @@ public class ExpenseServiceTest {
         verify(expenseRepository, never()).save(any(Expense.class));
     }
 
-//    @DisplayName("JUnit test for ExpenseService - deleteExpenseByPublicId()")
-//    @Test
-//    void givenValidExpenseId_whenDeleteExpenseByPublicId_thenDeleteExpense() {
-//        // GIVEN
-//        given(expenseRepository.findExpenseByPublicId(expenseId)).willReturn(Optional.of(expense));
-//
-//
-//     }
+    @DisplayName("JUnit test for ExpenseService - deleteExpenseByPublicId()")
+    @Test
+    void givenValidExpenseId_whenDeleteExpenseByPublicId_thenDeleteExpense() {
+        // GIVEN
+        given(expenseRepository.deleteExpenseByPublicId(expenseId)).willReturn(1);
+
+        //WHEN
+        int deletedRows = expenseService.deleteExpenseByPublicId(expenseId);
+
+        //THEN
+        assertThat(deletedRows).isEqualTo(1);
+        verify(expenseRepository, times(1)).deleteExpenseByPublicId(expenseId);
+     }
+
+
 }
