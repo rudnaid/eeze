@@ -110,7 +110,7 @@ public class ExpenseServiceTest {
 
     @DisplayName("JUnit test for ExpenseService - addExpense() saves new expense")
     @Test
-    void givenExpenseRequestDTOAndUsername_whenAddExpense_thenReturnSavedExpenseResponseDTO() {
+    void givenExpenseWithAmountDateCategoryDTOAndUsername_whenAddExpense_thenReturnSavedExpenseWithIdAmountDateCategoryDTO() {
         // GIVEN
         given(memberRepository.findMemberByUsername("testUser")).willReturn(Optional.of(member));
         given(transactionCategoryRepository.getTransactionCategoryByName("Food")).willReturn(category);
@@ -149,7 +149,7 @@ public class ExpenseServiceTest {
 
     @DisplayName("JUnit test for ExpenseService - updateExpense()")
     @Test
-    void givenValidExpenseID_whenUpdateExpense_thenReturnUpdatedExpenseResponseDTO() {
+    void givenValidExpenseID_whenUpdateExpense_thenReturnUpdatedExpenseWithIdAmountDateCategoryDTO() {
         //GIVEN
         ExpenseWithIdAmountDateCategoryDTO updatedExpenseDTO = new ExpenseWithIdAmountDateCategoryDTO(expenseId, 600.00, LocalDate.of(2025, 3, 8),
                 "Transport");
