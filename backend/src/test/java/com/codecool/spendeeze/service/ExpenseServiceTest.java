@@ -21,6 +21,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -164,7 +165,42 @@ public class ExpenseServiceTest {
         //THEN
         assertThat(deletedRows).isEqualTo(1);
         verify(expenseRepository, times(1)).deleteExpenseByPublicId(expenseId);
-     }
+    }
 
+    @DisplayName("JUnit test for ExpenseService - getAllExpensesByUserName()")
+    @Test
+    void givenUserName_whenGetAllExpensesByUserName_thenReturnAllExpenses() {
+        // GIVEN
+        given(expenseRepository.getExpensesByMemberUsername("testUser")).willReturn(List.of(expense));
+
+        // WHEN
+        List<ExpenseWithIdAmountDateCategoryDTO> actualExpenses = expenseService.getAllExpensesByUsername("testUser");
+
+        // THEN
+        List<ExpenseWithIdAmountDateCategoryDTO> expectedExpenses = List.of(expenseWithIdAmountDateCategoryDTO);
+
+        assertIterableEquals(expectedExpenses, actualExpenses);
+
+        verify(expenseRepository, times(1)).getExpensesByMemberUsername("testUser");
+    }
+
+    @DisplayName("JUnit test for ExpenseService - getExpensesByExpenseCategoryAndMemberUsername()")
+    @Test
+    void givenCategoryAndUsername_whenGetExpensesByExpenseCategoryAndMemberUsername_thenReturnExpenseList() {
+        //GIVEN
+        given(expenseRepository.getExpensesByTransactionCategoryAndMemberUsername(category, "testUser")).willReturn(List.of(expense));
+
+        //WHEN
+        List<ExpenseWithIdAmountDateCategoryDTO> actualExpenses = expenseService.getExpensesByExpenseCategoryAndMemberUsername(category, "testUser");
+
+        //THEN
+        List<ExpenseWithIdAmountDateCategoryDTO> expectedExpenses = List.of(expenseWithIdAmountDateCategoryDTO);
+
+        assertThat(expectedExpenses).hasSize(1);
+        assertThat(expectedExpenses.get(0).expenseCategory()).isEqualTo("Food");
+        assertIterableEquals(expectedExpenses, actualExpenses);
+
+        verify(expenseRepository, times(1)).getExpensesByTransactionCategoryAndMemberUsername(category, "testUser");
+    }
 
 }
