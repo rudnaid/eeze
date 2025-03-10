@@ -71,7 +71,7 @@ public class ExpenseServiceTest {
         expenseResponseDTO = new ExpenseResponseDTO(expenseId, 500.00, LocalDate.of(2025, 3, 5), "Food");
     }
 
-    @DisplayName("JUnit test for ExpenseService - addExpense()")
+    @DisplayName("JUnit test for ExpenseService - addExpense() saves new expense")
     @Test
     void givenExpenseRequestDTOAndUsername_whenAddExpense_thenReturnSavedExpenseResponseDTO() {
         // GIVEN
