@@ -73,6 +73,41 @@ public class ExpenseServiceTest {
         expenseWithIdAmountDateCategoryDTO = new ExpenseWithIdAmountDateCategoryDTO(expenseId, 500.00, LocalDate.of(2025, 3, 5), "Food");
     }
 
+    @DisplayName("JUnit test for ExpenseService - getExpenseDTOByPublicId()")
+    @Test
+    void givenValidExpenseId_whenGetExpenseDTOByPublicId_thenReturnExpenseWithIdAmountDateCategoryDTO() {
+        // GIVEN
+        given(expenseRepository.findExpenseByPublicId(expenseId)).willReturn(Optional.of(expense));
+
+        // WHEN
+        ExpenseWithIdAmountDateCategoryDTO foundExpense = expenseService.getExpenseDTOByPublicId(expenseId);
+
+        // THEN
+        assertThat(foundExpense).isNotNull();
+        assertThat(foundExpense.amount()).isEqualTo(expense.getAmount());
+        assertThat(foundExpense.transactionDate()).isEqualTo(expense.getTransactionDate());
+        assertThat(foundExpense.expenseCategory()).isEqualTo(expense.getTransactionCategory().getName());
+
+        // Verify output
+        verify(expenseRepository, times(1)).findExpenseByPublicId(expenseId);
+    }
+
+    @DisplayName("JUnit test for ExpenseService - getExpenseDTOByPublicId() should throw exception if expense not found")
+    @Test
+    void givenInvalidExpenseId_whenGetExpenseDTOByPublicId_thenThrowException() {
+        // GIVEN
+        UUID invalidExpenseId = UUID.randomUUID();
+        given(expenseRepository.findExpenseByPublicId(invalidExpenseId)).willReturn(Optional.empty());
+
+        // WHEN & THEN
+        assertThrows(NoSuchElementException.class, () -> {
+            expenseService.getExpenseDTOByPublicId(invalidExpenseId);
+        });
+
+        // Verify output
+        verify(expenseRepository, times(1)).findExpenseByPublicId(invalidExpenseId);
+    }
+
     @DisplayName("JUnit test for ExpenseService - addExpense() saves new expense")
     @Test
     void givenExpenseRequestDTOAndUsername_whenAddExpense_thenReturnSavedExpenseResponseDTO() {
