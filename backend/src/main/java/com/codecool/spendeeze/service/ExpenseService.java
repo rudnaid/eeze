@@ -1,7 +1,7 @@
 package com.codecool.spendeeze.service;
 
-import com.codecool.spendeeze.model.dto.ExpenseRequestDTO;
-import com.codecool.spendeeze.model.dto.ExpenseResponseDTO;
+import com.codecool.spendeeze.model.dto.ExpenseWithAmountDateCategoryDTO;
+import com.codecool.spendeeze.model.dto.ExpenseWithIdAmountDateCategoryDTO;
 import com.codecool.spendeeze.model.entity.Expense;
 import com.codecool.spendeeze.model.entity.Member;
 import com.codecool.spendeeze.model.entity.TransactionCategory;
@@ -32,7 +32,7 @@ public class ExpenseService {
         this.transactionCategoryRepository = transactionCategoryRepository;
     }
 
-    public ExpenseResponseDTO getExpenseDTOByPublicId(UUID id) {
+    public ExpenseWithIdAmountDateCategoryDTO getExpenseDTOByPublicId(UUID id) {
         Expense expense = getExpenseByPublicId(id);
         return convertToExpenseResponseDTO(expense);
     }
@@ -42,7 +42,7 @@ public class ExpenseService {
         return expense.orElseThrow(NoSuchElementException::new);
     }
 
-    public ExpenseResponseDTO addExpense(String username, ExpenseRequestDTO expenseDTO) {
+    public ExpenseWithIdAmountDateCategoryDTO addExpense(String username, ExpenseWithAmountDateCategoryDTO expenseDTO) {
         Member member = memberRepository.findMemberByUsername(username).orElseThrow(NoSuchElementException::new);
         Expense expense = convertToExpense(expenseDTO);
 
@@ -52,7 +52,7 @@ public class ExpenseService {
         return convertToExpenseResponseDTO(expense);
     }
 
-    public ExpenseResponseDTO updateExpense(UUID publicId, ExpenseResponseDTO expenseDTO) {
+    public ExpenseWithIdAmountDateCategoryDTO updateExpense(UUID publicId, ExpenseWithIdAmountDateCategoryDTO expenseDTO) {
         Expense expenseToUpdate = getExpenseByPublicId(publicId);
         TransactionCategory category = transactionCategoryRepository.getTransactionCategoryByName(expenseDTO.expenseCategory());
 
@@ -70,21 +70,21 @@ public class ExpenseService {
     }
 
 
-    private ExpenseResponseDTO convertToExpenseResponseDTO(Expense expense) {
-        return new ExpenseResponseDTO(
+    private ExpenseWithIdAmountDateCategoryDTO convertToExpenseResponseDTO(Expense expense) {
+        return new ExpenseWithIdAmountDateCategoryDTO(
                 expense.getPublicId(),
                 expense.getAmount(),
                 expense.getTransactionDate(),
                 expense.getTransactionCategory().getName());
     }
 
-    private Expense convertToExpense(ExpenseRequestDTO expenseRequestDTO) {
+    private Expense convertToExpense(ExpenseWithAmountDateCategoryDTO expenseWithAmountDateCategoryDTO) {
         try {
             Expense expense = new Expense();
-            expense.setAmount(expenseRequestDTO.amount());
-            expense.setTransactionDate(expenseRequestDTO.transactionDate());
+            expense.setAmount(expenseWithAmountDateCategoryDTO.amount());
+            expense.setTransactionDate(expenseWithAmountDateCategoryDTO.transactionDate());
 
-            TransactionCategory category = transactionCategoryRepository.getTransactionCategoryByName(expenseRequestDTO.category());
+            TransactionCategory category = transactionCategoryRepository.getTransactionCategoryByName(expenseWithAmountDateCategoryDTO.category());
             expense.setTransactionCategory(category);
             return expense;
         } catch (Exception e) {
@@ -92,7 +92,7 @@ public class ExpenseService {
         }
     }
 
-    public List<ExpenseResponseDTO> getAllExpensesByUsername(String username) {
+    public List<ExpenseWithIdAmountDateCategoryDTO> getAllExpensesByUsername(String username) {
         List<Expense> expenses = expenseRepository.getExpensesByMemberUsername(username);
 
         return expenses.stream()
@@ -100,7 +100,7 @@ public class ExpenseService {
                 .toList();
     }
 
-    public List<ExpenseResponseDTO> getExpensesByExpenseCategoryAndMemberUsername(TransactionCategory category, String username) {
+    public List<ExpenseWithIdAmountDateCategoryDTO> getExpensesByExpenseCategoryAndMemberUsername(TransactionCategory category, String username) {
         List<Expense> expenses = expenseRepository.getExpensesByTransactionCategoryAndMemberUsername(category, username);
 
         return expenses.stream()
