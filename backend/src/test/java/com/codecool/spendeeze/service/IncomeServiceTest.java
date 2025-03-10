@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -85,10 +86,17 @@ public class IncomeServiceTest {
         List<IncomeDTO> foundIncomes = incomeService.findIncomesByMemberUsername("testUsername");
 
         // THEN
+        List<IncomeDTO> expectedIncomes = List.of(new IncomeDTO(
+                income.getPublicId(),
+                income.getAmount(),
+                income.getDate()
+        ));
+
         assertThat(foundIncomes).isNotEmpty();
         assertThat(foundIncomes.size()).isEqualTo(1);
         assertThat(foundIncomes.get(0).amount()).isEqualTo(1000.50);
         assertThat(foundIncomes.get(0).date()).isEqualTo(LocalDate.of(2025, 3, 6));
+        assertIterableEquals(expectedIncomes, foundIncomes);
 
         // Verify output
         verify(memberRepository, times(1)).findMemberByUsername("testUsername");
@@ -123,7 +131,11 @@ public class IncomeServiceTest {
         List<IncomeDTO> result = incomeService.findIncomesByMemberUsername(username);
 
         // THEN
+        List<IncomeDTO> expectedIncomes = Collections.emptyList();
+
         assertThat(result).isEmpty();
+        assertIterableEquals(expectedIncomes, result);
+
         verify(memberRepository, times(1)).findMemberByUsername(username);
         verify(incomeRepository, times(1)).findIncomesByMember(member);
     }
