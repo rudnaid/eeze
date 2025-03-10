@@ -13,7 +13,7 @@ const Homepage = () => {
 					<div className="container max-w-6xl mx-auto px-6 py-12">
 						{/* Menu/Logo container */}
 						<nav className="flex items-center justify-between font-bold text-white">
-							<Link to="/home">
+							<Link to="/">
 								<h1 className="ml-7 text-5xl text-[#fdc57b]">eeze</h1>
 							</Link>
 							<div className="hidden h-10 text-2xl md:flex md:space-x-8">
@@ -57,27 +57,29 @@ const Homepage = () => {
 					id="why-eeze"
 					className="bg-[#fdc57b] py-0 flex flex-col md:flex-row items-stretch w-full h-auto overflow-hidden"
 				>
+					{/* Image Container */}
 					<div className="w-full md:w-1/2 h-auto">
 						<img
-							src="/why_eeze.jpg"
+							src="/why-eeze-transparent.png"
 							alt="Why Eeze"
-							className="w-full h-auto object-cover opacity-70"
+							className="w-full h-auto object-cover opacity-70 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto"
 						/>
 					</div>
 
-					<div className="w-full text-justify md:w-1/2 flex flex-col justify-center p-8 pl-20 pr-20">
+					{/* Text Content */}
+					<div className="w-full text-justify md:w-1/2 flex flex-col justify-center p-8 px-6 sm:px-10 md:px-20">
 						<h2 className="text-4xl text-white mb-6">Why Eeze</h2>
 						<p className="text-lg text-gray-700 leading-relaxed">
 							Manage your money smarter with{' '}
-							<span className="text-white"> Eeze </span>.
-							<p>
-								Track your expenses and incomes, organize them into categories,
-								and gain insights through dynamic charts.
-							</p>
-							<p>
-								Stay in control, make better financial decisions, and reach your
-								financial goals effortlessly.
-							</p>
+							<span className="text-white">Eeze</span>.
+						</p>
+						<p className="text-lg text-gray-700 leading-relaxed">
+							Track your expenses and incomes, organize them into categories,
+							and gain insights through dynamic charts.
+						</p>
+						<p className="text-lg text-gray-700 leading-relaxed">
+							Stay in control, make better financial decisions, and reach your
+							financial goals effortlessly.
 						</p>
 					</div>
 				</div>
@@ -87,25 +89,27 @@ const Homepage = () => {
 					id="about"
 					className="bg-[#7fa99b] py-0 flex flex-col md:flex-row-reverse items-stretch w-full h-auto overflow-hidden"
 				>
+					{/* Image Container */}
 					<div className="w-full md:w-1/2 h-auto">
 						<img
-							src="/about_eeze.jpg"
+							src="/about-eeze-transparent.png"
 							alt="About Eeze"
-							className="w-full h-auto object-cover opacity-70"
+							className="w-full h-auto object-cover opacity-70 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto"
 						/>
 					</div>
 
-					<div className="w-full text-justify md:w-1/2 flex flex-col justify-center p-8 pl-20 pr-20">
+					{/* Text Content */}
+					<div className="w-full text-justify md:w-1/2 flex flex-col justify-center p-8 px-6 sm:px-10 md:px-20">
 						<h2 className="text-4xl text-white mb-6">About Eeze</h2>
 						<p className="text-lg text-gray-700 leading-relaxed">
 							We believe that financial tracking should be simple, stress-free,
 							and even a little fun!
-							<p>
-								<span className="text-white"> Eeze </span> is designed to help
-								you manage your money effortlessly. Whether you're tracking
-								expenses, organizing your income, or analyzing your financial
-								habits with interactive charts, we’ve got you covered.
-							</p>
+						</p>
+						<p>
+							<span className="text-white">Eeze</span> is designed to help you
+							manage your money effortlessly. Whether you're tracking expenses,
+							organizing your income, or analyzing your financial habits with
+							interactive charts, we’ve got you covered.
 						</p>
 					</div>
 				</div>

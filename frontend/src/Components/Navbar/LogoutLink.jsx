@@ -6,9 +6,9 @@ const LogoutLink = ({ onLogout }) => {
 
     const handleLogout = (e) => {
         e.preventDefault();
-        localStorage.removeItem("jwt"); // Remove token
-        if (onLogout) onLogout(); // Close dropdown if passed
-        navigate("/"); // Redirect to home
+        localStorage.removeItem("jwt");
+        if (onLogout) onLogout();
+        navigate("/");
     };
 
     return (
