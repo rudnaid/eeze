@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai"; // Import both icons
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { FaApple, FaFacebook, FaUser } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
@@ -35,14 +35,14 @@ const Login = () => {
 		<>
 			<div className="relative">
 				<div className="flex justify-center items-center font-[sans-serif] h-full min-h-screen p-4 bg-[url(/green-circles.png)] bg-no-repeat bg-cover bg-center">
-					<Link to="/home">
+					<Link to="/">
 						<h1 className="absolute top-0 left-0 p-7 text-5xl text-[#fdc57b]">eeze</h1>
 					</Link>
 					<div className="max-w-md w-full mx-auto">
 						<form className="bg-white bg-opacity-70 shadow-2xl rounded-lg p-6" onSubmit={onSubmit}>
 							<div className="mb-12">
 								<h3 className="text-gray-800 text-center text-3xl font-bold">
-									<Link to="/home/income">Sign in</Link>
+									Sign in
 								</h3>
 							</div>
 							{/* Username Input */}

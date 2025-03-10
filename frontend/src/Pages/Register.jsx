@@ -42,7 +42,7 @@ const Register = () => {
 		<>
 			<div className="font-[sans-serif] relative bg-[#394a51] pb-40">
 				<div className="h-[400px] font-[sans-serif] bg-[url(/green-circles.png)] bg-no-repeat bg-cover bg-center">
-					<Link to="/home">
+					<Link to="/">
 						<h1 className="ml-7 text-5xl pt-8 text-[#fdc57b]">eeze</h1>
 					</Link>
 					{/* <img className="w-full h-full bg-[#6a9184]" /> */}
@@ -55,7 +55,7 @@ const Register = () => {
 					>
 						<div className="mb-12">
 							<h3 className="text-gray-800 text-3xl font-bold text-center">
-								<Link to="/home/income">Register</Link>
+								Register
 							</h3>
 						</div>
 
