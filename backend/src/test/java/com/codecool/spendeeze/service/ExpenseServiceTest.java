@@ -1,7 +1,7 @@
 package com.codecool.spendeeze.service;
 
-import com.codecool.spendeeze.model.dto.ExpenseRequestDTO;
-import com.codecool.spendeeze.model.dto.ExpenseResponseDTO;
+import com.codecool.spendeeze.model.dto.ExpenseWithAmountDateCategoryDTO;
+import com.codecool.spendeeze.model.dto.ExpenseWithIdAmountDateCategoryDTO;
 import com.codecool.spendeeze.model.entity.Expense;
 import com.codecool.spendeeze.model.entity.Member;
 import com.codecool.spendeeze.model.entity.TransactionCategory;
@@ -9,6 +9,7 @@ import com.codecool.spendeeze.repository.ExpenseRepository;
 import com.codecool.spendeeze.repository.MemberRepository;
 import com.codecool.spendeeze.repository.TransactionCategoryRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,8 +43,8 @@ public class ExpenseServiceTest {
 
     private Member member;
     private Expense expense;
-    private ExpenseRequestDTO expenseRequestDTO;
-    private ExpenseResponseDTO expenseResponseDTO;
+    private ExpenseWithAmountDateCategoryDTO expenseWithAmountDateCategoryDTO;
+    private ExpenseWithIdAmountDateCategoryDTO expenseWithIdAmountDateCategoryDTO;
     private TransactionCategory category;
     private UUID expenseId;
 
@@ -66,9 +67,9 @@ public class ExpenseServiceTest {
         expense.setMember(member);
         expense.setTransactionCategory(category);
 
-        expenseRequestDTO = new ExpenseRequestDTO(500.00, LocalDate.of(2025, 3, 5), "Food");
+        expenseWithAmountDateCategoryDTO = new ExpenseWithAmountDateCategoryDTO(500.00, LocalDate.of(2025, 3, 5), "Food");
 
-        expenseResponseDTO = new ExpenseResponseDTO(expenseId, 500.00, LocalDate.of(2025, 3, 5), "Food");
+        expenseWithIdAmountDateCategoryDTO = new ExpenseWithIdAmountDateCategoryDTO(expenseId, 500.00, LocalDate.of(2025, 3, 5), "Food");
     }
 
     @DisplayName("JUnit test for ExpenseService - addExpense() saves new expense")
@@ -80,13 +81,13 @@ public class ExpenseServiceTest {
         given(expenseRepository.save(any(Expense.class))).willReturn(expense);
 
         // WHEN
-        ExpenseResponseDTO savedExpenseResponseDTO = expenseService.addExpense("testUser", expenseRequestDTO);
+        ExpenseWithIdAmountDateCategoryDTO savedExpenseWithIdAmountDateCategoryDTO = expenseService.addExpense("testUser", expenseWithAmountDateCategoryDTO);
 
         // THEN
-        assertThat(savedExpenseResponseDTO).isNotNull();
-        assertThat(savedExpenseResponseDTO.amount()).isEqualTo(expenseRequestDTO.amount());
-        assertThat(savedExpenseResponseDTO.transactionDate()).isEqualTo(expenseRequestDTO.transactionDate());
-        assertThat(savedExpenseResponseDTO.expenseCategory()).isEqualTo(expenseRequestDTO.category());
+        assertThat(savedExpenseWithIdAmountDateCategoryDTO).isNotNull();
+        assertThat(savedExpenseWithIdAmountDateCategoryDTO.amount()).isEqualTo(expenseWithAmountDateCategoryDTO.amount());
+        assertThat(savedExpenseWithIdAmountDateCategoryDTO.transactionDate()).isEqualTo(expenseWithAmountDateCategoryDTO.transactionDate());
+        assertThat(savedExpenseWithIdAmountDateCategoryDTO.expenseCategory()).isEqualTo(expenseWithAmountDateCategoryDTO.category());
 
         // Verify output
         verify(memberRepository, times(1)).findMemberByUsername("testUser");
@@ -102,11 +103,61 @@ public class ExpenseServiceTest {
 
         // WHEN & THEN
         assertThrows(NoSuchElementException.class, () -> {
-            expenseService.addExpense("invalidUser", expenseRequestDTO);
+            expenseService.addExpense("invalidUser", expenseWithAmountDateCategoryDTO);
         });
 
         // Verify repository calls
         verify(memberRepository, times(1)).findMemberByUsername("invalidUser");
         verify(expenseRepository, never()).save(any(Expense.class));
     }
+
+    @DisplayName("JUnit test for ExpenseService - updateExpense()")
+    @Test
+    void givenValidExpenseID_whenUpdateExpense_thenReturnUpdatedExpenseResponseDTO() {
+        //GIVEN
+        ExpenseWithIdAmountDateCategoryDTO updatedExpenseDTO = new ExpenseWithIdAmountDateCategoryDTO(expenseId, 600.00, LocalDate.of(2025, 3, 8),
+                "Transport");
+        TransactionCategory updatedCategory = new TransactionCategory();
+        updatedCategory.setId(2L);
+        updatedCategory.setName("Transport");
+
+        given(expenseRepository.findExpenseByPublicId(expenseId)).willReturn(Optional.of(expense));
+        given(transactionCategoryRepository.getTransactionCategoryByName("Transport")).willReturn(updatedCategory);
+        given(expenseRepository.save(any(Expense.class))).willReturn(expense);
+
+        //WHEN
+        ExpenseWithIdAmountDateCategoryDTO updatedExpense = expenseService.updateExpense(expenseId, updatedExpenseDTO);
+
+        // THEN
+        assertThat(updatedExpense).isNotNull();
+        assertThat(updatedExpense.amount()).isEqualTo(600.00);
+        assertThat(updatedExpense.transactionDate()).isEqualTo(LocalDate.of(2025, 3, 8));
+        assertThat(updatedExpense.expenseCategory()).isEqualTo("Transport");
+
+        // Verify repository calls
+        verify(expenseRepository, times(1)).findExpenseByPublicId(expenseId);
+        verify(transactionCategoryRepository, times(1)).getTransactionCategoryByName("Transport");
+        verify(expenseRepository, times(1)).save(any(Expense.class));
+    }
+
+    @DisplayName("JUnit test for ExpenseService - updateExpense() should throw exception if expense not found")
+    @Test
+    void givenInvalidExpenseId_whenUpdateExpense_thenThrowException() {
+        // GIVEN
+        given(expenseRepository.findExpenseByPublicId(expenseId)).willReturn(Optional.empty());
+
+        // WHEN & THEN
+        assertThrows(NoSuchElementException.class, () -> expenseService.updateExpense(expenseId, expenseWithIdAmountDateCategoryDTO));
+
+        verify(expenseRepository, never()).save(any(Expense.class));
+    }
+
+//    @DisplayName("JUnit test for ExpenseService - deleteExpenseByPublicId()")
+//    @Test
+//    void givenValidExpenseId_whenDeleteExpenseByPublicId_thenDeleteExpense() {
+//        // GIVEN
+//        given(expenseRepository.findExpenseByPublicId(expenseId)).willReturn(Optional.of(expense));
+//
+//
+//     }
 }
