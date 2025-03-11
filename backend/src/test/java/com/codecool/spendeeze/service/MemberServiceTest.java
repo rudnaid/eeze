@@ -21,10 +21,12 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -69,6 +71,41 @@ public class MemberServiceTest {
         );
 
         loginRequestDTO = new LoginMemberRequestDTO("testUser", "password123");
+    }
+
+    @DisplayName("JUnit test for MemberService - getUserResponseDTOByUsername()")
+    @Test
+    void givenValidUsername_whenGetUserResponseDTOByUsername_thenReturnMemberResponseDTO() {
+        // GIVEN
+        given(memberRepository.findMemberByUsername("testUser")).willReturn(Optional.of(member));
+
+        // WHEN
+        MemberResponseDTO result = memberService.getUserResponseDTOByUsername("testUser");
+
+        // THEN
+        assertThat(result).isNotNull();
+        assertThat(result.firstName()).isEqualTo(member.getFirstName());
+        assertThat(result.lastName()).isEqualTo(member.getLastName());
+        assertThat(result.email()).isEqualTo(member.getEmail());
+        assertThat(result.country()).isEqualTo(member.getCountry());
+
+        // Verify repository interaction
+        verify(memberRepository, times(1)).findMemberByUsername("testUser");
+    }
+
+    @DisplayName("JUnit test for MemberService - getUserResponseDTOByUsername() should throw exception if user not found")
+    @Test
+    void givenInvalidUsername_whenGetUserResponseDTOByUsername_thenThrowException() {
+        // GIVEN
+        given(memberRepository.findMemberByUsername("invalidUser")).willReturn(Optional.empty());
+
+        // WHEN & THEN
+        assertThrows(NoSuchElementException.class, () -> {
+            memberService.getUserResponseDTOByUsername("invalidUser");
+        });
+
+        // Verify repository interaction
+        verify(memberRepository, times(1)).findMemberByUsername("invalidUser");
     }
 
     @DisplayName("JUnit test for MemberService - addMember()")
