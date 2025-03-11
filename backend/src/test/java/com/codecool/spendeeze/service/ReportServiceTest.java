@@ -1,0 +1,73 @@
+package com.codecool.spendeeze.service;
+
+import com.codecool.spendeeze.model.dto.ReportDTO;
+import com.codecool.spendeeze.model.dto.TotalExpenseByTransactionCategoryDTO;
+import com.codecool.spendeeze.model.dto.reports.CategoryReport;
+import com.codecool.spendeeze.model.dto.reports.MonthlyExpenseTotal;
+import com.codecool.spendeeze.model.dto.reports.MonthlyIncomeExpenseReportDTO;
+import com.codecool.spendeeze.model.dto.reports.MonthlyIncomeTotal;
+import com.codecool.spendeeze.model.entity.Member;
+import com.codecool.spendeeze.repository.ExpenseRepository;
+import com.codecool.spendeeze.repository.IncomeRepository;
+import com.codecool.spendeeze.repository.MemberRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.*;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+class ReportServiceTest {
+
+    @Mock
+    private IncomeRepository incomeRepository;
+
+    @Mock
+    private ExpenseRepository expenseRepository;
+
+    @Mock
+    private MemberRepository memberRepository;
+
+    @InjectMocks
+    private ReportService reportService;
+
+    private Member member;
+
+    @BeforeEach
+    void setUp() {
+        member = new Member();
+        member.setId(1L);
+        member.setUsername("testUser");
+    }
+
+    @DisplayName("JUnit test for ReportService - generateReport()")
+    @Test
+    void givenUsername_whenGenerateReport_thenReturnReportDTO() {
+        // GIVEN
+        given(incomeRepository.getTotalIncomeByMemberUsername("testUser")).willReturn(5000.00);
+        given(expenseRepository.getTotalExpensesByMemberUsername("testUser")).willReturn(3000.00);
+
+        // WHEN
+        ReportDTO report = reportService.generateReport("testUser");
+
+        // THEN
+        assertThat(report).isNotNull();
+        assertThat(report.totalIncome()).isEqualTo(5000.00);
+        assertThat(report.totalExpenses()).isEqualTo(3000.00);
+        assertThat(report.currentBalance()).isEqualTo(2000.00);
+
+        verify(incomeRepository, times(1)).getTotalIncomeByMemberUsername("testUser");
+        verify(expenseRepository, times(1)).getTotalExpensesByMemberUsername("testUser");
+    }
+
+
+}
