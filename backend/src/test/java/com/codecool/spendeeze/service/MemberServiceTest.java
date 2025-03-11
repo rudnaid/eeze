@@ -118,5 +118,23 @@ public class MemberServiceTest {
         verify(jwtUtils, times(1)).generateJwtToken(authentication);
     }
 
+    @DisplayName("JUnit test for MemberService - updateMember()")
+    @Test
+    void givenMemberRequestDTO_whenUpdateMember_thenReturnUpdatedMemberResponseDTO() {
+        // GIVEN
+        given(memberRepository.findMemberByUsername("testUser")).willReturn(Optional.of(member));
+        given(memberRepository.save(any(Member.class))).willReturn(member);
 
+        // WHEN
+        MemberResponseDTO updatedMember = memberService.updateMember(memberRequestDTO);
+
+        // THEN
+        assertThat(updatedMember).isNotNull();
+        assertThat(updatedMember.firstName()).isEqualTo("TestFirstName");
+        assertThat(updatedMember.email()).isEqualTo("test@gmail.com");
+
+        // Verify repository interactions
+        verify(memberRepository, times(1)).findMemberByUsername("testUser");
+        verify(memberRepository, times(1)).save(any(Member.class));
+    }
 }
