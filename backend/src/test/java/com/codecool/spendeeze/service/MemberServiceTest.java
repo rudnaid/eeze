@@ -177,4 +177,36 @@ public class MemberServiceTest {
         verify(memberRepository, times(1)).findMemberByUsername("testUser");
         verify(memberRepository, times(1)).save(any(Member.class));
     }
+
+    @DisplayName("JUnit test for MemberService - deleteMemberByUsername()")
+    @Test
+    void givenValidUsername_whenDeleteMemberByUsername_thenReturnSuccess() {
+        // GIVEN
+        given(memberRepository.deleteMemberByUsername("testUser")).willReturn(1);
+
+        // WHEN
+        int deletedRows = memberService.deleteMemberByUsername("testUser");
+
+        // THEN
+        assertThat(deletedRows).isEqualTo(1);
+
+        // Verify repository interaction
+        verify(memberRepository, times(1)).deleteMemberByUsername("testUser");
+    }
+
+    @DisplayName("JUnit test for MemberService - deleteMemberByUsername() should return 0 when user does not exist")
+    @Test
+    void givenInvalidUsername_whenDeleteMemberByUsername_thenReturnZero() {
+        // GIVEN
+        given(memberRepository.deleteMemberByUsername("invalidUser")).willReturn(0);
+
+        // WHEN
+        int deletedRows = memberService.deleteMemberByUsername("invalidUser");
+
+        // THEN
+        assertThat(deletedRows).isEqualTo(0);
+
+        // Verify repository interaction
+        verify(memberRepository, times(1)).deleteMemberByUsername("invalidUser");
+    }
 }
