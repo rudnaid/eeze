@@ -156,4 +156,46 @@ class ReportServiceTest {
         verify(memberRepository, times(1)).findMemberByUsername("invalidUser");
         verify(expenseRepository, never()).getMonthlyExpensesByCategory(any(), anyInt(), anyInt());
     }
+
+    @DisplayName("JUnit test for ReportService - getYearlyReport()")
+    @Test
+    void givenUsernameYear_whenGetYearlyReport_thenReturnMonthlyIncomeExpenseReportList() {
+        // GIVEN
+        given(memberRepository.findMemberByUsername("testUser")).willReturn(Optional.of(member));
+        List<MonthlyExpenseTotal> expenseTotals = List.of(new MonthlyExpenseTotal(3, 1500.00));
+        List<MonthlyIncomeTotal> incomeTotals = List.of(new MonthlyIncomeTotal(3, 2500.00));
+
+        given(expenseRepository.getMonthlyTotalExpenses(member, 2025)).willReturn(expenseTotals);
+        given(incomeRepository.getMonthlyTotalIncomes(member, 2025)).willReturn(incomeTotals);
+
+        // WHEN
+        List<MonthlyIncomeExpenseReportDTO> result = reportService.getYearlyReport("testUser", 2025);
+
+        // THEN
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).month()).isEqualTo("MARCH");
+        assertThat(result.get(0).totalIncome()).isEqualTo(2500.00);
+        assertThat(result.get(0).totalExpense()).isEqualTo(1500.00);
+
+        verify(expenseRepository, times(1)).getMonthlyTotalExpenses(member, 2025);
+        verify(incomeRepository, times(1)).getMonthlyTotalIncomes(member, 2025);
+    }
+
+    @DisplayName("JUnit test for ReportService - getYearlyReport() should throw exception if member not found")
+    @Test
+    void givenInvalidUsername_whenGetYearlyReport_thenThrowException() {
+        // GIVEN
+        given(memberRepository.findMemberByUsername("invalidUser")).willReturn(Optional.empty());
+
+        // WHEN & THEN
+        assertThrows(NoSuchElementException.class, () -> {
+            reportService.getYearlyReport("invalidUser", 2025);
+        });
+
+        verify(memberRepository, times(1)).findMemberByUsername("invalidUser");
+        verify(expenseRepository, never()).getMonthlyTotalExpenses(any(), anyInt());
+        verify(incomeRepository, never()).getMonthlyTotalIncomes(any(), anyInt());
+    }
+
+
 }
