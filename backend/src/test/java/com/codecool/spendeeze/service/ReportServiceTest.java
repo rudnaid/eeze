@@ -69,5 +69,58 @@ class ReportServiceTest {
         verify(expenseRepository, times(1)).getTotalExpensesByMemberUsername("testUser");
     }
 
+    @DisplayName("JUnit test for ReportService - getTotalExpenseByTransactionCategory()")
+    @Test
+    void givenUsername_whenGetTotalExpenseByTransactionCategory_thenReturnList() {
+        // GIVEN
+        List<TotalExpenseByTransactionCategoryDTO> categoryExpenses = List.of(
+                new TotalExpenseByTransactionCategoryDTO() {
+                    @Override
+                    public String getCategoryName() {
+                        return "Food";
+                    }
+
+                    @Override
+                    public double getTotalByCategory() {
+                        return 1000.00;
+                    }
+
+                    @Override
+                    public long getCategoryPublicId() {
+                        return 1L;
+                    }
+                },
+                new TotalExpenseByTransactionCategoryDTO() {
+                    @Override
+                    public String getCategoryName() {
+                        return "Transport";
+                    }
+
+                    @Override
+                    public double getTotalByCategory() {
+                        return 500.00;
+                    }
+
+                    @Override
+                    public long getCategoryPublicId() {
+                        return 2L;
+                    }
+                }
+        );
+        given(expenseRepository.getExpensesByTransactionCategory("testUser")).willReturn(categoryExpenses);
+
+        // WHEN
+        List<TotalExpenseByTransactionCategoryDTO> result = reportService.getTotalExpenseByTransactionCategory("testUser");
+
+        // THEN
+        assertThat(result).hasSize(2);
+        assertThat(result.get(0).getCategoryName()).isEqualTo("Food");
+        assertThat(result.get(1).getCategoryName()).isEqualTo("Transport");
+
+        verify(expenseRepository, times(1)).getExpensesByTransactionCategory("testUser");
+    }
+
+
+
 
 }
