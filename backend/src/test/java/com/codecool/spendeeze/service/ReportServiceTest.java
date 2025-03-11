@@ -142,5 +142,18 @@ class ReportServiceTest {
         verify(expenseRepository, times(1)).getMonthlyExpensesByCategory(member, 3, 2025);
     }
 
+    @DisplayName("JUnit test for ReportService - getMonthlyReport() should throw exception if member not found")
+    @Test
+    void givenInvalidUsername_whenGetMonthlyReport_thenThrowException() {
+        // GIVEN
+        given(memberRepository.findMemberByUsername("invalidUser")).willReturn(Optional.empty());
 
+        // WHEN & THEN
+        assertThrows(NoSuchElementException.class, () -> {
+            reportService.getMonthlyReport("invalidUser", 3, 2025);
+        });
+
+        verify(memberRepository, times(1)).findMemberByUsername("invalidUser");
+        verify(expenseRepository, never()).getMonthlyExpensesByCategory(any(), anyInt(), anyInt());
+    }
 }
