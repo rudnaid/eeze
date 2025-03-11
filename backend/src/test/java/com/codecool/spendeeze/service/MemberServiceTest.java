@@ -124,14 +124,17 @@ public class MemberServiceTest {
         // GIVEN
         given(memberRepository.findMemberByUsername("testUser")).willReturn(Optional.of(member));
         given(memberRepository.save(any(Member.class))).willReturn(member);
+        member.setEmail("updated@gmail.com");
+        member.setCountry("UpdatedCountry");
+        memberRequestDTO = new MemberRequestDTO("TestFirstName", "TestLastName", "UpdatedCountry", "updated@gmail.com", "testUser", "password123");
 
         // WHEN
         MemberResponseDTO updatedMember = memberService.updateMember(memberRequestDTO);
 
         // THEN
         assertThat(updatedMember).isNotNull();
-        assertThat(updatedMember.firstName()).isEqualTo("TestFirstName");
-        assertThat(updatedMember.email()).isEqualTo("test@gmail.com");
+        assertThat(updatedMember.email()).isEqualTo("updated@gmail.com");
+        assertThat(updatedMember.country()).isEqualTo("UpdatedCountry");
 
         // Verify repository interactions
         verify(memberRepository, times(1)).findMemberByUsername("testUser");
