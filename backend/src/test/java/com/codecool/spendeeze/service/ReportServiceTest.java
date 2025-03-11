@@ -120,7 +120,27 @@ class ReportServiceTest {
         verify(expenseRepository, times(1)).getExpensesByTransactionCategory("testUser");
     }
 
+    @DisplayName("JUnit test for ReportService - getMonthlyReport()")
+    @Test
+    void givenUsernameMonthYear_whenGetMonthlyReport_thenReturnCategoryReportList() {
+        // GIVEN
+        given(memberRepository.findMemberByUsername("testUser")).willReturn(Optional.of(member));
+        List<CategoryReport> reports = List.of(
+                new CategoryReport("Food", 1200.00),
+                new CategoryReport("Entertainment", 300.00)
+        );
+        given(expenseRepository.getMonthlyExpensesByCategory(member, 3, 2025)).willReturn(reports);
 
+        // WHEN
+        List<CategoryReport> result = reportService.getMonthlyReport("testUser", 3, 2025);
+
+        // THEN
+        assertThat(result).hasSize(2);
+        assertThat(result.get(0).getCategoryName()).isEqualTo("Food");
+        assertThat(result.get(1).getCategoryName()).isEqualTo("Entertainment");
+
+        verify(expenseRepository, times(1)).getMonthlyExpensesByCategory(member, 3, 2025);
+    }
 
 
 }
