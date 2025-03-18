@@ -3,9 +3,8 @@
 A web app to track your income and expenses, providing insights with charts.
 
 
-## Table of Contents
-
-<table-of-contents>
+<details>
+<summary><strong>## Table of Contents</strong></summary>
   
 - [About the Project](#about-the-project)
 - [Built With](#built-with)
@@ -16,7 +15,7 @@ A web app to track your income and expenses, providing insights with charts.
 - [Usage](#usage)
 - [Acknowledgments](#acknowledgments)
   
-</table-of-contents>
+</details>
 
 
 ## About The Project
