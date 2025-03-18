@@ -10,6 +10,7 @@ A web app to track your income and expenses, providing insights with charts.
   - [Prerequisites](#prerequisites)
   - [Installation Steps](#installation-steps)
 - [Usage](#usage)
+- [Acknowledgments](#acknowledgments)
 
 
 ## About The Project
@@ -55,4 +56,8 @@ Make sure you have the following installed:
 
 
 ### Installation Steps
+
+## Usage
+
+## Acknowledgments
 
