@@ -2,7 +2,11 @@
 
 A web app to track your income and expenses, providing insights with charts.
 
+
 ## Table of Contents
+
+<details>
+  
 - [About the Project](#about-the-project)
 - [Built With](#built-with)
 - [Contributors](#contributors)
@@ -11,6 +15,8 @@ A web app to track your income and expenses, providing insights with charts.
   - [Installation Steps](#installation-steps)
 - [Usage](#usage)
 - [Acknowledgments](#acknowledgments)
+  
+</details>
 
 
 ## About The Project
