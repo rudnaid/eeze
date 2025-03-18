@@ -66,3 +66,6 @@ Make sure you have the following installed:
 
 ## Acknowledgments
 
+- [Best-README-Template](https://github.com/othneildrew/Best-README-Template) for inspiration
+- [Shields.io](https://shields.io/) for the badges
+
