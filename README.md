@@ -38,8 +38,6 @@ Features:
 
 ## Contributors
 
-Thanks to the following people who have contributed to this project:
-
 | Name          | GitHub Profile |
 |--------------|---------------|
 | Éva Gömbös-Jeczuska  | [Vica1921](https://github.com/Vica1921) |
