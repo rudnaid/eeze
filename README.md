@@ -43,3 +43,16 @@ Thanks to the following people who have contributed to this project:
 | Éva Gömbös-Jeczuska  | [Vica1921](https://github.com/Vica1921) |
 | Erika Oláhné Klár | [o-k-e](https://github.com/o-k-e) |
 | Dávid Rudnai | [rudnaid](https://github.com/rudnaid) |
+
+
+## Getting Started
+
+To get a local copy up and running, follow these steps.
+
+
+### Prerequisites
+Make sure you have the following installed:
+
+
+### Installation Steps
+
