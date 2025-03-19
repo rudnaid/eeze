@@ -10,6 +10,7 @@ import com.codecool.spendeeze.repository.MemberRepository;
 import com.codecool.spendeeze.security.jwt.JwtUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
@@ -64,6 +66,10 @@ public class MemberService {
     }
 
     public MemberResponseDTO addMember(MemberRequestDTO memberRequestDTO) {
+        if (memberRepository.findMemberByUsername(memberRequestDTO.username()).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username already exist!");
+        }
+
         Member member = convertToUser(memberRequestDTO);
 
         memberRepository.save(member);
