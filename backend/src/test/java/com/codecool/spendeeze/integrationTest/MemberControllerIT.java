@@ -42,13 +42,19 @@ public class MemberControllerIT {
             }
             """;
 
-    String loginCredentials = """
+    String rightLoginCredentials = """
             {
                 "username": "jon",
                 "password": "password"
             }
             """;
 
+    String wrongLoginCredentials = """
+            {
+                "username": "jane",
+                "password": "password"
+            }
+            """;
 
     @AfterEach
     public void cleanUp(){
@@ -71,6 +77,24 @@ public class MemberControllerIT {
     }
 
     @Test
+    public void testRegistration_whenUsernameAlreadyExist_ThrowException() throws Exception {
+        Member member = new Member();
+        member.setFirstName("Jon");
+        member.setLastName("Doe");
+        member.setCountry("country");
+        member.setEmail("email@email.com");
+        member.setUsername("jon");
+        member.setPassword(passwordEncoder.encode("password"));
+        memberRepository.save(member);
+
+        mockMvc.perform(post("/api/users/register")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(userCredentials))
+                .andExpect(status().isBadRequest())
+                .andExpect(status().reason("Username already exist!"));
+    }
+
+    @Test
     public void testLogin_ReturnJwtToken() throws Exception {
         Member member = new Member();
         member.setFirstName("Jon");
@@ -83,9 +107,26 @@ public class MemberControllerIT {
 
         mockMvc.perform(post("/api/users/login")
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(loginCredentials))
+                    .content(rightLoginCredentials))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.jwt").exists())
                 .andExpect(jsonPath("$.username").value("jon"));
+    }
+
+    @Test
+    public void testLogin_WhenInvalidCredentials_ReturnUnauthorized() throws Exception {
+        Member member = new Member();
+        member.setFirstName("Jon");
+        member.setLastName("Doe");
+        member.setCountry("country");
+        member.setEmail("email@email.com");
+        member.setUsername("jon");
+        member.setPassword(passwordEncoder.encode("password"));
+        memberRepository.save(member);
+
+        mockMvc.perform(post("/api/users/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(wrongLoginCredentials))
+                .andExpect(status().isUnauthorized());
     }
 }
