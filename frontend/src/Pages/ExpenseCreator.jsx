@@ -1,41 +1,30 @@
-import { useState } from "react";
-import { redirect, useNavigate } from "react-router-dom";
+import {useState} from "react";
 import ExpenseForm from "../Components/Forms/ExpenseForm";
-
-const createExpense = (expense) => {
-    // change to your own generated database-s no1 members public id!
-    const token = localStorage.getItem('jwt');
-    return fetch("/api/expenses", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify(expense),
-    }).then((res) => res.json());
-  };
+import {postNewExpense} from "../Services/apiService.js";
+import {useAuth} from "../Context/AuthContext.jsx";
+import Loading from "../Components/Loading/Loading.jsx";
 
 const ExpenseCreator = ({onCancel}) => {
-    
-    const [loading, setLoading] = useState(false);
-  
-    const handleCreateExpense = (expense) => {
-      setLoading(true);
-  
-      createExpense(expense)
-        .then(() => {
-          setLoading(false);
-          onCancel();
-        })
-    };
-  
-    return (
-      <ExpenseForm
-        onCancel={(onCancel)}
-        disabled={loading}
-        onSave={handleCreateExpense}
-      />
-    );
+  const {user} = useAuth();
+  const [loading, setLoading] = useState(false);
+
+  const handleCreateExpense = async (expense) => {
+    setLoading(true);
+
+    await postNewExpense(user, expense);
+
+    setLoading(false);
   };
-  
-  export default ExpenseCreator;
+
+  if (loading) return <Loading/>;
+
+  return (
+    <ExpenseForm
+      onCancel={(onCancel)}
+      disabled={loading}
+      onSave={handleCreateExpense}
+    />
+  );
+};
+
+export default ExpenseCreator;
