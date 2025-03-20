@@ -36,8 +36,8 @@ Features:
 |--------------|----------------------------------------------------------------|
 | **Backend**  | ![Spring Boot](https://img.shields.io/badge/Backend-Spring_Boot-green?logo=spring) |
 | **Frontend** | ![React](https://img.shields.io/badge/Frontend-React-blue?logo=react) |
-|         | ![Vite](https://img.shields.io/badge/Frontend-Vite-purple?logo=vite) |
-|         | ![Tailwind CSS](https://img.shields.io/badge/Frontend-Tailwind_CSS-38B2AC?logo=tailwindcss) |
+| **Frontend** | ![Vite](https://img.shields.io/badge/Frontend-Vite-purple?logo=vite) |
+| **Frontend** | ![Tailwind CSS](https://img.shields.io/badge/Frontend-Tailwind_CSS-38B2AC?logo=tailwindcss) |
 | **Database** | ![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL-316192?logo=postgresql) |
 | **Containerization** | ![Docker](https://img.shields.io/badge/Docker-Containerization-blue?logo=docker) |
 
