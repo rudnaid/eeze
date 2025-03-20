@@ -5,7 +5,6 @@ import com.codecool.spendeeze.model.entity.Member;
 import com.codecool.spendeeze.model.entity.MemberRole;
 import com.codecool.spendeeze.repository.IncomeRepository;
 import com.codecool.spendeeze.repository.MemberRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,8 +22,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -35,9 +33,6 @@ public class IncomeControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @Autowired
     private IncomeRepository incomeRepository;
@@ -128,5 +123,45 @@ public class IncomeControllerIT {
                 .andExpect(jsonPath("$.date").value("2025-03-10"));
     }
 
+    @DisplayName("Integration test for IncomeController - findIncomesByMember()")
+    @Test
+    void givenExistingIncomes_whenFindIncomesByMember_thenReturnIncomeList() throws Exception {
+        mockMvc.perform(get("/api/incomes")
+                        .header("Authorization", "Bearer " + jwtToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()").value(1))
+                .andExpect(jsonPath("$[0].amount").value(1500.00))
+                .andExpect(jsonPath("$[0].date").value("2025-03-10"));
+    }
+
+    @DisplayName("Integration test for IncomeController - updateIncome()")
+    @Test
+    void givenUpdatedIncomeDTO_whenUpdateIncome_thenReturnUpdatedIncome() throws Exception {
+        String updatedIncomeJson = """
+        {
+            "amount": 3000.00,
+            "date": "2025-06-20"
+        }
+    """;
+
+        mockMvc.perform(put("/api/incomes/" + testIncome.getPublicId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(updatedIncomeJson)
+                        .header("Authorization", "Bearer " + jwtToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.amount").value(3000.00))
+                .andExpect(jsonPath("$.date").value("2025-06-20"));
+    }
+
+
+    @DisplayName("Integration test for IncomeController - deleteIncome()")
+    @Test
+    void givenIncomeId_whenDeleteIncome_thenIncomeIsRemoved() throws Exception {
+        mockMvc.perform(delete("/api/incomes/" + testIncome.getPublicId())
+                        .header("Authorization", "Bearer " + jwtToken))
+                .andExpect(status().isOk());
+
+        assertEquals(0, incomeRepository.count());
+    }
 
 }
