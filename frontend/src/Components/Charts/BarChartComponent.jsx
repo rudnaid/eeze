@@ -1,6 +1,12 @@
 import {BarChart, CartesianGrid, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer} from "recharts";
+import {useNavigate} from "react-router-dom";
 
 const BarChartComponent = ({chartData, year}) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate('/expenses');
+  }
   return (
     <>
 
@@ -22,7 +28,7 @@ const BarChartComponent = ({chartData, year}) => {
             </BarChart>
           </ResponsiveContainer>
           <div className="card-actions justify-end">
-            {/*<button className="btn btn-primary ">View Details</button>*/}
+            <button className="btn btn-primary" onClick={handleClick}>View Details</button>
           </div>
         </div>
       </div>

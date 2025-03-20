@@ -58,7 +58,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: 'income',
+        path: 'incomes',
         element: (
           <ProtectedRoute>
             <Income/>
@@ -66,7 +66,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: 'income/create',
+        path: 'incomes/create',
         element: (
           <ProtectedRoute>
             <IncomeCreator/>

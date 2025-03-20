@@ -1,5 +1,5 @@
 export const ROUTES = [
     { name: "Home", path: "/home" },
-    { name: "Income", path: "/income" },
+    { name: "Income", path: "/incomes" },
     { name: "Expenses", path: "/expenses" }
   ];
