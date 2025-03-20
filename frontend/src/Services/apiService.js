@@ -79,3 +79,59 @@ export const fetchYearlyIncomeExpenseReport = async (user, year) => {
     console.error('Error getting yearly expense report:', error);
   }
 }
+
+export const loginUser = async (userData) => {
+  try {
+    const response = await api.post("/users/login", userData);
+
+    return response.data;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+export const getExpenseCategories = async (user) => {
+  try {
+    const response = await api.get("/categories", {
+      user
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error getting categories:', error);
+  }
+}
+
+export const postNewIncome = async (user, income) => {
+  try {
+    const response = await api.post("/incomes", income, {
+      user
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error posting income:', error);
+  }
+}
+
+export const postNewExpense = async (user, expense) => {
+  try {
+    const response = await api.post("/expenses", expense, {
+      user
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error posting expense:', error);
+  }
+}
+
+export const registerUser = async (user) => {
+  try {
+    const response = await api.post("/users/register", user);
+
+    return response.data;
+  } catch (error) {
+    console.error('Error registering user:', error);
+  }
+}
