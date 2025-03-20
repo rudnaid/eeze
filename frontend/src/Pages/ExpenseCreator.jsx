@@ -14,6 +14,7 @@ const ExpenseCreator = ({onCancel}) => {
     await postNewExpense(user, expense);
 
     setLoading(false);
+    onCancel();
   };
 
   if (loading) return <Loading/>;
