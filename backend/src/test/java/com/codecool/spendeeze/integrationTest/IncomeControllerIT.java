@@ -23,8 +23,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -126,6 +125,17 @@ public class IncomeControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.amount").value(1500.00))
                 .andExpect(jsonPath("$.date").value("2025-03-10"));
+    }
+
+    @DisplayName("Integration test for IncomeController - findIncomesByMember()")
+    @Test
+    void givenExistingIncomes_whenFindIncomesByMember_thenReturnIncomeList() throws Exception {
+        mockMvc.perform(get("/api/incomes")
+                        .header("Authorization", "Bearer " + jwtToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()").value(1))
+                .andExpect(jsonPath("$[0].amount").value(1500.00))
+                .andExpect(jsonPath("$[0].date").value("2025-03-10"));
     }
 
 
