@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { RxHamburgerMenu } from "react-icons/rx";
-import { Link, useNavigate } from "react-router-dom";
-import { ROUTES } from "./NavbarLinks";
+import {useEffect, useState} from "react";
+import {RxHamburgerMenu} from "react-icons/rx";
+import {Link} from "react-router-dom";
+import {ROUTES} from "./NavbarLinks";
 import LogoutLink from "./LogoutLink";
-import { FiUser } from "react-icons/fi";
+import {FiUser} from "react-icons/fi";
 
 const Navbar = ({ navbarRef, updateNavbarHeight }) => {
     const [isMobileMenuShown, setIsMobileMenuShown] = useState(false);
@@ -11,7 +11,7 @@ const Navbar = ({ navbarRef, updateNavbarHeight }) => {
 
     useEffect(() => {
         updateNavbarHeight();
-    }, [isMobileMenuShown]);
+    }, [isMobileMenuShown, updateNavbarHeight]);
 
     return (
         <nav
