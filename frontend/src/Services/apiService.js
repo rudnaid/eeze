@@ -1,6 +1,24 @@
 import axios from 'axios';
 
-export const fetchMonthlyExpenseReport = async (month, year) => {
+const api = axios.create({
+  baseURL: '/api',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+api.interceptors.request.use(
+  (config) => {
+    if (config.user && config.user.jwt) {
+      config.headers['Authorization'] = `Bearer ${config.user.jwt}`;
+      delete config.user;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+export const fetchMonthlyExpenseReport = async (user, month, year) => {
   try {
     const token = localStorage.getItem('jwt');
 
