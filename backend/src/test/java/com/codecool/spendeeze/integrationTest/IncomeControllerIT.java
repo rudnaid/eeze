@@ -138,5 +138,24 @@ public class IncomeControllerIT {
                 .andExpect(jsonPath("$[0].date").value("2025-03-10"));
     }
 
+    @DisplayName("Integration test for IncomeController - updateIncome()")
+    @Test
+    void givenUpdatedIncomeDTO_whenUpdateIncome_thenReturnUpdatedIncome() throws Exception {
+        String updatedIncomeJson = """
+        {
+            "amount": 3000.00,
+            "date": "2025-06-20"
+        }
+    """;
+
+        mockMvc.perform(put("/api/incomes/" + testIncome.getPublicId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(updatedIncomeJson)
+                        .header("Authorization", "Bearer " + jwtToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.amount").value(3000.00))
+                .andExpect(jsonPath("$.date").value("2025-06-20"));
+    }
+
 
 }
