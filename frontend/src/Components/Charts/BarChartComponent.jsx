@@ -15,14 +15,14 @@ const BarChartComponent = ({chartData, year}) => {
               <CartesianGrid strokeDasharray="3 3"/>
               <XAxis dataKey="month"/>
               <YAxis/>
-              <Bar dataKey="totalIncome" fill="#00C49F" name="Total Income"/>
-              <Bar dataKey="totalExpense" fill="#FF6384" name="Total Expense"/>
+              <Bar dataKey="totalIncome" fill="#5D7572" name="Total Income"/>
+              <Bar dataKey="totalExpense" fill="#F57969" name="Total Expense"/>
               <Tooltip cursor={false}/>
               <Legend/>
             </BarChart>
           </ResponsiveContainer>
           <div className="card-actions justify-end">
-            <button className="btn btn-primary">View Details</button>
+            {/*<button className="btn btn-primary ">View Details</button>*/}
           </div>
         </div>
       </div>

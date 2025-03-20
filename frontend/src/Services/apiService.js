@@ -1,17 +1,28 @@
 import axios from 'axios';
 
-export const fetchMonthlyExpenseReport = async (month, year) => {
-  try {
-    const token = localStorage.getItem('jwt');
+const api = axios.create({
+  baseURL: '/api',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 
-    const response = await axios.get("/api/reports/monthly", {
-      params: {
-        month: month,
-        year: year,
-      },
-      headers: {
-        Authorization: `Bearer ${token}`,
-      }
+api.interceptors.request.use(
+  (config) => {
+    if (config.user && config.user.jwt) {
+      config.headers['Authorization'] = `Bearer ${config.user.jwt}`;
+      delete config.user;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+export const fetchMonthlyExpenseReport = async (user, month, year) => {
+  try {
+    const response = await api.get("/reports/monthly", {
+      params: { month, year },
+      user
     });
 
     return response.data;
@@ -20,13 +31,10 @@ export const fetchMonthlyExpenseReport = async (month, year) => {
   }
 };
 
-export const fetchTotalIncomes = async () => {
+export const fetchTotalIncomes = async (user) => {
   try {
-    const token = localStorage.getItem("jwt");
-    const response = await axios.get("/api/incomes", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      }
+    const response = await api.get("/incomes", {
+      user
     });
 
     return response.data;
@@ -35,13 +43,10 @@ export const fetchTotalIncomes = async () => {
   }
 };
 
-export const fetchSummary = async () => {
+export const fetchSummary = async (user) => {
   try {
-    const token = localStorage.getItem("jwt");
-    const response = await axios.get("/api/reports", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      }
+    const response = await api.get("/reports", {
+      user
     });
 
     return response.data;
@@ -50,13 +55,10 @@ export const fetchSummary = async () => {
   }
 };
 
-export const fetchExpensesByCategory = async () => {
+export const fetchExpensesByCategory = async (user) => {
   try {
-    const token = localStorage.getItem("jwt");
-    const response = await axios.get("/api/reports/by-category", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      }
+    const response = await api.get("/reports/by-category", {
+      user
     });
 
     return response.data;
@@ -65,20 +67,71 @@ export const fetchExpensesByCategory = async () => {
   }
 };
 
-export const fetchYearlyIncomeExpenseReport = async (year) => {
+export const fetchYearlyIncomeExpenseReport = async (user, year) => {
   try {
-    const token = localStorage.getItem('jwt');
-
-    const response = await axios.get("/api/reports/yearly", {
-      params: {
-        year: year,
-      },
-      headers: {
-        Authorization: `Bearer ${token}`,
-      }
+    const response = await api.get("/reports/yearly", {
+      params: { year },
+      user
     });
+
     return response.data;
   } catch (error) {
     console.error('Error getting yearly expense report:', error);
+  }
+}
+
+export const loginUser = async (userData) => {
+  try {
+    const response = await api.post("/users/login", userData);
+
+    return response.data;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+export const getExpenseCategories = async (user) => {
+  try {
+    const response = await api.get("/categories", {
+      user
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error getting categories:', error);
+  }
+}
+
+export const postNewIncome = async (user, income) => {
+  try {
+    const response = await api.post("/incomes", income, {
+      user
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error posting income:', error);
+  }
+}
+
+export const postNewExpense = async (user, expense) => {
+  try {
+    const response = await api.post("/expenses", expense, {
+      user
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error posting expense:', error);
+  }
+}
+
+export const registerUser = async (user) => {
+  try {
+    const response = await api.post("/users/register", user);
+
+    return response.data;
+  } catch (error) {
+    console.error('Error registering user:', error);
   }
 }

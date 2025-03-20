@@ -1,22 +1,14 @@
-import React, { useState } from "react";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import { FaApple, FaFacebook, FaUser } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router-dom";
-
-const logInUser = async (userEntity) => {
-    const response = await fetch("/api/users/login", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userEntity),
-    });
-    const data = await response.json();
-    localStorage.setItem("jwt", data.jwt);
-};
+import {useState} from "react";
+import {AiFillEye, AiFillEyeInvisible} from "react-icons/ai";
+import {FaApple, FaFacebook, FaUser} from "react-icons/fa";
+import {FcGoogle} from "react-icons/fc";
+import {Link, useNavigate} from "react-router-dom";
+import {useAuth} from "../Context/AuthContext.jsx";
+import {loginUser} from "../Services/apiService.js";
 
 const Login = () => {
+	const navigate = useNavigate();
+	const {login} = useAuth();
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [showPassword, setShowPassword] = useState(false);
@@ -27,8 +19,15 @@ const Login = () => {
 
 	const onSubmit = async (e) => {
 		e.preventDefault();
-		await logInUser({ username, password });
-		window.location.href = "/home";
+
+		try {
+			const user = await loginUser({username, password});
+			login(user);
+			navigate("/home");
+		} catch (error) {
+			console.error(error);
+			navigate("/login");
+		}
 	};
 
 	return (

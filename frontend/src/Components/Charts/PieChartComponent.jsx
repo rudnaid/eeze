@@ -2,7 +2,7 @@ import {PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer} from 'rechart
 import {getMonthName} from "../../Utils/Util.js";
 
 const PieChartComponent = ({chartData, month, year}) => {
-  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#FF6384", "#36A2EB", "#FFCE56"];
+  const COLORS = ["#F59847", "#F57969", "#3D4B5C", "#DBC88C", "#75685D", "#8DB2DB", "#FFCE56"];
 
   return (
 
@@ -29,8 +29,8 @@ const PieChartComponent = ({chartData, month, year}) => {
           </PieChart>
         </ResponsiveContainer>
         <div className="card-actions justify-center">
-          <button className="btn btn-primary">Prev Month</button>
-          <button className="btn btn-primary">Next Month</button>
+          <button className="btn btn-primary bg-gray-800">Prev Month</button>
+          <button className="btn btn-primary bg-gray-800">Next Month</button>
         </div>
       </div>
     </div>

@@ -1,41 +1,30 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {useState} from "react";
 import IncomeForm from "../Components/Forms/IncomeForm";
-
-const createIncome = (income) => {
- 
-    const token = localStorage.getItem('jwt');
-    return fetch("/api/incomes", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify(income),
-    }).then((res) => res.json());
-  };
+import {useAuth} from "../Context/AuthContext.jsx";
+import {postNewIncome} from "../Services/apiService.js";
+import Loading from "../Components/Loading/Loading.jsx";
 
 const IncomeCreator = ({onCancel}) => {
-    
-    const [loading, setLoading] = useState(false);
-  
-    const handleCreateIncome = (income) => {
-      setLoading(true);
-  
-      createIncome(income)
-        .then(() => {
-          setLoading(false);
-          onCancel();
-        })
-    };
-  
-    return (
-      <IncomeForm
-        onCancel={onCancel}
-        disabled={loading}
-        onSave={handleCreateIncome}
-      />
-    );
+  const {user} = useAuth();
+  const [loading, setLoading] = useState(false);
+
+  const handleCreateIncome = async (income) => {
+    setLoading(true);
+
+    await postNewIncome(user, income);
+
+    setLoading(false);
   };
-  
-  export default IncomeCreator;
+
+  if (loading) return <Loading/>;
+
+  return (
+    <IncomeForm
+      onCancel={onCancel}
+      disabled={loading}
+      onSave={handleCreateIncome}
+    />
+  );
+};
+
+export default IncomeCreator;

@@ -29,7 +29,7 @@ const IncomeForm = ({ onSave, disabled, income, onCancel }) => {
 				</div>
 				<div className="bg-[#fbf2d5] max-w-md w-full mx-auto relative -mt-60 m-4">
 					<form
-						className="bg-white max-w-xl w-full mx-auto shadow-[0_2px_10px_-3px_rgba(182,191,184,0.99)] p-6 sm:p-8 rounded-2xl"
+						className="bg-white max-w-xl w-full mx-auto p-6 sm:p-8"
 						onSubmit={onSubmit}
 					>
 						<div className="mb-12">
@@ -46,6 +46,7 @@ const IncomeForm = ({ onSave, disabled, income, onCancel }) => {
 									onChange={(e) => setAmount(e.target.value)}
 									name="amount"
 									id="amount"
+									required={true}
 									className="w-full bg-transparent text-sm text-gray-800 border-b border-gray-300 focus:border-gray-500 pl-2 pr-8 py-3 outline-none"
 									placeholder="Enter amount"
 								/>
@@ -61,6 +62,7 @@ const IncomeForm = ({ onSave, disabled, income, onCancel }) => {
 									onChange={(e) => setDate(e.target.value)}
 									name="date"
 									id="date"
+									required={true}
 									className="w-full bg-transparent text-sm text-gray-800 border-b border-gray-300 focus:border-gray-500 pl-2 pr-8 py-3 outline-none"
 								/>
 							</div>

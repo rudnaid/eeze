@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { fetchSummary } from "../Services/apiService";
+import {useAuth} from "../Context/AuthContext.jsx";
 
 export const useFetchSummary = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [summary, setSummary] = useState({});
+    const {user} = useAuth();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -12,7 +14,7 @@ export const useFetchSummary = () => {
                 setLoading(true);
                 setError(null);
 
-                const result = await fetchSummary();
+                const result = await fetchSummary(user);
                 setSummary(result)
             } catch (error) {
                 setError(error);
@@ -23,7 +25,7 @@ export const useFetchSummary = () => {
         }
 
         fetchData();
-    }, []);
+    }, [user]);
 
     return { loading, error, summary };
 }

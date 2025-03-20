@@ -4,19 +4,10 @@ import { FcGoogle } from 'react-icons/fc';
 import { AiFillEye } from 'react-icons/ai';
 import { BiMap } from 'react-icons/bi';
 import { MdAlternateEmail } from 'react-icons/md';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaUser } from 'react-icons/fa';
-
-const createUser = (userEntity) => {
-	return fetch('/api/users/register', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify(userEntity),
-	}).then((res) => res.json());
-};
+import {registerUser} from "../Services/apiService.js";
 
 const Register = () => {
 	const navigate = useNavigate();
@@ -32,9 +23,11 @@ const Register = () => {
 		setShowPassword(!showPassword);
 	};
 
-	const onSubmit = (e) => {
+	const handleRegister = async (e) => {
 		e.preventDefault();
-		createUser({ firstName, lastName, country, email, username, password });
+
+		await registerUser({ firstName, lastName, country, email, username, password });
+
 		navigate('/login');
 	};
 
@@ -51,7 +44,7 @@ const Register = () => {
 				<div className="max-w-md w-full mx-auto relative -mt-60 m-4">
 					<form
 						className="bg-white max-w-xl w-full mx-auto shadow-[0_2px_10px_-3px_rgba(182,191,184,0.99)] p-6 sm:p-8 rounded-2xl"
-						onSubmit={onSubmit}
+						onSubmit={handleRegister}
 					>
 						<div className="mb-12">
 							<h3 className="text-gray-800 text-3xl font-bold text-center">

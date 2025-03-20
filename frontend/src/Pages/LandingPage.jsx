@@ -9,8 +9,10 @@ import ExpenseButton from "../Components/Buttons/ExpenseButton.jsx";
 import IncomeButton from "../Components/Buttons/IncomeButton.jsx";
 import "./landingPage.css";
 import ThemeToggle from "../Components/Buttons/ThemeToggle.jsx";
+import {useAuth} from "../Context/AuthContext.jsx";
 
 const LandingPage = () => {
+  const {user} = useAuth();
 
   // useEffect needed temporarily to let DaisyUI theme affect this page
   // TODO need to remove if DaisyUI is applied to whole frontend
@@ -29,14 +31,14 @@ const LandingPage = () => {
     monthlyExpenseReportData,
     month: pieMonth,
     year: pieYear,
-  } = useFetchMonthlyExpenseReport();
+  } = useFetchMonthlyExpenseReport(user);
 
   const {
     loading: yearlyLoading,
     error: yearlyError,
     yearlyIncomeExpenseReportData,
     year: barYear,
-  } = useFetchYearlyIncomeExpenseReport();
+  } = useFetchYearlyIncomeExpenseReport(user);
 
   const loading = monthlyLoading || yearlyLoading;
   const error = monthlyError || yearlyError;

@@ -1,12 +1,13 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
+import {useAuth} from "../../Context/AuthContext.jsx";
 
 const LogoutLink = ({ onLogout }) => {
+    const {logout} = useAuth();
     const navigate = useNavigate();
 
     const handleLogout = (e) => {
         e.preventDefault();
-        localStorage.removeItem("jwt");
+        logout();
         if (onLogout) onLogout();
         navigate("/");
     };
