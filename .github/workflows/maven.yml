@@ -30,7 +30,7 @@ jobs:
     - name: Build and run unit tests with Maven
       run: mvn -B clean package --file ./backend/pom.xml
 
-  integration-tests:
+  integration-unit-tests:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
 
