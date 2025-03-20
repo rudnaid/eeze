@@ -14,6 +14,7 @@ const IncomeCreator = ({onCancel}) => {
     await postNewIncome(user, income);
 
     setLoading(false);
+    onCancel();
   };
 
   if (loading) return <Loading/>;
