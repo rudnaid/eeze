@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { fetchExpensesByCategory } from "../Services/apiService";
+import {useAuth} from "../Context/AuthContext.jsx";
 
 export const useFetchExpensesByCategory = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [categories, setCategories] = useState({});
+    const {user} = useAuth();
     
         useEffect(() => {
             const fetchData = async () => {
@@ -12,7 +14,7 @@ export const useFetchExpensesByCategory = () => {
                     setLoading(true);
                     setError(null);
     
-                    const result = await fetchExpensesByCategory();
+                    const result = await fetchExpensesByCategory(user);
                     setCategories(result)
                 } catch (error) {
                     setError(error);
@@ -23,7 +25,7 @@ export const useFetchExpensesByCategory = () => {
             }
     
             fetchData();
-        }, []);
+        }, [user]);
     
         return { loading, error, categories };
 }
