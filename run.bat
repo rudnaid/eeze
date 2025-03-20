@@ -8,10 +8,7 @@ docker-compose up -d --build
 
 echo ⏳ Waiting for PostgreSQL to be ready...
 :waitloop
-docker exec -i db psql -U postgres -d spendeeze -c "
-  SELECT 1 FROM information_schema.tables
-  WHERE table_name IN ('expense', 'income', 'member', 'member_roles', 'transaction_category');
-" >nul 2>nul
+docker exec -i db psql -U postgres -d spendeeze -c "SELECT 1 FROM information_schema.tables WHERE table_name IN ('expense', 'income', 'member', 'member_roles', 'transaction_category');" >nul 2>nul
 
 if errorlevel 1 (
   echo Tables not ready yet, waiting...
