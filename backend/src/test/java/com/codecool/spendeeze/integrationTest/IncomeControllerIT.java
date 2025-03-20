@@ -118,7 +118,15 @@ public class IncomeControllerIT {
         assertEquals(2, incomeRepository.count());
     }
 
-
+    @DisplayName("Integration test for IncomeController - findIncomeById()")
+    @Test
+    void givenIncomeId_whenFindIncomeById_thenReturnIncomeDTO() throws Exception {
+        mockMvc.perform(get("/api/incomes/" + testIncome.getPublicId())
+                        .header("Authorization", "Bearer " + jwtToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.amount").value(1500.00))
+                .andExpect(jsonPath("$.date").value("2025-03-10"));
+    }
 
 
 }
