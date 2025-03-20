@@ -4,7 +4,7 @@
 set -e
 
 # Step 1: Start the containers in detached mode
-docker-compose up -d --build
+docker compose up -d --build
 
 # Step 2: Wait for the backend to finish initializing the database
 echo "Waiting for PostgreSQL to be ready..."
