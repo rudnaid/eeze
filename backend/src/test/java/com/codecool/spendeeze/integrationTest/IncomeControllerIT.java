@@ -158,4 +158,14 @@ public class IncomeControllerIT {
     }
 
 
+    @DisplayName("Integration test for IncomeController - deleteIncome()")
+    @Test
+    void givenIncomeId_whenDeleteIncome_thenIncomeIsRemoved() throws Exception {
+        mockMvc.perform(delete("/api/incomes/" + testIncome.getPublicId())
+                        .header("Authorization", "Bearer " + jwtToken))
+                .andExpect(status().isOk());
+
+        assertEquals(0, incomeRepository.count());
+    }
+
 }
