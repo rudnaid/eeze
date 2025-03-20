@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {fetchMonthlyExpenseReport} from "../Services/apiService.js";
 
-export const useFetchMonthlyExpenseReport = (selectedMonth = null, selectedYear = null) => {
+export const useFetchMonthlyExpenseReport = (user, selectedMonth = null, selectedYear = null) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [monthlyExpenseReportData, setMonthlyExpenseReportData] = useState(null);
@@ -19,7 +19,7 @@ export const useFetchMonthlyExpenseReport = (selectedMonth = null, selectedYear 
         setLoading(true);
         setError(null);
 
-        const result = await fetchMonthlyExpenseReport(month, year);
+        const result = await fetchMonthlyExpenseReport(user, month, year);
         setMonthlyExpenseReportData(result);
       } catch (error) {
         setError(error);

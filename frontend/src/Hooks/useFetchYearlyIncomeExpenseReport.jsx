@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {fetchYearlyIncomeExpenseReport} from "../Services/apiService.js";
 
-const useFetchYearlyIncomeExpenseReport = (selectedYear = null) => {
+const useFetchYearlyIncomeExpenseReport = (user, selectedYear = null) => {
   const [yearlyIncomeExpenseReportData, setYearlyIncomeExpenseReportData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -15,7 +15,7 @@ const useFetchYearlyIncomeExpenseReport = (selectedYear = null) => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const result = await fetchYearlyIncomeExpenseReport(year);
+        const result = await fetchYearlyIncomeExpenseReport(user, year);
 
         setYearlyIncomeExpenseReportData(result);
       } catch (error) {
@@ -25,7 +25,7 @@ const useFetchYearlyIncomeExpenseReport = (selectedYear = null) => {
       }
     }
     fetchData();
-  }, [year]);
+  }, [user, year]);
 
   return {loading, error, yearlyIncomeExpenseReportData, year};
 }
