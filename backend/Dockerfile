@@ -1,8 +1,5 @@
 FROM eclipse-temurin:23-jdk-alpine AS build
 WORKDIR /app
-COPY pom.xml .
-COPY ./mvnw ./mvnw
-COPY ./.mvn ./.mvn
 
 COPY . .
 
