@@ -1,6 +1,32 @@
-version: '1'
-
 services:
+
+  db:
+      image: 'postgres:17.4-alpine3.21'
+      container_name: db
+      environment:
+        - POSTGRES_USER=${POSTGRES_USER}
+        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+        - POSTGRES_DB=spendeeze
+      volumes:
+        - postgres_data:/var/lib/postgresql/data
+      networks:
+        - spendeeze_network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+      - codecool.app.jwtSecret=${JWT_SECRET}
+      - codecool.app.jwtExpirationMs=${JWT_EXPIRATION_MS}
+    networks:
+      - spendeeze_network
   frontend:
     build:
       context: ./frontend
@@ -12,38 +38,7 @@ services:
       - backend
     networks:
       - spendeeze_network
-
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    container_name: backend
-    ports:
-    - "8080:8080"
-    depends_on:
-      - db
-    environment:
-      - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
-      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
-      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - codecool.app.jwtSecret=${JWT_SECRET}
-      - codecool.app.jwtExpirationMs=${JWT_EXPIRATION_MS}
-    networks:
-      - spendeeze_network
     
-  db:
-    image: 'postgres:13.1-alpine'
-    container_name: db
-    environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=spendeeze
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - spendeeze_network
-
 volumes:
   postgres_data:
 
