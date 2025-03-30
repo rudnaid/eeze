@@ -1,7 +1,6 @@
 # EEZE
 
-A web app to track your income and expenses, providing insights with charts.
-
+![GitHub Actions]([https://github.com/github/docs/actions/workflows/main.yml](https://github.com/rudnaid/spendeeze/blob/development/docker-compose.yaml)/badge.svg?event=push)
 
 <details>
 <summary><h2>Table of Contents</h2></summary>
