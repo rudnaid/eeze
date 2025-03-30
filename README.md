@@ -32,14 +32,20 @@ Features:
   
 ## Built With
 
-| Category      | Badge |
-|--------------|----------------------------------------------------------------|
-| **Backend**  | ![Spring Boot](https://img.shields.io/badge/Backend-Spring_Boot-green?logo=spring) |
-| **Frontend** | ![React](https://img.shields.io/badge/Frontend-React-blue?logo=react) |
-| **Frontend** | ![Vite](https://img.shields.io/badge/Frontend-Vite-purple?logo=vite) |
-| **Frontend** | ![Tailwind CSS](https://img.shields.io/badge/Frontend-Tailwind_CSS-38B2AC?logo=tailwindcss) |
-| **Database** | ![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL-316192?logo=postgresql) |
-| **Containerization** | ![Docker](https://img.shields.io/badge/Docker-Containerization-blue?logo=docker) |
+- **Backend:**  
+  [![Spring Boot](https://img.shields.io/badge/Backend-Spring_Boot-green?logo=spring)](https://spring.io/projects/spring-boot)
+
+- **Database:**  
+  [![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL-316192?logo=postgresql)](https://www.postgresql.org/)
+
+- **Frontend:**  
+  [![React](https://img.shields.io/badge/Frontend-React-black?logo=react)](https://reactjs.org/)
+  [![Vite](https://img.shields.io/badge/Frontend-Vite-646cff?logo=vite)](https://vitejs.dev/)
+  [![TailwindCSS](https://img.shields.io/badge/Frontend-TailwindCSS-38bdf8?logo=tailwindcss)](https://tailwindcss.com/)
+
+- **Containerization:**  
+  [![Docker](https://img.shields.io/badge/Containerization-Docker-2496ED?logo=docker)](https://www.docker.com/)
+  [![NGINX](https://img.shields.io/badge/Containerization-NGINX-009639?logo=nginx)](https://www.nginx.com/)
 
 
 ## Contributors
