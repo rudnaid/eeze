@@ -1,6 +1,6 @@
 # EEZE
 
-![GitHub Actions]([https://github.com/github/docs/actions/workflows/main.yml](https://github.com/rudnaid/spendeeze/blob/development/docker-compose.yaml)/badge.svg?event=push)
+[![GitHub Actions](https://github.com/rudnaid/spendeeze/actions/workflows/main.yml/badge.svg)](https://github.com/rudnaid/spendeeze/actions/workflows/main.yml)
 
 <details>
 <summary><h2>Table of Contents</h2></summary>
