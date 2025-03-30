@@ -40,7 +40,7 @@ Features:
 
 - **Frontend:**  
   [![React](https://img.shields.io/badge/Frontend-React-black?logo=react)](https://reactjs.org/)
-  [![Vite](https://img.shields.io/badge/Frontend-Vite-646cff?logo=vite)](https://vitejs.dev/)
+  [![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)  
   [![TailwindCSS](https://img.shields.io/badge/Frontend-TailwindCSS-38bdf8?logo=tailwindcss)](https://tailwindcss.com/)
 
 - **Containerization:**  
