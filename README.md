@@ -3,7 +3,7 @@
 [![GitHub Actions](https://github.com/rudnaid/spendeeze/actions/workflows/maven.yml/badge.svg)](https://github.com/rudnaid/spendeeze/actions/workflows/maven.yml)
 
 <details>
-<summary><h2>Table of Contents</h2></summary>
+<summary><strong>Table of Contents</strong></summary>
   
 - [About the Project](#about-the-project)
 - [Built With](#built-with)
