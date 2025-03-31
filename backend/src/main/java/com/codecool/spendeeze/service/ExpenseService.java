@@ -13,6 +13,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -108,8 +109,16 @@ public class ExpenseService {
                 .toList();
     }
 
-    public List<ExpenseWithIdAmountDateCategoryDTO> getMonthlyExpenses(String username, int month, int year) {
-        List<Expense> expenses = expenseRepository.getMonthlyExpensesByUsername(username, month, year);
+    public List<ExpenseWithIdAmountDateCategoryDTO> getCurrentMonthExpenses(String username) {
+        LocalDate localDate = LocalDate.now();
+        int currentMonth = localDate.getMonthValue();
+        int currentYear = localDate.getYear();
+        return getRequestedMonthExpenses(username, currentMonth, currentYear);
+
+    }
+
+    public List<ExpenseWithIdAmountDateCategoryDTO> getCurrentMonthExpenses(String username, int month, int year) {
+        List<Expense> expenses = expenseRepository.getMonthlyExpensesByUsernameAndMonthAndYear(username, month, year);
         return expenses.stream()
                 .map(this::convertToExpenseResponseDTO)
                 .toList();
