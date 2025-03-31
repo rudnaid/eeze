@@ -57,4 +57,11 @@ public class ExpenseController {
     public int deleteExpense(@PathVariable UUID id) {
         return expenseService.deleteExpenseByPublicId(id);
     }
+
+    @GetMapping("/current")
+    public List<ExpenseWithIdAmountDateCategoryDTO> getCurrentMonthExpenses() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        return expenseService.getCurrentMonthExpenses(username);
+    }
 }
