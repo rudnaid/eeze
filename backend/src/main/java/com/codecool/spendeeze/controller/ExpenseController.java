@@ -5,6 +5,7 @@ import com.codecool.spendeeze.model.dto.ExpenseWithIdAmountDateCategoryDTO;
 import com.codecool.spendeeze.model.entity.TransactionCategory;
 import com.codecool.spendeeze.service.ExpenseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
