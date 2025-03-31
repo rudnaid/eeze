@@ -14,7 +14,7 @@ export const Expenses = () => {
 
 	return (
 		<>
-			<div className="p-6 md:p-10 lg:p-12">
+			<div className="p-6 max-w-2xl mx-auto">
 				{/* Summary Table */}
 				<div className="table w-full border border-gray-300 rounded-lg overflow-hidden mb-6">
 					<div className="table-header-group bg-gray-100 text-gray-700 font-semibold">

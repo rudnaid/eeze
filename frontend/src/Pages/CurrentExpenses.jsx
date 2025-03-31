@@ -18,7 +18,7 @@ const CurrentExpenses = () => {
                 {expenses.map((expense) => (
                     <div
                         key={expense.publicId}
-                        className="border rounded-lg p-4 shadow-sm bg-white flex justify-between items-center"
+                        className="border border-[#fdc57b] rounded-xl p-4 shadow-sm bg-white flex justify-between items-center"
                     >
                         <div className="flex flex-col">
                             <p className="font-semibold">{expense.expenseCategory}</p>
