@@ -113,7 +113,7 @@ public class ExpenseService {
         LocalDate localDate = LocalDate.now();
         int currentMonth = localDate.getMonthValue();
         int currentYear = localDate.getYear();
-        return getRequestedMonthExpenses(username, currentMonth, currentYear);
+        return getCurrentMonthExpenses(username, currentMonth, currentYear);
 
     }
 
