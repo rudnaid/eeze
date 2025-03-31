@@ -61,5 +61,5 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
 
     @Query("SELECT COALESCE(SUM (e.amount), 0) FROM Expense e WHERE e.member.username = :username AND MONTH(e.transactionDate) = :month AND YEAR(e.transactionDate) = :year ORDER BY e.transactionDate DESC")
-    List<Expense> getMonthlyExpensesByUsernameAndMonthAndYearr(@Param("username") String username, @Param("month") int month, @Param("year") int year);
+    List<Expense> getMonthlyExpensesByUsernameAndMonthAndYear(@Param("username") String username, @Param("month") int month, @Param("year") int year);
 }
