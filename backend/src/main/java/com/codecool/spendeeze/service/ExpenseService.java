@@ -107,4 +107,11 @@ public class ExpenseService {
                 .map(this::convertToExpenseResponseDTO)
                 .toList();
     }
+
+    public List<ExpenseWithIdAmountDateCategoryDTO> getMonthlyExpenses(String username, int month, int year) {
+        List<Expense> expenses = expenseRepository.getMonthlyExpensesByUsername(username, month, year);
+        return expenses.stream()
+                .map(this::convertToExpenseResponseDTO)
+                .toList();
+    }
 }
