@@ -16,72 +16,54 @@ export const Expenses = () => {
 		<>
 			<div className="p-6 max-w-2xl mx-auto">
 				{/* Summary Table */}
-				<div className="table w-full border border-gray-300 rounded-lg overflow-hidden mb-6">
-					<div className="table-header-group bg-gray-100 text-gray-700 font-semibold">
-						<div className="table-row">
-							<div className="table-cell px-6 py-3 text-center">
-								Total Income
-							</div>
-							<div className="table-cell px-6 py-3 text-center">
-								Total Expense
-							</div>
-							<div className="table-cell px-6 py-3 text-center">
-								Total Balance
-							</div>
-						</div>
+				<div className="border-2 border-[#fdc57b] bg-[#fffdf6] rounded-2xl p-6 shadow-lg mb-10 max-w-3xl mx-auto">
+					<div className="flex justify-between text-gray-700 font-semibold px-4 pb-2 border-b border-gray-300">
+						<p>Total Income</p>
+						<p>Total Expense</p>
+						<p>Total Balance</p>
 					</div>
-					<div className="table-row-group text-gray-800">
-						<div className="table-row">
-							<div className="table-cell px-6 py-3 text-center">
-								{summary.totalIncome?.toLocaleString('de-DE', {
-									minimumFractionDigits: 2,
-									maximumFractionDigits: 2,
-								})}
-							</div>
-							<div className="table-cell px-6 py-3 text-center">
-								{summary.totalExpenses?.toLocaleString('de-DE', {
-									minimumFractionDigits: 2,
-									maximumFractionDigits: 2,
-								})}
-							</div>
-							<div className="table-cell px-6 py-3 text-center">
-								{summary.currentBalance?.toLocaleString('de-DE', {
-									minimumFractionDigits: 2,
-									maximumFractionDigits: 2,
-								})}
-							</div>
-						</div>
+					<div className="flex justify-between text-gray-800 font-bold px-4 pt-2">
+						<p>
+							{summary.totalIncome?.toLocaleString('de-DE', {
+								minimumFractionDigits: 2,
+								maximumFractionDigits: 2,
+							})}
+						</p>
+						<p>
+							{summary.totalExpenses?.toLocaleString('de-DE', {
+								minimumFractionDigits: 2,
+								maximumFractionDigits: 2,
+							})}
+						</p>
+						<p>
+							{summary.currentBalance?.toLocaleString('de-DE', {
+								minimumFractionDigits: 2,
+								maximumFractionDigits: 2,
+							})}
+						</p>
 					</div>
 				</div>
+				<div className="mb-8"></div>
 
-				{/* Categories Table */}
-				<div className="table w-full border border-gray-300 rounded-lg overflow-hidden">
-					<div className="table-header-group bg-gray-100 text-gray-700 font-semibold">
-						<div className="table-row">
-							<div className="table-cell px-6 py-3 text-left">
-								Category Name
-							</div>
-							<div className="table-cell px-6 py-3 text-right">Amount</div>
+				{/* Categories Boxed Layout */}
+				<div className="space-y-4">
+					{categories.map((category, index) => (
+						<div
+							key={index}
+							className="border border-[#fdc57b] rounded-xl p-4 shadow-sm bg-white flex justify-between items-center"
+						>
+							<p className="font-semibold">{category.categoryName}</p>
+							<p className="font-bold">
+								{category.totalByCategory.toLocaleString('de-DE', {
+									minimumFractionDigits: 2,
+									maximumFractionDigits: 2,
+								})}
+							</p>
 						</div>
-					</div>
-					<div className="table-row-group text-gray-800 ">
-						{categories.map((category, index) => (
-							<div className="table-row even:bg-gray-50" key={index}>
-								<div className="table-cell px-6 py-3">
-									{category.categoryName}
-								</div>
-								<div className="table-cell px-6 py-3 text-right">
-									{category.totalByCategory.toLocaleString('de-DE', {
-										minimumFractionDigits: 2,
-										maximumFractionDigits: 2,
-									})}
-								</div>
-							</div>
-						))}
-					</div>
+					))}
 				</div>
 			</div>
-			<div className="mt-6 flex justify-center">
+			<div className="mt-6 flex justify-center pb-10">
 				<Link
 					to="/expenses/create"
 					className="text-white bg-[#7e8283] hover:bg-[#7fa99b] font-semibold py-2 px-4 rounded transition"
