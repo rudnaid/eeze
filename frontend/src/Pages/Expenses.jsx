@@ -17,12 +17,12 @@ export const Expenses = () => {
 			<div className="p-6 max-w-2xl mx-auto">
 				{/* Summary Table */}
 				<div className="border-2 border-[#fdc57b] bg-[#fffdf6] rounded-2xl p-6 shadow-lg mb-10 max-w-3xl mx-auto">
-					<div className="flex justify-between text-gray-700 font-semibold px-4 pb-2 border-b border-gray-300">
+					<div className="flex justify-between text-gray-700 font-semibold px-4 pb-2 border-b border-gray-300 text-lg">
 						<p>Total Income</p>
 						<p>Total Expense</p>
 						<p>Total Balance</p>
 					</div>
-					<div className="flex justify-between text-gray-800 font-bold px-4 pt-2">
+					<div className="flex justify-between text-gray-800 font-bold px-4 pt-2 text-xl">
 						<p>
 							{summary.totalIncome?.toLocaleString('de-DE', {
 								minimumFractionDigits: 2,

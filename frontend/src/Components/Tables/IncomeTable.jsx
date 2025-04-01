@@ -1,24 +1,46 @@
 import { Link } from 'react-router-dom';
+import React from "react";
 
 const IncomeTable = ({ incomes }) => {
+    const total = incomes.reduce((acc, income) => acc + income.amount, 0);
+
     return (
-        <div className="IncomeTable flex flex-col justify-start min-h-screen pt-30">
-            <table className="mx-auto border-collapse border border-gray-300 bg-white w-2xl">
-                <thead>
-                    <tr>
-                        <th className="border border-spacing-2 p-2 border-gray-300">Amount</th>
-                        <th className="border border-spacing-2 p-2 border-gray-300">Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {incomes.map((income, index) => (
-                        <tr key={index}>
-                            <td className="border p-2 border-gray-300">{income.amount}</td>
-                            <td className="border p-2 border-gray-300">{income.date}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+        <div className="p-6 max-w-2xl mx-auto">
+            {/* Total Income Box */}
+            <div className="border-2 border-[#fdc57b] rounded-xl p-4 shadow-md bg-[#fefaf4] mb-6">
+                <p className="font-bold text-right text-lg text-gray-700">
+                    Total Income
+                </p>
+                <hr className="my-2 border-t border-gray-200" />
+                <p className="text-xl font-bold text-right">
+                    {total.toLocaleString("de-DE", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                    })}
+                </p>
+            </div>
+            <div className="mb-8"></div>
+
+
+            {/* Income Items Boxed Layout */}
+            <div className="space-y-4">
+                {incomes.map((income, index) => (
+                    <div
+                        key={index}
+                        className="border border-[#fdc57b] rounded-xl p-4 shadow-sm bg-white flex justify-between items-center"
+                    >
+                        <div className="text-gray-500 text-sm mt-1">{income.date}</div>
+                        <div className="font-bold">
+                            {income.amount.toLocaleString('de-DE', {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                            })}
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            {/* Add Button */}
             <div className="mt-6 flex justify-center">
                 <Link
                     to="/income/create"
@@ -29,6 +51,6 @@ const IncomeTable = ({ incomes }) => {
             </div>
         </div>
     );
-}
+};
 
 export default IncomeTable;

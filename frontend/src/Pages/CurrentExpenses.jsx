@@ -10,9 +10,18 @@ const CurrentExpenses = () => {
 
     return (
         <div className="p-6 max-w-3xl mx-auto">
-            <h1 className="text-2xl font-bold mb-4 text-right">
-                Monthly Total: {total.toLocaleString("de-DE", { minimumFractionDigits: 2})}
-            </h1>
+            <div className="border-2 border-[#fdc57b] rounded-xl p-4 shadow-md bg-[#fefaf4] mb-6">
+                <p className="font-bold text-right text-lgtext-gray-700">
+                    Monthly Total
+                </p>
+                <hr className="my-2 border-t border-gray-200" />
+                <p className="text-xl font-bold text-right">
+                    {total.toLocaleString("de-DE", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                    })}
+                </p>
+            </div>
 
             <div className="space-y-4">
                 {expenses.map((expense) => (
