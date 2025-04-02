@@ -11,7 +11,7 @@ const CurrentExpenses = () => {
     return (
         <div className="p-6 max-w-3xl mx-auto">
             <div className="border-2 border-[#fdc57b] rounded-xl p-4 shadow-md bg-[#fefaf4] mb-6">
-                <p className="font-bold text-right text-lgtext-gray-700">
+                <p className="font-bold text-right text-lg text-gray-700">
                     Monthly Total
                 </p>
                 <hr className="my-2 border-t border-gray-200" />
