@@ -6,92 +6,78 @@ const IncomeForm = ({ onSave, disabled, income, onCancel }) => {
 
 	const onSubmit = (e) => {
 		e.preventDefault();
-
-		if (income) {
-			return onSave({
-				...income,
-				amount: amount,
-				date: date,
-			});
-		}
-
-		return onSave({
-			amount: amount,
-			date: date,
-		});
+		const data = { amount, date };
+		if (income) return onSave({ ...income, ...data });
+		return onSave(data);
 	};
 
 	return (
-		<>
-			<div className="font-[sans-serif] relative">
-				<div className="h-[240px] font-[sans-serif] bg-[#7fa99b]">
-					{/* <img className="w-full h-full bg-[#6a9184]" /> */}
-				</div>
-				<div className="bg-[#fbf2d5] max-w-md w-full mx-auto relative -mt-60 m-4">
-					<form
-						className="bg-white max-w-xl w-full mx-auto p-6 sm:p-8"
-						onSubmit={onSubmit}
-					>
-						<div className="mb-12">
-							<h3 className="text-gray-800 text-3xl font-bold text-center">
-								Add new income
-							</h3>
-						</div>
+		<div className="font-[sans-serif] relative">
+			<div className="h-[240px] bg-[#7fa99b]"></div>
 
-						<div>
-							<label className="text-gray-800 text-xs block mb-2"></label>
-							<div className="relative flex items-center">
-								<input
-									value={amount}
-									onChange={(e) => setAmount(e.target.value)}
-									name="amount"
-									id="amount"
-									required={true}
-									className="w-full bg-transparent text-sm text-gray-800 border-b border-gray-300 focus:border-gray-500 pl-2 pr-8 py-3 outline-none"
-									placeholder="Enter amount"
-								/>
-							</div>
-						</div>
+			<div className="bg-[#fbf2d5] w-full mx-auto relative -mt-60 m-4">
+				<form
+					className="bg-white w-full mx-auto p-6 sm:p-8"
+					onSubmit={onSubmit}
+				>
+					<div className="mb-8">
+						<h3 className="text-gray-800 text-2xl font-bold text-center">
+							Add New Income
+						</h3>
+					</div>
 
-						<div>
-							<label className="text-gray-800 text-xs block mb-2"></label>
-							<div className="relative flex items-center">
-								<input
-									value={date}
-									type="date"
-									onChange={(e) => setDate(e.target.value)}
-									name="date"
-									id="date"
-									required={true}
-									className="w-full bg-transparent text-sm text-gray-800 border-b border-gray-300 focus:border-gray-500 pl-2 pr-8 py-3 outline-none"
-								/>
-							</div>
-						</div>
+					{/* Amount */}
+					<div className="mb-4">
+						<label htmlFor="amount" className="block text-sm font-medium text-gray-700 mb-1">
+							Amount
+						</label>
+						<input
+							value={amount}
+							onChange={(e) => setAmount(e.target.value)}
+							name="amount"
+							id="amount"
+							required
+							className="w-full bg-white text-sm text-gray-800 border border-[#fdc57b] rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-[#fdc57b] transition"
+							placeholder="Enter amount"
+						/>
+					</div>
 
-						<div className="mt-8">
-							<button
-								type="submit"
-								className="w-full shadow-xl py-2.5 px-4 text-sm font-semibold tracking-wider rounded-md text-white bg-[#394a51] hover:bg-[#7fa99b] focus:outline-none transition-all"
-								disabled={disabled}
-							>
-								{income ? 'Update Income' : 'Create Income'}
-							</button>
+					{/* Date */}
+					<div className="mb-6">
+						<label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-1">
+							Date
+						</label>
+						<input
+							value={date}
+							type="date"
+							onChange={(e) => setDate(e.target.value)}
+							name="date"
+							id="date"
+							required
+							className="w-full bg-white text-sm text-gray-800 border border-[#fdc57b] rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-[#fdc57b] transition"
+						/>
+					</div>
 
-              <br />
-              <br />
-              
-							<button
-								type="button"
-								onClick={onCancel}
-								className="w-full shadow-xl py-2.5 px-4 text-sm font-semibold tracking-wider rounded-md text-white bg-[#394a51] hover:bg-[#7fa99b] focus:outline-none transition-all"
-							>
-								Cancel
-							</button>
-						</div>
-					</form>
-				</div>
+					<div className="flex flex-col gap-3 mt-8">
+						<button
+							type="submit"
+							disabled={disabled}
+							className="w-full py-2.5 px-4 text-sm font-semibold rounded-lg text-gray-700 bg-[#fff8ef] border border-[#fdc57b] hover:bg-[#fff0da] transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+						>
+							{income ? 'Update Income' : 'Add Income'}
+						</button>
+
+						<button
+							type="button"
+							onClick={onCancel}
+							className="w-full py-2.5 px-4 text-sm font-semibold rounded-lg text-gray-600 bg-white border border-[#fdc57b] hover:bg-[#fff0da] transition duration-200"
+						>
+							Cancel
+						</button>
+					</div>
+				</form>
 			</div>
-		</>
+		</div>
 	);
 };
 
