@@ -4,6 +4,7 @@ import { useFetchSummary } from '../Hooks/useFetchSummary';
 import { useFetchExpensesByCategory } from '../Hooks/useFetchExpensesByCategory';
 import Loading from "../Components/Loading/Loading";
 import ErrorComponent from "../Components/Util/ErrorComponent.jsx";
+import ExpenseButton from "../Components/Buttons/ExpenseButton.jsx";
 
 export const Expenses = () => {
 	const {loading: summaryLoading, error: summaryError, summary} = useFetchSummary();
@@ -64,12 +65,7 @@ export const Expenses = () => {
 				</div>
 			</div>
 			<div className="mt-6 flex justify-center pb-10">
-				<Link
-					to="/expenses/create"
-					className="text-white bg-[#7e8283] hover:bg-[#7fa99b] font-semibold py-2 px-4 rounded transition"
-				>
-					Add New Expense
-				</Link>
+				<ExpenseButton />
 			</div>
 		</>
 	);
