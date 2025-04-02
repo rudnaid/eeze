@@ -104,9 +104,9 @@ const Login = () => {
 					{/* Social Icons */}
 					<hr className="my-6 border-[#fdc57b]" />
 					<div className="flex justify-center space-x-6">
-						<AiOutlineGoogle size={28} className="text-[#fdc57b] hover:opacity-70 transition"/>
-						<FaApple size={28} className="text-[#fdc57b] hover:opacity-60 transition" />
-						<FaFacebook size={28} className="text-[#fdc57b] hover:opacity-60 transition" />
+						<AiOutlineGoogle size={28} className="text-gray-400 hover:text-gray-500"/>
+						<FaApple size={28} className="text-gray-400 hover:text-gray-500" />
+						<FaFacebook size={28} className="text-gray-400 hover:text-gray-500" />
 					</div>
 				</form>
 			</div>

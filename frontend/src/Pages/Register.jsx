@@ -226,14 +226,14 @@ const Register = () => {
 						{/* Social icons */}
 						<hr className="my-6 border-[#fdc57b]" />
 						<div className="space-x-8 flex justify-center">
-							<AiOutlineGoogle size={28} className="text-[#fdc57b] hover:opacity-70 transition"/>
+							<AiOutlineGoogle size={28} className="text-gray-400 hover:text-gray-500"/>
 							<FaApple
 								size={26}
-								className="text-[#fdc57b] hover:opacity-70 transition"
+								className="text-gray-400 hover:text-gray-500"
 							/>
 							<FaFacebook
 								size={26}
-								className="text-[#fdc57b] hover:opacity-70 transition"
+								className="text-gray-400 hover:text-gray-500"
 							/>
 						</div>
 					</form>
