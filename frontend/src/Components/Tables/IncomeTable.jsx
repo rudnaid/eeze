@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import React from "react";
+import IncomeButton from "../Buttons/IncomeButton.jsx";
 
 const IncomeTable = ({ incomes }) => {
     const total = incomes.reduce((acc, income) => acc + income.amount, 0);
@@ -42,12 +43,7 @@ const IncomeTable = ({ incomes }) => {
 
             {/* Add Button */}
             <div className="mt-6 flex justify-center">
-                <Link
-                    to="/income/create"
-                    className="text-white bg-[#7e8283] hover:bg-[#7fa99b] font-semibold py-2 px-4 rounded transition"
-                >
-                    Add New Income
-                </Link>
+                <IncomeButton />
             </div>
         </div>
     );
