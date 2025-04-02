@@ -8,7 +8,9 @@ const IncomeButton = () => {
   return (
     <>
       <div>
-        <button onClick={() => setIncomeModal(true)} className="w-full shadow-xl py-2.5 px-4 text-sm font-semibold tracking-wider rounded-md text-white bg-gray-800 hover:bg-gray-500 focus:outline-none transition-all">
+        <button onClick={() => setIncomeModal(true)}
+                className="w-full py-2.5 px-4 text-sm font-semibold rounded-lg text-gray-700 bg-[#fff8ef] border border-[#fdc57b] hover:bg-[#fff0da] transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
           Add new income
         </button>
 

@@ -21,6 +21,14 @@ const Layout = () => {
 		return () => window.removeEventListener('resize', updateNavbarHeight);
 	}, []);
 
+	useEffect(() => {
+		if (!user) {
+			setNavbarHeight(0);
+		} else {
+			updateNavbarHeight();
+		}
+	}, [user]);
+
 	return (
 		<div className="flex flex-col min-h-screen">
 			{user ? (

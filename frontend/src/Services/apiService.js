@@ -135,3 +135,14 @@ export const registerUser = async (user) => {
     console.error('Error registering user:', error);
   }
 }
+
+export const fetchCurrentMonthExpenses = async (user) => {
+  try {
+    const response = await api.get("/expenses/current", {
+      user,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error getting current month expenses:', error);
+  }
+};

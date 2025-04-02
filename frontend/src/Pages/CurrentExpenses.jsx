@@ -1,15 +1,18 @@
-import React from "react";
-import IncomeButton from "../Buttons/IncomeButton.jsx";
+import Loading from "../Components/Loading/Loading.jsx";
+import {useFetchCurrentMonthExpenses} from "../Hooks/useFetchCurrentMonthExpenses.jsx";
 
-const IncomeTable = ({ incomes }) => {
-    const total = incomes.reduce((acc, income) => acc + income.amount, 0);
+const CurrentExpenses = () => {
+    const { expenses, loading } = useFetchCurrentMonthExpenses();
+
+    const total =  expenses.reduce((acc, item) => acc + item.amount, 0);
+
+    if (loading) return <Loading />;
 
     return (
-        <div className="p-6 max-w-2xl mx-auto">
-            {/* Total Income Box */}
+        <div className="p-6 max-w-3xl mx-auto">
             <div className="border-2 border-[#fdc57b] rounded-xl p-4 shadow-md bg-[#fefaf4] mb-6">
                 <p className="font-bold text-right text-lg text-gray-700">
-                    Total Income
+                    Monthly Total
                 </p>
                 <hr className="my-2 border-t border-gray-200" />
                 <p className="text-xl font-bold text-right">
@@ -19,33 +22,28 @@ const IncomeTable = ({ incomes }) => {
                     })}
                 </p>
             </div>
-            <div className="mb-8"></div>
 
-
-            {/* Income Items Boxed Layout */}
             <div className="space-y-4">
-                {incomes.map((income, index) => (
+                {expenses.map((expense) => (
                     <div
-                        key={index}
+                        key={expense.publicId}
                         className="border border-[#fdc57b] rounded-xl p-4 shadow-sm bg-white flex justify-between items-center"
                     >
-                        <div className="text-gray-500 text-sm mt-1">{income.date}</div>
+                        <div className="flex flex-col">
+                            <p className="font-semibold">{expense.expenseCategory}</p>
+                            <p className="text-gray-500 text-xs mt-1">{expense.transactionDate}</p>
+                        </div>
+
                         <div className="font-bold">
-                            {income.amount.toLocaleString('de-DE', {
+                            {expense.amount.toLocaleString("de-DE", {
                                 minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
                             })}
                         </div>
                     </div>
                 ))}
             </div>
-
-            {/* Add Button */}
-            <div className="mt-6 flex justify-center">
-                <IncomeButton />
-            </div>
         </div>
     );
 };
 
-export default IncomeTable;
+export default CurrentExpenses;

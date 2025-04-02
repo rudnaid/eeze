@@ -14,6 +14,7 @@ import LandingPage from './Pages/LandingPage.jsx';
 import {AuthProvider} from "./Context/AuthContext.jsx";
 import Layout from "./Layouts/Layout.jsx";
 import ProtectedRoute from "./Components/Util/ProtectedRoute.jsx";
+import CurrentExpenses from "./Pages/CurrentExpenses.jsx";
 
 const router = createBrowserRouter([
   {
@@ -70,6 +71,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <IncomeCreator/>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'expenses/current',
+        element: (
+          <ProtectedRoute>
+            <CurrentExpenses/>
           </ProtectedRoute>
         ),
       },
