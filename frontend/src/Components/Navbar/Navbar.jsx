@@ -16,7 +16,7 @@ const Navbar = ({ navbarRef, updateNavbarHeight }) => {
     return (
         <nav
             ref={navbarRef}
-            className="fixed top-0 left-0 w-full bg-[#7fa99b] shadow-md p-4 flex flex-wrap justify-between items-center z-50"
+            className="fixed top-0 left-0 w-full bg-[url(/green-circles.png)] shadow-md p-4 flex flex-wrap justify-between items-center z-50"
         >
             <Link to="/home" className="text-4xl text-[#fdc57b] font-[sans-serif]">
                 eeze
