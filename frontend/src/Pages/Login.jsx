@@ -92,12 +92,13 @@ const Login = () => {
 						>
 							Sign in
 						</button>
-						<Link
-							to="/register"
-							className="w-full text-center py-2.5 px-4 text-sm font-semibold rounded-lg text-gray-600 bg-white border border-[#fdc57b] hover:bg-[#fff0da] transition"
-						>
-							Register here
-						</Link>
+
+						<p className="text-gray-800 text-sm text-center mt-6">
+							Don&#39;t have an account?
+							<Link to="/register" className="text-[#394a51] font-semibold hover:underline ml-1 whitespace-nowrap">
+								Register here
+							</Link>
+						</p>
 					</div>
 
 					{/* Social Icons */}
