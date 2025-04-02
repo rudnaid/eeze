@@ -1,6 +1,6 @@
+import { AiOutlineGoogle } from "react-icons/ai"; 
 import { FaFacebook } from 'react-icons/fa';
 import { FaApple } from 'react-icons/fa';
-import { FcGoogle } from 'react-icons/fc';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { BiMap } from 'react-icons/bi';
 import { MdAlternateEmail } from 'react-icons/md';
@@ -226,14 +226,14 @@ const Register = () => {
 						{/* Social icons */}
 						<hr className="my-6 border-[#fdc57b]" />
 						<div className="space-x-8 flex justify-center">
-							<FcGoogle size={28} className="hover:opacity-70 transition" />
+							<AiOutlineGoogle size={28} className="text-[#fdc57b] hover:opacity-70 transition"/>
 							<FaApple
 								size={26}
-								className="text-gray-800 hover:opacity-70 transition"
+								className="text-[#fdc57b] hover:opacity-70 transition"
 							/>
 							<FaFacebook
 								size={26}
-								className="text-[#394a51] hover:opacity-70 transition"
+								className="text-[#fdc57b] hover:opacity-70 transition"
 							/>
 						</div>
 					</form>

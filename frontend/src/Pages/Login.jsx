@@ -1,7 +1,7 @@
+import { AiOutlineGoogle } from "react-icons/ai"; 
 import { useState } from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { FaApple, FaFacebook, FaUser } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext.jsx";
 import { loginUser } from "../Services/apiService.js";
@@ -104,9 +104,9 @@ const Login = () => {
 					{/* Social Icons */}
 					<hr className="my-6 border-[#fdc57b]" />
 					<div className="flex justify-center space-x-6">
-						<FcGoogle size={28} />
-						<FaApple size={28} className="text-black" />
-						<FaFacebook size={28} className="text-[#1877F2]" />
+						<AiOutlineGoogle size={28} className="text-[#fdc57b] hover:opacity-70 transition"/>
+						<FaApple size={28} className="text-[#fdc57b] hover:opacity-60 transition" />
+						<FaFacebook size={28} className="text-[#fdc57b] hover:opacity-60 transition" />
 					</div>
 				</form>
 			</div>
