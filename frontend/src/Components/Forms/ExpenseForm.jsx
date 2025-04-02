@@ -48,7 +48,7 @@ const ExpenseForm = ({ onSave, disabled, expense, onCancel }) => {
                     <form className="bg-white max-w-xl w-full mx-auto p-6 sm:p-8" onSubmit={onSubmit}>
                         <div className="mb-12">
                             <h3 className="text-gray-800 text-3xl font-bold text-center">
-                                Create new expense
+                                Add new expense
                             </h3>
                         </div>
 
@@ -102,7 +102,7 @@ const ExpenseForm = ({ onSave, disabled, expense, onCancel }) => {
                             <button
                                 type="submit"
                                 disabled={disabled}
-                                className="w-full shadow-xl py-2.5 px-4 text-sm font-semibold tracking-wider rounded-md text-white bg-gray-800 hover:bg-gray-500 focus:outline-none transition-all">
+                                className="w-full shadow-xl py-2.5 px-4 text-sm font-semibold tracking-wider rounded-md text-white bg-[#394a51] hover:bg-[#7fa99b] focus:outline-none transition-all">
                                 {expense ? "Update Expense" : "Create Expense"}
                             </button>
 
@@ -112,7 +112,7 @@ const ExpenseForm = ({ onSave, disabled, expense, onCancel }) => {
                             <button
                                 type="button"
                                 onClick={onCancel}
-                                className="w-full shadow-xl py-2.5 px-4 text-sm font-semibold tracking-wider rounded-md text-white bg-gray-800 hover:bg-gray-500 focus:outline-none transition-all">
+                                className="w-full shadow-xl py-2.5 px-4 text-sm font-semibold tracking-wider rounded-md text-white bg-[#394a51] hover:bg-[#7fa99b] focus:outline-none transition-all">
                                 Cancel
                             </button>
                         </div>

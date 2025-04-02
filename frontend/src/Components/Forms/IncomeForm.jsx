@@ -34,7 +34,7 @@ const IncomeForm = ({ onSave, disabled, income, onCancel }) => {
 					>
 						<div className="mb-12">
 							<h3 className="text-gray-800 text-3xl font-bold text-center">
-								Create new income
+								Add new income
 							</h3>
 						</div>
 
@@ -71,7 +71,7 @@ const IncomeForm = ({ onSave, disabled, income, onCancel }) => {
 						<div className="mt-8">
 							<button
 								type="submit"
-								className="w-full shadow-xl py-2.5 px-4 text-sm font-semibold tracking-wider rounded-md text-white bg-gray-800 hover:bg-gray-500 focus:outline-none transition-all"
+								className="w-full shadow-xl py-2.5 px-4 text-sm font-semibold tracking-wider rounded-md text-white bg-[#394a51] hover:bg-[#7fa99b] focus:outline-none transition-all"
 								disabled={disabled}
 							>
 								{income ? 'Update Income' : 'Create Income'}
@@ -83,7 +83,7 @@ const IncomeForm = ({ onSave, disabled, income, onCancel }) => {
 							<button
 								type="button"
 								onClick={onCancel}
-								className="w-full shadow-xl py-2.5 px-4 text-sm font-semibold tracking-wider rounded-md text-white bg-gray-800 hover:bg-gray-500 focus:outline-none transition-all"
+								className="w-full shadow-xl py-2.5 px-4 text-sm font-semibold tracking-wider rounded-md text-white bg-[#394a51] hover:bg-[#7fa99b] focus:outline-none transition-all"
 							>
 								Cancel
 							</button>
