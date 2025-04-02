@@ -48,7 +48,7 @@ const Register = () => {
 					{/* <img className="w-full h-full bg-[#6a9184]" /> */}
 				</div>
 
-				<div className="max-w-md w-full mx-auto relative -mt-60 m-4">
+				<div className="max-w-lg w-full mx-auto relative -mt-60 m-4">
 					<form
 						onSubmit={handleRegister}
 						className="bg-white bg-opacity-90 w-full p-6 sm:p-8 rounded-xl border border-[#fdc57b] shadow-md"
