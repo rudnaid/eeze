@@ -1,9 +1,6 @@
 package com.codecool.spendeeze.service;
 
-import com.codecool.spendeeze.model.dto.JwtResponse;
-import com.codecool.spendeeze.model.dto.LoginMemberRequestDTO;
-import com.codecool.spendeeze.model.dto.MemberRequestDTO;
-import com.codecool.spendeeze.model.dto.MemberResponseDTO;
+import com.codecool.spendeeze.model.dto.*;
 import com.codecool.spendeeze.model.entity.Member;
 import com.codecool.spendeeze.model.entity.MemberRole;
 import com.codecool.spendeeze.repository.MemberRepository;
@@ -40,10 +37,10 @@ public class MemberService {
 
     public MemberResponseDTO getUserResponseDTOByUsername(String username) {
         Optional<Member> member = memberRepository.findMemberByUsername(username);
-        return member.map(this::convertToUserResponseDTO).orElseThrow(NoSuchElementException::new);
+        return member.map(this::convertToMemberResponseDTO).orElseThrow(NoSuchElementException::new);
     }
 
-    private MemberResponseDTO convertToUserResponseDTO(Member member) {
+    private MemberResponseDTO convertToMemberResponseDTO(Member member) {
         return new MemberResponseDTO(
                 member.getFirstName(),
                 member.getLastName(),
@@ -52,7 +49,7 @@ public class MemberService {
         );
     }
 
-    private Member convertToUser(MemberRequestDTO memberRequestDTO) {
+    private Member convertToMember(MemberRequestDTO memberRequestDTO) {
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
@@ -70,11 +67,11 @@ public class MemberService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username already exist!");
         }
 
-        Member member = convertToUser(memberRequestDTO);
+        Member member = convertToMember(memberRequestDTO);
 
         memberRepository.save(member);
 
-        return convertToUserResponseDTO(member);
+        return convertToMemberResponseDTO(member);
     }
 
     private Member getUserByUsername(String username) {
@@ -82,17 +79,18 @@ public class MemberService {
         return member.orElseThrow(NoSuchElementException::new);
     }
 
-    public MemberResponseDTO updateMember(MemberRequestDTO memberRequestDTO) {
-        Member member = getUserByUsername(memberRequestDTO.username());
+    public MemberResponseDTO updateMember(String username, MemberUpdateDTO memberUpdateDTO) {
+        Member member = getUserByUsername(username);
 
-        member.setFirstName(memberRequestDTO.firstName());
-        member.setLastName(memberRequestDTO.lastName());
-        member.setEmail(memberRequestDTO.email());
-        member.setCountry(memberRequestDTO.country());
+        memberUpdateDTO.firstName().ifPresent(member::setFirstName);
+        memberUpdateDTO.lastName().ifPresent(member::setLastName);
+        memberUpdateDTO.country().ifPresent(member::setCountry);
+        memberUpdateDTO.email().ifPresent(member::setEmail);
+        memberUpdateDTO.password().ifPresent(password -> member.setPassword(encoder.encode(password)));
 
         memberRepository.save(member);
 
-        return convertToUserResponseDTO(member);
+        return convertToMemberResponseDTO(member);
     }
 
     public int deleteMemberByUsername(String username) {

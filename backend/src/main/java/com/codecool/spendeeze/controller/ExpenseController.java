@@ -4,10 +4,8 @@ import com.codecool.spendeeze.model.dto.ExpenseWithAmountDateCategoryDTO;
 import com.codecool.spendeeze.model.dto.ExpenseWithIdAmountDateCategoryDTO;
 import com.codecool.spendeeze.model.entity.TransactionCategory;
 import com.codecool.spendeeze.service.ExpenseService;
+import com.codecool.spendeeze.util.AuthUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,16 +15,17 @@ import java.util.UUID;
 @RequestMapping("/api/expenses")
 public class ExpenseController {
     private final ExpenseService expenseService;
+    private final AuthUtil authUtil;
 
     @Autowired
-    public ExpenseController(ExpenseService expenseService) {
+    public ExpenseController(ExpenseService expenseService, AuthUtil authUtil) {
         this.expenseService = expenseService;
+        this.authUtil = authUtil;
     }
 
     @GetMapping
     public List<ExpenseWithIdAmountDateCategoryDTO> getAllExpensesByMemberUsername() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
+        String username = authUtil.getUsername();
         return expenseService.getAllExpensesByUsername(username);
     }
 
@@ -37,15 +36,13 @@ public class ExpenseController {
 
     @GetMapping("/category/{category}")
     public List<ExpenseWithIdAmountDateCategoryDTO> getExpensesOfMemberByCategory(@PathVariable TransactionCategory category) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
+        String username = authUtil.getUsername();
         return expenseService.getExpensesByExpenseCategoryAndMemberUsername(category, username);
     }
 
     @PostMapping
     public ExpenseWithIdAmountDateCategoryDTO addExpense(@RequestBody ExpenseWithAmountDateCategoryDTO expenseDTO) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
+        String username = authUtil.getUsername();
         return expenseService.addExpense(username, expenseDTO);
     }
 
@@ -61,8 +58,7 @@ public class ExpenseController {
 
     @GetMapping("/current")
     public List<ExpenseWithIdAmountDateCategoryDTO> getCurrentMonthExpenses() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
+        String username = authUtil.getUsername();
         return expenseService.getCurrentMonthExpenses(username);
     }
 }

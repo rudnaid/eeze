@@ -1,9 +1,6 @@
 package com.codecool.spendeeze.service;
 
-import com.codecool.spendeeze.model.dto.JwtResponse;
-import com.codecool.spendeeze.model.dto.LoginMemberRequestDTO;
-import com.codecool.spendeeze.model.dto.MemberRequestDTO;
-import com.codecool.spendeeze.model.dto.MemberResponseDTO;
+import com.codecool.spendeeze.model.dto.*;
 import com.codecool.spendeeze.model.entity.Member;
 import com.codecool.spendeeze.model.entity.MemberRole;
 import com.codecool.spendeeze.repository.MemberRepository;
@@ -53,6 +50,7 @@ public class MemberServiceTest {
     private Member member;
     private MemberRequestDTO memberRequestDTO;
     private LoginMemberRequestDTO loginRequestDTO;
+
 
     @BeforeEach
     void setUp() {
@@ -163,10 +161,10 @@ public class MemberServiceTest {
         given(memberRepository.save(any(Member.class))).willReturn(member);
         member.setEmail("updated@gmail.com");
         member.setCountry("UpdatedCountry");
-        memberRequestDTO = new MemberRequestDTO("TestFirstName", "TestLastName", "UpdatedCountry", "updated@gmail.com", "testUser", "password123");
+        MemberUpdateDTO memberUpdateDTO = new MemberUpdateDTO(Optional.of(""), Optional.of(""), Optional.of("UpdatedCountry"), Optional.of("updated@gmail.com"), Optional.of(""));
 
         // WHEN
-        MemberResponseDTO updatedMember = memberService.updateMember(memberRequestDTO);
+        MemberResponseDTO updatedMember = memberService.updateMember("testUser", memberUpdateDTO);
 
         // THEN
         assertThat(updatedMember).isNotNull();

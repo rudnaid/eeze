@@ -1,23 +1,21 @@
 package com.codecool.spendeeze.controller;
 
-import com.codecool.spendeeze.model.dto.JwtResponse;
-import com.codecool.spendeeze.model.dto.LoginMemberRequestDTO;
-import com.codecool.spendeeze.model.dto.MemberRequestDTO;
-import com.codecool.spendeeze.model.dto.MemberResponseDTO;
+import com.codecool.spendeeze.model.dto.*;
 import com.codecool.spendeeze.service.MemberService;
+import com.codecool.spendeeze.util.AuthUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/users")
 public class MemberController {
     private final MemberService memberService;
+    private final AuthUtil authUtil;
 
     @Autowired
-    public MemberController(MemberService memberService) {
+    public MemberController(MemberService memberService, AuthUtil authUtil) {
         this.memberService = memberService;
+        this.authUtil = authUtil;
     }
 
     @GetMapping("/me")
@@ -35,13 +33,15 @@ public class MemberController {
         return memberService.authenticateUser(loginRequest);
     }
 
-    @PutMapping
-    public MemberResponseDTO updateMember(@RequestBody MemberRequestDTO memberRequestDTO) {
-        return memberService.updateMember(memberRequestDTO);
+    @PatchMapping
+    public MemberResponseDTO updateMember(@RequestBody MemberUpdateDTO memberUpdateDTO) {
+        String username = authUtil.getUsername();
+        return memberService.updateMember(username, memberUpdateDTO);
     }
 
     @DeleteMapping
-    public int deleteMember(@RequestParam String username) {
+    public int deleteMember() {
+        String username = authUtil.getUsername();
         return memberService.deleteMemberByUsername(username);
     }
 }
