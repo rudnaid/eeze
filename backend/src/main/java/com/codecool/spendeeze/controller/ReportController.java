@@ -5,9 +5,8 @@ import com.codecool.spendeeze.model.dto.TotalExpenseByTransactionCategoryDTO;
 import com.codecool.spendeeze.model.dto.reports.CategoryReport;
 import com.codecool.spendeeze.model.dto.reports.MonthlyIncomeExpenseReportDTO;
 import com.codecool.spendeeze.service.ReportService;
+import com.codecool.spendeeze.util.AuthUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -18,23 +17,23 @@ import java.util.List;
 @CrossOrigin("*")
 public class ReportController {
     private final ReportService reportService;
+    private final AuthUtil authUtil;
 
     @Autowired
-    public ReportController(ReportService reportService) {
+    public ReportController(ReportService reportService, AuthUtil authUtil) {
         this.reportService = reportService;
+        this.authUtil = authUtil;
     }
 
     @GetMapping
     public ReportDTO getSummaryReport() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String memberUsername = authentication.getName();
+        String memberUsername = authUtil.getUsername();
         return reportService.generateReport(memberUsername);
     }
 
     @GetMapping("/by-category")
     public List<TotalExpenseByTransactionCategoryDTO> getExpensesByCategory() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String memberUsername = authentication.getName();
+        String memberUsername = authUtil.getUsername();
         return reportService.getTotalExpenseByTransactionCategory(memberUsername);
     }
 
