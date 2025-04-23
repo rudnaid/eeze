@@ -86,17 +86,21 @@ To simplify setup, example `.env` files with the necessary **environment variabl
 
 #### Without Docker
 
-- **On Windows:**
-     - Execute the command:
-       ```bash
-       ./start-local.ps1
-       ```
-- **On macOS/Linux:**
-     - Execute the command:
-       ```bash
-       chmod +x start-local.sh && ./start-local.sh
-       ```
+1. **Navigate to the scripts folder**
+   - Open your terminal and navigate to the **scripts** folder located in the **root** folder of the project.
 
+2. **Run starter scripts for automated setup**
+   - **On Windows:**
+        - Execute the command:
+          ```bash
+          ./start-local.ps1
+          ```
+   - **On macOS/Linux:**
+        - Execute the command:
+          ```bash
+          chmod +x start-local.sh && ./start-local.sh
+          ```
+         
 3. **Access the Application**
    - Open your browser and visit:  
      [http://localhost:5173](http://localhost:5173)
@@ -107,7 +111,7 @@ To simplify setup, example `.env` files with the necessary **environment variabl
    - Start Docker Desktop or the Docker daemon on your system.
 
 2. **Navigate to the scripts folder**
-   - Open your terminal and navigate to the **scripts** folder located in the **root** of the project.
+   - Open your terminal and navigate to the **scripts** folder located in the **root** folder of the project.
 
 3. **Build and run the containers**
    - **On Windows:**
