@@ -11,21 +11,23 @@ Get-Content "../config/.env.docker" | ForEach-Object {
 docker-compose up -d --build
 
 Write-Host "Waiting for PostgreSQL to be ready..."
-$tablesReady = $false
+$pgReady = $false
 
-while (-not $tablesReady) {
-    $result = docker exec -i db psql -U postgres -d spendeeze -c "SELECT 1 FROM information_schema.tables WHERE table_name IN ('expense', 'income', 'member', 'member_roles', 'transaction_category');" 2>&1
-    if ($result -match "1") {
-        $tablesReady = $true
+while (-not $pgReady) {
+    $result = docker exec db pg_isready -U postgres 2>&1
+    if ($result -match "accepting connections") {
+        $pgReady = $true
     } else {
-        Write-Host "Tables not ready yet, waiting..."
+        Write-Host "PostgreSQL not ready yet, waiting..."
         Start-Sleep -Seconds 5
     }
 }
 
+
 Write-Host "Tables are ready. Executing dummy data script..."
 
-docker exec -i db psql -U postgres -d spendeeze < ../backend/db_init/dummyDataGenerator.sql
+Get-Content ../backend/db_init/dummyDataGenerator.sql | docker exec -i db psql -U postgres -d spendeeze
 
 Write-Host "Dummy data inserted successfully."
 Write-Host "Visit http://localhost:3000 in your browser."
+
