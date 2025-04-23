@@ -107,8 +107,8 @@ To simplify setup, example `.env` files with the necessary **environment variabl
    - Open your browser and visit:  
      [http://localhost:5173](http://localhost:5173)
 
-4. **Stop the application**
-   - In your **** press `Ctrl + C`
+4. **Stopping the application**
+   - In your **terminal** press `Ctrl + C`
 
 #### With Docker
 
@@ -135,7 +135,7 @@ To simplify setup, example `.env` files with the necessary **environment variabl
    - Open your browser and visit:  
      [http://localhost:3000](http://localhost:3000)
 
-5. **Stop the application**
+5. **Stopping the application**
    - To remove the containers, execute this command:  
      ```bash
        docker-compose down
