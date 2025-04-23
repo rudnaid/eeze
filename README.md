@@ -32,10 +32,6 @@ It provides insights through data visualization, helping users make informed fin
 
 <img width="492" alt="Screenshot 2025-04-02 at 21 52 38" src="https://github.com/user-attachments/assets/704132f7-2839-4503-95e9-9c5b3d3ef769" /> <br>
 
-<img width="378" alt="Screenshot 2025-04-02 at 21 48 21" src="https://github.com/user-attachments/assets/bb7a4245-e3c1-4a57-a892-8fb632745adc" />
-
-<img width="373" alt="Screenshot 2025-04-02 at 22 02 17" src="https://github.com/user-attachments/assets/909e5839-669e-4dcf-877f-468ca1b8f296" />
-
   
 ## Built With
 
@@ -80,16 +76,17 @@ Make sure you have the following installed:
 
 ### Installation Steps
 
-**Clone the repository to your machine, then proceed with one of the installation options below.**
+**Clone the repository to your machine** with command `git clone https://github.com/rudnaid/spendeeze`**, then proceed with one of the installation options below.**
 
 To simplify setup, example `.env` files with the necessary **environment variables** are already provided in the **config** folder. You can modify their values to customize the app to your preferences.
 
 #### Without Docker
 
-1. **Navigate to the scripts folder**
+1. **Modify .env.local file with your own PostgreSQL credentials**
+2. **Navigate to the scripts folder**
    - Open your terminal and navigate to the **scripts** folder located in the **root** folder of the project.
 
-2. **Run starter scripts for automated setup**
+3. **Run starter scripts for automated setup**
    - **On Windows:**
         - Execute the command:
           ```bash
@@ -101,9 +98,12 @@ To simplify setup, example `.env` files with the necessary **environment variabl
           chmod +x start-local.sh && ./start-local.sh
           ```
          
-3. **Access the Application**
+4. **Access the Application**
    - Open your browser and visit:  
      [http://localhost:5173](http://localhost:5173)
+
+5. **Stop the application**
+   - Press `Ctrl + C`
 
 #### With Docker
 
@@ -129,23 +129,37 @@ To simplify setup, example `.env` files with the necessary **environment variabl
    - Open your browser and visit:  
      [http://localhost:3000](http://localhost:3000)
 
+5. **Stop the application**
+   - To remove the containers, execute this command:  
+     ```bash
+       docker-compose down
+     ```
+
 ## Usage
 
 ### Managing Incomes and Expenses
 
 1. **Register** a new user or **log in** if you already have an account.
 
-2. **Add Income or Expense**
+   You can also use a default user to explore the app with some preloaded transactions:
+      - **Username:** `john_doe`
+      - **Password:** `user`
+
+3. **Add Income or Expense**
    - Once on the main page, click the **Add Income** or **Add Expense** button.
    - A pop-up will appear where you can enter the required details:
      - **Amount**
      - **Date**
      - If it's an *expense*, also **select a category** from the list.
 
-3. **Visualize Your Finances**
+4. **Visualize Your Finances**
    - After adding your data:
      - The **bar chart** will show a **monthly breakdown** of total *income* and *expenses*.
      - The **pie chart** will display how the **current month's expenses** are distributed across categories.
+    
+<img width="378" alt="Screenshot 2025-04-02 at 21 48 21" src="https://github.com/user-attachments/assets/bb7a4245-e3c1-4a57-a892-8fb632745adc" />
+
+<img width="373" alt="Screenshot 2025-04-02 at 22 02 17" src="https://github.com/user-attachments/assets/909e5839-669e-4dcf-877f-468ca1b8f296" />
 
 ## Acknowledgments
 
