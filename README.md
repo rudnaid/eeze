@@ -32,9 +32,9 @@ It provides insights through data visualization, helping users make informed fin
 
 <img width="492" alt="Screenshot 2025-04-02 at 21 52 38" src="https://github.com/user-attachments/assets/704132f7-2839-4503-95e9-9c5b3d3ef769" /> <br>
 
-The entire application is containerized using Docker Compose, enabling seamless deployment and scalability.
+The entire application is containerized using **Docker Compose**, enabling seamless **deployment** and **scalability**.
 
-A functional CI pipeline ensures the code quality and automate the build and test processes.
+A **CI pipeline** helps ensure **code stability** and **correctness** by automatically building and testing code changes on GitHub.
   
 ## Built With
 
@@ -75,21 +75,23 @@ Make sure you have the following installed:
 - **Node.js 18+**
 - **PostgreSQL 14+**
 - **Maven**
-- **Docker** (optional)
+- **Docker** (*optional*)
 
 ### Installation Steps
 
-**Clone the repository to your machine** with command `git clone https://github.com/rudnaid/spendeeze`**, then proceed with one of the installation options below.**
+1. Open a **terminal** and navigate to the directory where you would like to save the repository.
+   
+2. **Clone the repository** to your machine by executing the command `git clone https://github.com/rudnaid/spendeeze` in your **terminal**, then proceed with one of the installation  options below.
 
-To simplify setup, example `.env` files with the necessary **environment variables** are already provided in the **config** folder. You can modify their values to customize the app to your preferences.
+To simplify setup, example `.env` files with the necessary **environment variables** are already provided in the **config** directory. You can modify their values to customize the app to your preferences, either by manually editing them or by running the provided **starter scripts**.
 
 #### Without Docker
 
-1. **Modify .env.local file with your own PostgreSQL credentials**
-2. **Navigate to the scripts folder**
-   - Open your terminal and navigate to the **scripts** folder located in the **root** folder of the project.
+1. **Navigate to the scripts directory**
+   - Open your **terminal** and navigate to the **scripts** directory located in the **root** directory of the project.
+   - The **scripts** will guide you through the initial setup of **environment variables**.
 
-3. **Run starter scripts for automated setup**
+2. **Run starter script for automated setup**
    - **On Windows:**
         - Execute the command:
           ```bash
@@ -101,22 +103,23 @@ To simplify setup, example `.env` files with the necessary **environment variabl
           chmod +x start-local.sh && ./start-local.sh
           ```
          
-4. **Access the Application**
+3. **Access the Application**
    - Open your browser and visit:  
      [http://localhost:5173](http://localhost:5173)
 
-5. **Stop the application**
-   - Press `Ctrl + C`
+4. **Stop the application**
+   - In your **** press `Ctrl + C`
 
 #### With Docker
 
 1. **Ensure Docker is Running**
-   - Start Docker Desktop or the Docker daemon on your system.
+   - Start **Docker Desktop** or the **Docker daemon** on your system.
 
-2. **Navigate to the scripts folder**
-   - Open your terminal and navigate to the **scripts** folder located in the **root** folder of the project.
+2. **Navigate to the scripts directory**
+   - The **scripts** will guide you through the initial setup of **environment variables**.
+   - Open your **terminal** and navigate to the **scripts** directory located in the **root** directory of the project.
 
-3. **Build and run the containers**
+3. **Build and run the containers with the automated script**
    - **On Windows:**
      - Execute the command:
        ```bash
@@ -144,7 +147,7 @@ To simplify setup, example `.env` files with the necessary **environment variabl
 
 1. **Register** a new user or **log in** if you already have an account.
 
-   You can also use a default user to explore the app with some preloaded transactions:
+   You can also use a **default user** to explore the app with six months of randomly generated transactions:
       - **Username:** `john_doe`
       - **Password:** `user`
 
@@ -153,7 +156,7 @@ To simplify setup, example `.env` files with the necessary **environment variabl
    - A pop-up will appear where you can enter the required details:
      - **Amount**
      - **Date**
-     - If it's an *expense*, also **select a category** from the list.
+     - If you are adding an *expense*, also **select a category** from the list.
 
 4. **Visualize Your Finances**
    - After adding your data:
