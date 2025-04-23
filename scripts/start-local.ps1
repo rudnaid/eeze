@@ -6,7 +6,7 @@ Get-Content "../config/.env.local" | ForEach-Object {
 }
 
 Write-Host "Starting backend..."
-Start-Process powershell -ArgumentList '-NoExit', '-Command', "cd backend; .\mvnw spring-boot:run"
+Start-Process powershell -ArgumentList '-NoExit', '-Command', "cd ../backend; .\mvnw spring-boot:run"
 
 Write-Host "Starting frontend..."
-Start-Process powershell -ArgumentList '-NoExit', '-Command', "cd frontend; npm run dev"
+Start-Process powershell -ArgumentList '-NoExit', '-Command', "cd ../frontend; npm run dev"
