@@ -32,6 +32,9 @@ It provides insights through data visualization, helping users make informed fin
 
 <img width="492" alt="Screenshot 2025-04-02 at 21 52 38" src="https://github.com/user-attachments/assets/704132f7-2839-4503-95e9-9c5b3d3ef769" /> <br>
 
+The entire application is containerized using Docker Compose, enabling seamless deployment and scalability.
+
+A functional CI pipeline ensures the code quality and automate the build and test processes.
   
 ## Built With
 
