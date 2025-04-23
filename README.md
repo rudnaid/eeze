@@ -19,14 +19,15 @@
 
 ## About The Project
 
-This app helps users track their financial transactions by categorizing expenses and incomes.
+This app helps users track their financial transactions by categorizing expenses and incomes.  
 It provides insights through data visualization, helping users make informed financial decisions.
 
-Features:
-- Add, edit, and delete transactions
-- Categorize expenses
-- View financial trends using charts
-- Secure authentication and role-based user management
+### Features
+
+- **Add**, **edit**, and **delete** transactions  
+- **Categorize expenses** for better organization  
+- View financial trends using **bar** and **pie charts**  
+- Secure **authentication** and **role-based user management**
 
 
 <img width="492" alt="Screenshot 2025-04-02 at 21 52 38" src="https://github.com/user-attachments/assets/704132f7-2839-4503-95e9-9c5b3d3ef769" /> <br>
@@ -67,17 +68,82 @@ Features:
 
 To get a local copy up and running, follow these steps:
 
-
 ### Prerequisites
+
 Make sure you have the following installed:
 
+- **Java 23**
+- **Node.js 18+**
+- **PostgreSQL 14+**
+- **Maven**
+- **Docker** (optional)
 
 ### Installation Steps
 
+**Clone the repository to your machine, then proceed with one of the installation options below.**
+
+To simplify setup, example `.env` files with the necessary **environment variables** are already provided in the **config** folder. You can modify their values to customize the app to your preferences.
+
+#### Without Docker
+
+- **On Windows:**
+     - Execute the command:
+       ```bash
+       ./start-local.ps1
+       ```
+- **On macOS/Linux:**
+     - Execute the command:
+       ```bash
+       chmod +x start-local.sh && ./start-local.sh
+       ```
+
+3. **Access the Application**
+   - Open your browser and visit:  
+     [http://localhost:5173](http://localhost:5173)
+
+#### With Docker
+
+1. **Ensure Docker is Running**
+   - Start Docker Desktop or the Docker daemon on your system.
+
+2. **Navigate to the scripts folder**
+   - Open your terminal and navigate to the **scripts** folder located in the **root** of the project.
+
+3. **Build and run the containers**
+   - **On Windows:**
+     - Execute the command:
+       ```bash
+       ./start-with-docker.ps1
+       ```
+   - **On macOS/Linux:**
+     - Execute the command:
+       ```bash
+       chmod +x start-with-docker.sh && ./start-with-docker.sh
+       ```
+
+4. **Access the Application**
+   - Open your browser and visit:  
+     [http://localhost:3000](http://localhost:3000)
+
 ## Usage
+
+### Managing Incomes and Expenses
+
+1. **Register** a new user or **log in** if you already have an account.
+
+2. **Add Income or Expense**
+   - Once on the main page, click the **Add Income** or **Add Expense** button.
+   - A pop-up will appear where you can enter the required details:
+     - **Amount**
+     - **Date**
+     - If it's an *expense*, also **select a category** from the list.
+
+3. **Visualize Your Finances**
+   - After adding your data:
+     - The **bar chart** will show a **monthly breakdown** of total *income* and *expenses*.
+     - The **pie chart** will display how the **current month's expenses** are distributed across categories.
 
 ## Acknowledgments
 
 - [Best-README-Template](https://github.com/othneildrew/Best-README-Template) for inspiration
 - [Shields.io](https://shields.io/) for the badges
-

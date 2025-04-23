@@ -2,6 +2,11 @@
 
 set -e
 
+echo "Loading environment..."
+set -a
+source ../config/.env.docker
+set +a
+
 docker compose up -d --build
 
 echo "Waiting for PostgreSQL to be ready..."
@@ -16,7 +21,7 @@ done
 
 echo "Tables are ready. Executing dummy data script..."
 
-docker exec -i db psql -U postgres -d spendeeze < ./backend/db_init/dummyDataGenerator.sql
+docker exec -i db psql -U postgres -d spendeeze < ../backend/db_init/dummyDataGenerator.sql
 
 echo "Dummy data inserted successfully."
 
