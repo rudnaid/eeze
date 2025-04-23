@@ -1,33 +1,61 @@
 $ErrorActionPreference = "Stop"
 
-Write-Host "Loading environment..."
-Get-Content "../config/.env.docker" | ForEach-Object {
-    $var = $_.Split('=')
-    if ($var.Length -eq 2) {
-        [System.Environment]::SetEnvironmentVariable($var[0].Trim(), $var[1].Trim(), [System.EnvironmentVariableTarget]::Process)
+$envFile = "../config/.env.docker"
+New-Item -ItemType Directory -Force -Path (Split-Path $envFile) | Out-Null
+if (!(Test-Path $envFile)) {
+    New-Item -Path $envFile -ItemType File -Force | Out-Null
+}
+
+$envMap = @{}
+if (Test-Path $envFile) {
+    Get-Content $envFile | ForEach-Object {
+        if ($_ -match "^\s*([^#][^=]+)=(.*)$") {
+            $envMap[$matches[1].Trim()] = $matches[2].Trim()
+        }
     }
 }
 
-docker-compose up -d --build
-
-Write-Host "Waiting for PostgreSQL to be ready..."
-$pgReady = $false
-
-while (-not $pgReady) {
-    $result = docker exec db pg_isready -U postgres 2>&1
-    if ($result -match "accepting connections") {
-        $pgReady = $true
-    } else {
-        Write-Host "PostgreSQL not ready yet, waiting..."
-        Start-Sleep -Seconds 5
+function Prompt-WithDefault($key, $default) {
+    $current = if ($envMap.ContainsKey($key)) { $envMap[$key] } else { $null }
+    $shownDefault = if ($current) { $current } else { $default }
+    $input = Read-Host "$key [default: $shownDefault]"
+    if ([string]::IsNullOrWhiteSpace($input)) {
+        return $shownDefault
     }
+    return $input
 }
 
+Write-Host ""
+Write-Host "Configure environment variables for Docker setup."
+Write-Host ""
+Write-Host "If you already have a 'postgres_data' volume in Docker with your own user and password, enter those values when prompted."
+Write-Host "Entering custom values override the default .env.docker file."
+Write-Host ""
+Write-Host "Otherwise, press Enter to accept the default value shown in [brackets]."
+Write-Host ""
 
-Write-Host "Tables are ready. Executing dummy data script..."
+$envMap["SPRING_DATASOURCE_URL"] = Prompt-WithDefault "SPRING_DATASOURCE_URL" "jdbc:postgresql://localhost:5432/spendeeze"
+$envMap["SPRING_DATASOURCE_USERNAME"] = Prompt-WithDefault "SPRING_DATASOURCE_USERNAME" "postgres"
+$envMap["SPRING_DATASOURCE_PASSWORD"] = Prompt-WithDefault "SPRING_DATASOURCE_PASSWORD" "admin1234"
 
-Get-Content ../backend/db_init/dummyDataGenerator.sql | docker exec -i db psql -U postgres -d spendeeze
+$envMap["POSTGRES_USER"] = Prompt-WithDefault "POSTGRES_USER" "postgres"
+$envMap["POSTGRES_PASSWORD"] = Prompt-WithDefault "POSTGRES_PASSWORD" "admin1234"
+$envMap["POSTGRES_DB"] = Prompt-WithDefault "POSTGRES_DB" "spendeeze"
 
-Write-Host "Dummy data inserted successfully."
-Write-Host "Visit http://localhost:3000 in your browser."
+$envMap["JWT_SECRET"] = Prompt-WithDefault "JWT_SECRET" "0c4872abdb41610145e2c6819fc7420b589e37b624dc57eb7c1f212b14017d28"
+$envMap["JWT_EXPIRATION_MS"] = Prompt-WithDefault "JWT_EXPIRATION_MS" "86400000"
 
+$envMap.GetEnumerator() | ForEach-Object {
+    "$($_.Key)=$($_.Value)"
+} | Set-Content -Encoding UTF8 $envFile
+
+Write-Host "`nEnvironment saved to $envFile"
+
+$envMap.GetEnumerator() | ForEach-Object {
+    [System.Environment]::SetEnvironmentVariable($_.Key, $_.Value, "Process")
+}
+
+Write-Host "`nStarting Docker containers..."
+docker-compose up -d
+
+Write-Host "`nTo stop running the containers enter: docker compose down"
