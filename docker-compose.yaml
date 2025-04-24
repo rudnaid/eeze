@@ -1,24 +1,24 @@
 services:
 
-  db:
+  eeze_db:
       image: 'postgres:17.4-alpine3.21'
-      container_name: db
+      container_name: eeze_db
       environment:
         - POSTGRES_USER=${POSTGRES_USER}
         - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
         - POSTGRES_DB=${POSTGRES_DB}
       volumes:
-        - postgres_data:/var/lib/postgresql/data
+        - eeze_postgres_data:/var/lib/postgresql/data
       networks:
-        - spendeeze_network
+        - eeze_network
 
-  backend:
+  eeze_backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: backend
+    container_name: eeze_backend
     depends_on:
-      - db
+      - eeze_db
     environment:
       - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
       - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
@@ -26,21 +26,21 @@ services:
       - codecool.app.jwtSecret=${JWT_SECRET}
       - codecool.app.jwtExpirationMs=${JWT_EXPIRATION_MS}
     networks:
-      - spendeeze_network
-  frontend:
+      - eeze_network
+  eeze_frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: frontend
+    container_name: eeze_frontend
     ports:  
     - "3000:80"
     depends_on:
-      - backend
+      - eeze_backend
     networks:
-      - spendeeze_network
+      - eeze_network
     
 volumes:
-  postgres_data:
+  eeze_postgres_data:
 
 networks:
-  spendeeze_network:
+  eeze_network:
