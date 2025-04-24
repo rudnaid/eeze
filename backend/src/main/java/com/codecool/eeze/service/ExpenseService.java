@@ -1,14 +1,14 @@
-package com.codecool.spendeeze.service;
+package com.codecool.eeze.service;
 
-import com.codecool.spendeeze.model.dto.ExpenseWithAmountDateCategoryDTO;
-import com.codecool.spendeeze.model.dto.ExpenseWithIdAmountDateCategoryDTO;
-import com.codecool.spendeeze.model.entity.Expense;
-import com.codecool.spendeeze.model.entity.Member;
-import com.codecool.spendeeze.model.entity.TransactionCategory;
-import com.codecool.spendeeze.repository.ExpenseRepository;
-import com.codecool.spendeeze.repository.MemberRepository;
-import com.codecool.spendeeze.repository.TransactionCategoryRepository;
-import com.codecool.spendeeze.security.jwt.JwtUtils;
+import com.codecool.eeze.model.dto.ExpenseWithAmountDateCategoryDTO;
+import com.codecool.eeze.model.dto.ExpenseWithIdAmountDateCategoryDTO;
+import com.codecool.eeze.model.entity.Expense;
+import com.codecool.eeze.model.entity.Member;
+import com.codecool.eeze.model.entity.TransactionCategory;
+import com.codecool.eeze.repository.ExpenseRepository;
+import com.codecool.eeze.repository.MemberRepository;
+import com.codecool.eeze.repository.TransactionCategoryRepository;
+import com.codecool.eeze.security.jwt.JwtUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,12 +16,11 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@Transactional
 public class ExpenseService {
+
     private final ExpenseRepository expenseRepository;
     private final MemberRepository memberRepository;
     private final TransactionCategoryRepository transactionCategoryRepository;
@@ -33,18 +32,48 @@ public class ExpenseService {
         this.transactionCategoryRepository = transactionCategoryRepository;
     }
 
-    public ExpenseWithIdAmountDateCategoryDTO getExpenseDTOByPublicId(UUID id) {
-        Expense expense = getExpenseByPublicId(id);
+    public ExpenseWithIdAmountDateCategoryDTO getExpenseDTOByPublicId(UUID publicId) {
+        Expense expense = getExpenseByPublicId(publicId);
+
         return convertToExpenseResponseDTO(expense);
     }
 
-    private Expense getExpenseByPublicId(UUID id) {
-        Optional<Expense> expense = expenseRepository.findExpenseByPublicId(id);
-        return expense.orElseThrow(NoSuchElementException::new);
+    public List<ExpenseWithIdAmountDateCategoryDTO> getAllExpensesByUsername(String username) {
+        List<Expense> expenses = expenseRepository.getExpensesByMemberUsername(username);
+
+        return expenses.stream()
+                .map(this::convertToExpenseResponseDTO)
+                .toList();
+    }
+
+    public List<ExpenseWithIdAmountDateCategoryDTO> getExpensesByExpenseCategoryAndMemberUsername(TransactionCategory category, String username) {
+        List<Expense> expenses = expenseRepository.getExpensesByTransactionCategoryAndMemberUsername(category, username);
+
+        return expenses.stream()
+                .map(this::convertToExpenseResponseDTO)
+                .toList();
+    }
+
+    public List<ExpenseWithIdAmountDateCategoryDTO> getCurrentMonthExpenses(String username) {
+        LocalDate currentDate = LocalDate.now();
+        int currentMonth = currentDate.getMonthValue();
+        int currentYear = currentDate.getYear();
+
+        return getCurrentMonthExpenses(username, currentMonth, currentYear);
+
+    }
+
+    public List<ExpenseWithIdAmountDateCategoryDTO> getCurrentMonthExpenses(String username, int month, int year) {
+        List<Expense> expenses = expenseRepository.getMonthlyExpensesByUsernameAndMonthAndYear(username, month, year);
+
+        return expenses.stream()
+                .map(this::convertToExpenseResponseDTO)
+                .toList();
     }
 
     public ExpenseWithIdAmountDateCategoryDTO addExpense(String username, ExpenseWithAmountDateCategoryDTO expenseDTO) {
-        Member member = memberRepository.findMemberByUsername(username).orElseThrow(NoSuchElementException::new);
+        Member member = getMemberByUsername(username);
+
         Expense expense = convertToExpense(expenseDTO);
 
         expense.setMember(member);
@@ -53,8 +82,10 @@ public class ExpenseService {
         return convertToExpenseResponseDTO(expense);
     }
 
+    @Transactional
     public ExpenseWithIdAmountDateCategoryDTO updateExpense(UUID publicId, ExpenseWithIdAmountDateCategoryDTO expenseDTO) {
         Expense expenseToUpdate = getExpenseByPublicId(publicId);
+
         TransactionCategory category = transactionCategoryRepository.getTransactionCategoryByName(expenseDTO.expenseCategory());
 
         expenseToUpdate.setAmount(expenseDTO.amount());
@@ -66,10 +97,10 @@ public class ExpenseService {
         return convertToExpenseResponseDTO(expenseToUpdate);
     }
 
+    @Transactional
     public int deleteExpenseByPublicId(UUID publicId) {
         return expenseRepository.deleteExpenseByPublicId(publicId);
     }
-
 
     private ExpenseWithIdAmountDateCategoryDTO convertToExpenseResponseDTO(Expense expense) {
         return new ExpenseWithIdAmountDateCategoryDTO(
@@ -87,18 +118,12 @@ public class ExpenseService {
 
             TransactionCategory category = transactionCategoryRepository.getTransactionCategoryByName(expenseWithAmountDateCategoryDTO.category());
             expense.setTransactionCategory(category);
+
             return expense;
+
         } catch (Exception e) {
-            throw new RuntimeException("Could not convert expense requestDTO to Expense", e.getCause());
+            throw new IllegalStateException("Failed to convert ExpenseRequestDTO", e);
         }
-    }
-
-    public List<ExpenseWithIdAmountDateCategoryDTO> getAllExpensesByUsername(String username) {
-        List<Expense> expenses = expenseRepository.getExpensesByMemberUsername(username);
-
-        return expenses.stream()
-                .map(this::convertToExpenseResponseDTO)
-                .toList();
     }
 
     private Member getMemberByUsername(String username) {
