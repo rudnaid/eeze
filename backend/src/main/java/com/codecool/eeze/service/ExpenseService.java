@@ -101,12 +101,9 @@ public class ExpenseService {
                 .toList();
     }
 
-    public List<ExpenseWithIdAmountDateCategoryDTO> getExpensesByExpenseCategoryAndMemberUsername(TransactionCategory category, String username) {
-        List<Expense> expenses = expenseRepository.getExpensesByTransactionCategoryAndMemberUsername(category, username);
-
-        return expenses.stream()
-                .map(this::convertToExpenseResponseDTO)
-                .toList();
+    private Member getMemberByUsername(String username) {
+        return memberRepository.findMemberByUsername(username)
+                .orElseThrow(() -> new NoSuchElementException("Member with username: " + username + " not found"));
     }
 
     public List<ExpenseWithIdAmountDateCategoryDTO> getCurrentMonthExpenses(String username) {
