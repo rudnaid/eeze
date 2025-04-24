@@ -1,6 +1,6 @@
 #!/bin/bash
 
-trap 'echo "Exiting..."; pkill -f "spring-boot:run"; kill $SPENDEEZE_FRONTEND_PID 2>/dev/null; exit' INT
+trap 'echo "Exiting..."; pkill -f "spring-boot:run"; kill $EEZE_FRONTEND_PID 2>/dev/null; exit' INT
 
 ENV_FILE="../config/.env.local"
 mkdir -p ../config
@@ -21,13 +21,14 @@ prompt_with_default() {
 echo ""
 echo "Configure environment variables for your setup."
 echo ""
-echo "If you already have PostgreSQL installed with your own user and password, enter those values when prompted."
 echo "Entering custom values will override the default .env.local file."
+echo ""
+echo "If you already have PostgreSQL installed with your own user and password, enter those values when prompted."
 echo ""
 echo "Otherwise, press Enter to accept the default value shown in [brackets]."
 echo ""
 
-prompt_with_default SPRING_DATASOURCE_URL "jdbc:postgresql://localhost:5432/spendeeze"
+prompt_with_default SPRING_DATASOURCE_URL "jdbc:postgresql://localhost:5432/eeze"
 prompt_with_default SPRING_DATASOURCE_USERNAME "postgres"
 prompt_with_default SPRING_DATASOURCE_PASSWORD "admin1234"
 
@@ -56,12 +57,12 @@ set +a
 
 echo "Starting backend..."
 (cd ../backend && ./mvnw spring-boot:run) &
-SPENDEEZE_BACKEND_PID=$!
+EEZE_BACKEND_PID=$!
 
 echo "Starting frontend..."
 (cd ../frontend && npm run dev) &
-SPENDEEZE_FRONTEND_PID=$!
+EEZE_FRONTEND_PID=$!
 
-wait $SPENDEEZE_BACKEND_PID $SPENDEEZE_FRONTEND_PID
+wait $EEZE_BACKEND_PID $EEZE_FRONTEND_PID
 
 echo "Press Ctrl + C to exit"
