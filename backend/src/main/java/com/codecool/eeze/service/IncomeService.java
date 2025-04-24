@@ -66,4 +66,22 @@ public class IncomeService {
         Income income = incomeRepository.findIncomeByPublicId(incomeId).orElseThrow(() -> new NoSuchElementException("Income with id " + incomeId + " not found"));
         incomeRepository.delete(income);
     }
+
+    private Income convertDtoToEntity(IncomeDTO incomeDto) {
+        Income incomeEntity = new Income();
+        incomeEntity.setAmount(incomeDto.amount());
+        incomeEntity.setDate(incomeDto.date());
+
+        return incomeEntity;
+    }
+
+    private Income findIncomeByPublicId(UUID incomeId) {
+        return incomeRepository.findIncomeByPublicId(incomeId)
+                .orElseThrow(() -> new NoSuchElementException("Income with id " + incomeId + " not found"));
+    }
+
+    private Member findMemberByUsername(String username) {
+        return memberRepository.findMemberByUsername(username)
+                .orElseThrow(() -> new NoSuchElementException("User with username " + username + " not found"));
+    }
 }
