@@ -87,6 +87,12 @@ To simplify setup, example `.env` files with the necessary **environment variabl
 
 #### Without Docker
 
+1. **Create PostgreSQL Database** *(only necessary if running the application for the **first time**)*
+   - Open your **terminal** and enter `psql` and press Enter to connect to PostgreSQL.
+   - Enter your credentials (make sure the user has sufficient privileges to create databases)
+   - Enter `CREATE DATABASE eeze;` then press Enter.
+   - To exit PostgreSQL type `quit` and press Enter.
+
 1. **Navigate to the scripts directory**
    - Open your **terminal** and navigate to the **scripts** directory located in the **root** directory of the project.
    - The **scripts** will guide you through the initial setup of **environment variables**.
@@ -102,7 +108,7 @@ To simplify setup, example `.env` files with the necessary **environment variabl
           ```bash
           chmod +x start-local.sh && ./start-local.sh
           ```
-         
+            
 3. **Access the Application**
    - Open your browser and visit:  
      [http://localhost:5173](http://localhost:5173)
@@ -147,7 +153,7 @@ To simplify setup, example `.env` files with the necessary **environment variabl
 
 1. **Register** a new user or **log in** if you already have an account.
 
-   You can also use a **default user** to explore the app with six months of randomly generated transactions:
+   If you started the application using Docker You can also use a **default user** to explore the app with six months of randomly generated transactions:
       - **Username:** `john_doe`
       - **Password:** `user`
 
