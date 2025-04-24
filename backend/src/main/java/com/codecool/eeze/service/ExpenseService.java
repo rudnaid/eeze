@@ -106,18 +106,8 @@ public class ExpenseService {
                 .orElseThrow(() -> new NoSuchElementException("Member with username: " + username + " not found"));
     }
 
-    public List<ExpenseWithIdAmountDateCategoryDTO> getCurrentMonthExpenses(String username) {
-        LocalDate localDate = LocalDate.now();
-        int currentMonth = localDate.getMonthValue();
-        int currentYear = localDate.getYear();
-        return getCurrentMonthExpenses(username, currentMonth, currentYear);
-
-    }
-
-    public List<ExpenseWithIdAmountDateCategoryDTO> getCurrentMonthExpenses(String username, int month, int year) {
-        List<Expense> expenses = expenseRepository.getMonthlyExpensesByUsernameAndMonthAndYear(username, month, year);
-        return expenses.stream()
-                .map(this::convertToExpenseResponseDTO)
-                .toList();
+    private Expense getExpenseByPublicId(UUID publicId) {
+        return expenseRepository.findExpenseByPublicId(publicId)
+                .orElseThrow(() -> new NoSuchElementException("Expense with publicId" + publicId + "not found."));
     }
 }
