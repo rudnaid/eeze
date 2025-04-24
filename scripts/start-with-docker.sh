@@ -18,21 +18,25 @@ prompt_with_default() {
   export "$varname"="${input:-${current:-$default}}"
 }
 
+echo ""
 echo "Configure environment variables for Docker setup."
 echo ""
-echo "If you already have a 'postgres_data' volume in Docker with your own user and password, enter those values when prompted."
 echo "Entering custom values will override the default .env.docker file."
+echo ""
+echo "If you have an existing Docker volume for this project with custom PostgreSQL credentials, please enter those values when prompted."
+echo ""
+echo "If the default values shown in [brackets] do not match your existing setup, enter the values you set up previously when prompted."
 echo ""
 echo "Otherwise, press Enter to accept the default value shown in [brackets]."
 echo ""
 
-prompt_with_default SPRING_DATASOURCE_URL "jdbc:postgresql://localhost:5432/spendeeze"
+prompt_with_default SPRING_DATASOURCE_URL "jdbc:postgresql://eeze_db:5432/eeze"
 prompt_with_default SPRING_DATASOURCE_USERNAME "postgres"
 prompt_with_default SPRING_DATASOURCE_PASSWORD "admin1234"
 
 prompt_with_default POSTGRES_USER "postgres"
 prompt_with_default POSTGRES_PASSWORD "admin1234"
-prompt_with_default POSTGRES_DB "spendeeze"
+prompt_with_default POSTGRES_DB "eeze"
 
 prompt_with_default JWT_SECRET "0c4872abdb41610145e2c6819fc7420b589e37b624dc57eb7c1f212b14017d28"
 prompt_with_default JWT_EXPIRATION_MS "86400000"
@@ -61,7 +65,7 @@ docker compose up -d --build
 echo ""
 echo "Waiting for PostgreSQL to be ready..."
 
-until docker exec -it db psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "
+until docker exec -it eeze_db psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "
   SELECT 1 FROM information_schema.tables
   WHERE table_name IN ('expense', 'income', 'member', 'member_roles', 'transaction_category');
 " | grep -q 1; do
@@ -71,10 +75,10 @@ done
 
 echo "Tables are ready. Executing dummy data script..."
 
-docker exec -i db psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" < ../backend/db_init/dummyDataGenerator.sql
+docker exec -i eeze_db psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" < ../backend/db_init/dummyDataGenerator.sql
 
 echo "Dummy data inserted successfully."
 echo ""
 echo "Visit http://localhost:3000 in your browser."
 echo ""
-echo "To stop running the containers: docker compose down"
+echo "To stop running the containers enter: docker compose down, to also remove associated volumes enter: docker compose down -v"
