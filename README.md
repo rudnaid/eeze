@@ -81,42 +81,14 @@ Make sure you have the following installed:
 
 1. Open a **terminal** and navigate to the directory where you would like to save the repository.
    
-2. **Clone the repository** to your machine by executing the command `git clone https://github.com/rudnaid/spendeeze` in your **terminal**, then proceed with one of the installation  options below.
+2. **Clone the repository** to your machine by executing the command below in your **terminal**, then proceed with one of the installation options below.
+   ```bash
+   git clone https://github.com/rudnaid/spendeeze
+   ```
 
 To simplify setup, example `.env` files with the necessary **environment variables** are already provided in the **config** directory. You can modify their values to customize the app to your preferences, either by manually editing them or by running the provided **starter scripts**.
 
-#### Without Docker
-
-1. **Create PostgreSQL Database** *(only necessary if running the application for the **first time**)*
-   - Open your **terminal** and enter `psql` and press Enter to connect to PostgreSQL.
-   - Enter your credentials (make sure the user has sufficient privileges to create databases)
-   - Enter `CREATE DATABASE eeze;` then press Enter.
-   - To exit PostgreSQL type `quit` and press Enter.
-
-1. **Navigate to the scripts directory**
-   - Open your **terminal** and navigate to the **scripts** directory located in the **root** directory of the project.
-   - The **scripts** will guide you through the initial setup of **environment variables**.
-
-2. **Run starter script for automated setup**
-   - **On Windows:**
-        - Execute the command:
-          ```bash
-          ./start-local.ps1
-          ```
-   - **On macOS/Linux:**
-        - Execute the command:
-          ```bash
-          chmod +x start-local.sh && ./start-local.sh
-          ```
-            
-3. **Access the Application**
-   - Open your browser and visit:  
-     [http://localhost:5173](http://localhost:5173)
-
-4. **Stopping the application**
-   - In your **terminal** press `Ctrl + C`
-
-#### With Docker
+#### With Docker (recommended)
 
 1. **Ensure Docker is Running**
    - Start **Docker Desktop** or the **Docker daemon** on your system.
@@ -147,16 +119,64 @@ To simplify setup, example `.env` files with the necessary **environment variabl
        docker-compose down
      ```
 
+#### Without Docker
+
+1. **Create PostgreSQL database** *(only necessary if running the application for the **first time**)*
+   - Open your **terminal** and type `psql` then press Enter to connect to PostgreSQL.
+   - Log in with your PostgreSQL credentials (make sure the user has sufficient privileges to create databases)
+   - Type `CREATE DATABASE eeze;` then press Enter.
+   - All set! To exit PostgreSQL type `quit` and press Enter.
+
+1. **Navigate to the scripts directory**
+   - Open your **terminal** and navigate to the **scripts** directory located in the **root** directory of the project.
+   - The **scripts** will guide you through the initial setup of **environment variables**.
+
+2. **Run starter script for automated setup**
+   - **On Windows:**
+        - Execute the command:
+          ```bash
+          ./start-local.ps1
+          ```
+   - **On macOS/Linux:**
+        - Execute the command:
+          ```bash
+          chmod +x start-local.sh && ./start-local.sh
+          ```
+            
+3. **Access the Application**
+   - Open your browser and visit:  
+     [http://localhost:5173](http://localhost:5173)
+
+4. **Stopping the application**
+   - In your **terminal** press `Ctrl + C`
+
 ## Usage
 
 ### Managing Incomes and Expenses
 
 1. **Register** a new user or **log in** if you already have an account.
 
-   If you started the application using Docker You can also use a **default user** to explore the app with six months of randomly generated transactions:
+   You can also use a **default user** to explore the app with six months of randomly generated transactions:
       - **Username:** `john_doe`
       - **Password:** `user`
-
+        
+   **With Docker**
+      - No additional setup is needed, the dummy data is preloaded.  
+      - Simply log in using the credentials above.
+        
+   **Without Docker**
+     -  Open **terminal** and from the project's root directory navigate to `backend/db_init`.
+     -  Enter `psql` and log in with your credentials.
+     -  Connect to the 'eeze' database with the command:
+        ```bash
+        \c eeze;
+        ```
+     -  Execute the random data generator script with the command:
+        ```bash
+        `\i dummyDataGenerator.sql`
+        ``` 
+     -  All set! You can quit PostgreSQL and log in using the credentials above.
+   
 3. **Add Income or Expense**
    - Once on the main page, click the **Add Income** or **Add Expense** button.
    - A pop-up will appear where you can enter the required details:
