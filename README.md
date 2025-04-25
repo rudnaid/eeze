@@ -166,7 +166,7 @@ To simplify setup, example `.env` files with the necessary **environment variabl
         
    **Without Docker**
      -  Open **terminal** and from the project's root directory navigate to `backend/db_init`.
-     -  Enter `psql` and log in with your credentials.
+     -  Enter `psql -U [your PostgreSQL username]` and log in with your credentials.
      -  Connect to the 'eeze' database with the command:
         ```bash
         \c eeze;
