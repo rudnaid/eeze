@@ -173,7 +173,7 @@ To simplify setup, example `.env` files with the necessary **environment variabl
         ```
      -  Execute the random data generator script with the command:
         ```bash
-        `\i dummyDataGenerator.sql`
+        \i dummyDataGenerator.sql
         ``` 
      -  All set! You can quit PostgreSQL and log in using the credentials above.
    
