@@ -66,10 +66,10 @@ Write-Host "`nWaiting for PostgreSQL to be ready..."
 $dbReady = $false
 while (-not $dbReady) {
     try {
-        docker exec -it db_eeze psql -U "$envMap['POSTGRES_USER']" -d "$envMap['POSTGRES_DB']" -c "SELECT 1 FROM information_schema.tables WHERE table_name IN ('expense', 'income', 'member', 'member_roles', 'transaction_category');" | Out-Null
-        if ($LASTEXITCODE -eq 0) {
+        $output = docker exec -i eeze_db psql -U "$($envMap['POSTGRES_USER'])" -d "$($envMap['POSTGRES_DB'])" -t -c "SELECT to_regclass('public.member');"
+        if ($output -match "member") {
             Write-Host "Tables are ready. Executing dummy data script..."
-            docker exec -i eeze_db psql -U "$envMap['POSTGRES_USER']" -d "$envMap['POSTGRES_DB']" < ../backend/db_init/dummyDataGenerator.sql
+            Get-Content ../backend/db_init/dummyDataGenerator.sql -Raw | docker exec -i eeze_db psql -U "$($envMap['POSTGRES_USER'])" -d "$($envMap['POSTGRES_DB'])"
             Write-Host "Dummy data inserted successfully."
             $dbReady = $true
         } else {
