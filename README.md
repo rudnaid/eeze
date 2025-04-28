@@ -126,11 +126,20 @@ To simplify setup, example `.env` files with the necessary **environment variabl
    - Open your browser and visit:  
      [http://localhost:3000](http://localhost:3000)
 
-5. **Stopping the application**
-   - To remove the containers, execute this command:  
-     ```bash
-       docker compose down -v
-     ```
+5. Stopping the application
+
+- If you want to **stop the application** but **keep the database data** for future runs, execute:
+  ```bash
+  docker compose down
+  ```
+  In this case, the database will **persist** between runs, and your data will still be available next time you start the application.
+
+- If you want to **stop the application and delete the database data**, execute:
+  ```bash
+  docker compose down -v
+  ```
+  In this case, the database and all stored data will be completely removed.
+
 
 #### Without Docker
 
