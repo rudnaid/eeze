@@ -37,17 +37,12 @@ class ReportServiceTest {
     @Mock
     private MemberRepository memberRepository;
 
+    @Mock
+    private Member member;
+
     @InjectMocks
     private ReportService reportService;
 
-    private Member member;
-
-    @BeforeEach
-    void setUp() {
-        member = new Member();
-        member.setId(1L);
-        member.setUsername("testUser");
-    }
 
     @DisplayName("JUnit test for ReportService - generateReport()")
     @Test

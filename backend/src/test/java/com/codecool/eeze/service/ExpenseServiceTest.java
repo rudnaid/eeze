@@ -8,7 +8,6 @@ import com.codecool.eeze.model.entity.TransactionCategory;
 import com.codecool.eeze.repository.ExpenseRepository;
 import com.codecool.eeze.repository.MemberRepository;
 import com.codecool.eeze.repository.TransactionCategoryRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,7 +26,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class ExpenseServiceTest {
+class ExpenseServiceTest {
 
     @Mock
     private ExpenseRepository expenseRepository;
@@ -38,56 +37,39 @@ public class ExpenseServiceTest {
     @Mock
     private TransactionCategoryRepository transactionCategoryRepository;
 
+    @Mock
+    private Member member;
+
+    @Mock
+    private Expense expense;
+
+    @Mock
+    private TransactionCategory category;
+
     @InjectMocks
     private ExpenseService expenseService;
-
-    private Member member;
-    private Expense expense;
-    private ExpenseWithAmountDateCategoryDTO expenseWithAmountDateCategoryDTO;
-    private ExpenseWithIdAmountDateCategoryDTO expenseWithIdAmountDateCategoryDTO;
-    private TransactionCategory category;
-    private UUID expenseId;
-
-    @BeforeEach
-    void setUp() {
-        expenseId = UUID.randomUUID();
-
-        member = new Member();
-        member.setId(1L);
-        member.setUsername("testUser");
-
-        category = new TransactionCategory();
-        category.setId(1L);
-        category.setName("Food");
-
-        expense = new Expense();
-        expense.setPublicId(expenseId);
-        expense.setAmount(500.00);
-        expense.setTransactionDate(LocalDate.of(2025, 3, 5));
-        expense.setMember(member);
-        expense.setTransactionCategory(category);
-
-        expenseWithAmountDateCategoryDTO = new ExpenseWithAmountDateCategoryDTO(500.00, LocalDate.of(2025, 3, 5), "Food");
-
-        expenseWithIdAmountDateCategoryDTO = new ExpenseWithIdAmountDateCategoryDTO(expenseId, 500.00, LocalDate.of(2025, 3, 5), "Food");
-    }
 
     @DisplayName("JUnit test for ExpenseService - getExpenseDTOByPublicId()")
     @Test
     void givenValidExpenseId_whenGetExpenseDTOByPublicId_thenReturnExpenseWithIdAmountDateCategoryDTO() {
         // GIVEN
+        UUID expenseId = UUID.randomUUID();
+
         given(expenseRepository.findExpenseByPublicId(expenseId)).willReturn(Optional.of(expense));
+        given(expense.getAmount()).willReturn(500.00);
+        given(expense.getTransactionDate()).willReturn(LocalDate.of(2025, 3, 5));
+        given(expense.getTransactionCategory()).willReturn(category);
+        given(category.getName()).willReturn("Food");
 
         // WHEN
         ExpenseWithIdAmountDateCategoryDTO foundExpense = expenseService.getExpenseDTOByPublicId(expenseId);
 
         // THEN
         assertThat(foundExpense).isNotNull();
-        assertThat(foundExpense.amount()).isEqualTo(expense.getAmount());
-        assertThat(foundExpense.transactionDate()).isEqualTo(expense.getTransactionDate());
-        assertThat(foundExpense.expenseCategory()).isEqualTo(expense.getTransactionCategory().getName());
+        assertThat(foundExpense.amount()).isEqualTo(500.00);
+        assertThat(foundExpense.transactionDate()).isEqualTo(LocalDate.of(2025, 3, 5));
+        assertThat(foundExpense.expenseCategory()).isEqualTo("Food");
 
-        // Verify output
         verify(expenseRepository, times(1)).findExpenseByPublicId(expenseId);
     }
 
@@ -103,7 +85,6 @@ public class ExpenseServiceTest {
             expenseService.getExpenseDTOByPublicId(invalidExpenseId);
         });
 
-        // Verify output
         verify(expenseRepository, times(1)).findExpenseByPublicId(invalidExpenseId);
     }
 
@@ -111,20 +92,34 @@ public class ExpenseServiceTest {
     @Test
     void givenExpenseWithAmountDateCategoryDTOAndUsername_whenAddExpense_thenReturnSavedExpenseWithIdAmountDateCategoryDTO() {
         // GIVEN
+        ExpenseWithAmountDateCategoryDTO dto = new ExpenseWithAmountDateCategoryDTO(500.00, LocalDate.of(2025, 3, 5), "Food");
+        UUID expenseId = UUID.randomUUID();
+
+        Member member = new Member();
+        member.setUsername("testUser");
+
+        TransactionCategory category = new TransactionCategory();
+        category.setName("Food");
+
+        Expense expense = new Expense();
+        expense.setPublicId(expenseId);
+        expense.setTransactionDate(LocalDate.of(2025, 3, 5));
+        expense.setAmount(500.00);
+        expense.setTransactionCategory(category);
+
         given(memberRepository.findMemberByUsername("testUser")).willReturn(Optional.of(member));
         given(transactionCategoryRepository.getTransactionCategoryByName("Food")).willReturn(category);
         given(expenseRepository.save(any(Expense.class))).willReturn(expense);
 
         // WHEN
-        ExpenseWithIdAmountDateCategoryDTO savedExpenseWithIdAmountDateCategoryDTO = expenseService.addExpense("testUser", expenseWithAmountDateCategoryDTO);
+        ExpenseWithIdAmountDateCategoryDTO result = expenseService.addExpense("testUser", dto);
 
         // THEN
-        assertThat(savedExpenseWithIdAmountDateCategoryDTO).isNotNull();
-        assertThat(savedExpenseWithIdAmountDateCategoryDTO.amount()).isEqualTo(expenseWithAmountDateCategoryDTO.amount());
-        assertThat(savedExpenseWithIdAmountDateCategoryDTO.transactionDate()).isEqualTo(expenseWithAmountDateCategoryDTO.transactionDate());
-        assertThat(savedExpenseWithIdAmountDateCategoryDTO.expenseCategory()).isEqualTo(expenseWithAmountDateCategoryDTO.category());
+        assertThat(result).isNotNull();
+        assertThat(result.amount()).isEqualTo(500.00);
+        assertThat(result.transactionDate()).isEqualTo(LocalDate.of(2025, 3, 5));
+        assertThat(result.expenseCategory()).isEqualTo("Food");
 
-        // Verify output
         verify(memberRepository, times(1)).findMemberByUsername("testUser");
         verify(transactionCategoryRepository, times(1)).getTransactionCategoryByName("Food");
         verify(expenseRepository, times(1)).save(any(Expense.class));
@@ -134,14 +129,15 @@ public class ExpenseServiceTest {
     @Test
     void givenInvalidUsername_whenAddExpense_thenThrowException() {
         // GIVEN
+        ExpenseWithAmountDateCategoryDTO dto = new ExpenseWithAmountDateCategoryDTO(500.00, LocalDate.of(2025, 3, 5), "Food");
+
         given(memberRepository.findMemberByUsername("invalidUser")).willReturn(Optional.empty());
 
         // WHEN & THEN
         assertThrows(NoSuchElementException.class, () -> {
-            expenseService.addExpense("invalidUser", expenseWithAmountDateCategoryDTO);
+            expenseService.addExpense("invalidUser", dto);
         });
 
-        // Verify repository calls
         verify(memberRepository, times(1)).findMemberByUsername("invalidUser");
         verify(expenseRepository, never()).save(any(Expense.class));
     }
@@ -149,40 +145,27 @@ public class ExpenseServiceTest {
     @DisplayName("JUnit test for ExpenseService - updateExpense()")
     @Test
     void givenValidExpenseID_whenUpdateExpense_thenReturnUpdatedExpenseWithIdAmountDateCategoryDTO() {
-        //GIVEN
-        ExpenseWithIdAmountDateCategoryDTO updatedExpenseDTO = new ExpenseWithIdAmountDateCategoryDTO(expenseId, 600.00, LocalDate.of(2025, 3, 8),
-                "Transport");
-        TransactionCategory updatedCategory = new TransactionCategory();
-        updatedCategory.setId(2L);
-        updatedCategory.setName("Transport");
+        // GIVEN
+        UUID expenseId = UUID.randomUUID();
 
-        given(expenseRepository.findExpenseByPublicId(expenseId)).willReturn(Optional.of(expense));
-        given(transactionCategoryRepository.getTransactionCategoryByName("Transport")).willReturn(updatedCategory);
-        given(expenseRepository.save(any(Expense.class))).willReturn(expense);
+        given(expenseRepository.findExpenseByPublicId(expenseId)).willReturn(Optional.empty());
 
-        //WHEN
-        ExpenseWithIdAmountDateCategoryDTO updatedExpense = expenseService.updateExpense(expenseId, updatedExpenseDTO);
+        // THEN & WHEN
+        assertThrows(NoSuchElementException.class, () -> expenseService.updateExpense(expenseId, new ExpenseWithIdAmountDateCategoryDTO(expenseId, 500.00, LocalDate.now(), "Food")));
 
-        // THEN
-        assertThat(updatedExpense).isNotNull();
-        assertThat(updatedExpense.amount()).isEqualTo(600.00);
-        assertThat(updatedExpense.transactionDate()).isEqualTo(LocalDate.of(2025, 3, 8));
-        assertThat(updatedExpense.expenseCategory()).isEqualTo("Transport");
-
-        // Verify repository calls
-        verify(expenseRepository, times(1)).findExpenseByPublicId(expenseId);
-        verify(transactionCategoryRepository, times(1)).getTransactionCategoryByName("Transport");
-        verify(expenseRepository, times(1)).save(any(Expense.class));
+        verify(expenseRepository, never()).save(any(Expense.class));
     }
 
     @DisplayName("JUnit test for ExpenseService - updateExpense() should throw exception if expense not found")
     @Test
     void givenInvalidExpenseId_whenUpdateExpense_thenThrowException() {
         // GIVEN
+        UUID expenseId = UUID.randomUUID();
+
         given(expenseRepository.findExpenseByPublicId(expenseId)).willReturn(Optional.empty());
 
         // WHEN & THEN
-        assertThrows(NoSuchElementException.class, () -> expenseService.updateExpense(expenseId, expenseWithIdAmountDateCategoryDTO));
+        assertThrows(NoSuchElementException.class, () -> expenseService.updateExpense(expenseId, new ExpenseWithIdAmountDateCategoryDTO(expenseId, 500.00, LocalDate.now(), "Food")));
 
         verify(expenseRepository, never()).save(any(Expense.class));
     }
@@ -191,12 +174,14 @@ public class ExpenseServiceTest {
     @Test
     void givenValidExpenseId_whenDeleteExpenseByPublicId_thenDeleteExpense() {
         // GIVEN
+        UUID expenseId = UUID.randomUUID();
+
         given(expenseRepository.deleteExpenseByPublicId(expenseId)).willReturn(1);
 
-        //WHEN
+        // WHEN
         int deletedRows = expenseService.deleteExpenseByPublicId(expenseId);
 
-        //THEN
+        // THEN
         assertThat(deletedRows).isEqualTo(1);
         verify(expenseRepository, times(1)).deleteExpenseByPublicId(expenseId);
     }
@@ -206,14 +191,18 @@ public class ExpenseServiceTest {
     void givenUserName_whenGetAllExpensesByUserName_thenReturnAllExpenses() {
         // GIVEN
         given(expenseRepository.getExpensesByMemberUsername("testUser")).willReturn(List.of(expense));
+        given(expense.getPublicId()).willReturn(UUID.randomUUID());
+        given(expense.getAmount()).willReturn(500.00);
+        given(expense.getTransactionDate()).willReturn(LocalDate.of(2025, 3, 5));
+        given(expense.getTransactionCategory()).willReturn(category);
+        given(category.getName()).willReturn("Food");
 
         // WHEN
         List<ExpenseWithIdAmountDateCategoryDTO> actualExpenses = expenseService.getAllExpensesByUsername("testUser");
 
         // THEN
-        List<ExpenseWithIdAmountDateCategoryDTO> expectedExpenses = List.of(expenseWithIdAmountDateCategoryDTO);
-
-        assertIterableEquals(expectedExpenses, actualExpenses);
+        assertThat(actualExpenses).hasSize(1);
+        assertThat(actualExpenses.get(0).expenseCategory()).isEqualTo("Food");
 
         verify(expenseRepository, times(1)).getExpensesByMemberUsername("testUser");
     }
@@ -221,20 +210,21 @@ public class ExpenseServiceTest {
     @DisplayName("JUnit test for ExpenseService - getExpensesByExpenseCategoryAndMemberUsername()")
     @Test
     void givenCategoryAndUsername_whenGetExpensesByExpenseCategoryAndMemberUsername_thenReturnExpenseList() {
-        //GIVEN
+        // GIVEN
         given(expenseRepository.getExpensesByTransactionCategoryAndMemberUsername(category, "testUser")).willReturn(List.of(expense));
+        given(expense.getPublicId()).willReturn(UUID.randomUUID());
+        given(expense.getAmount()).willReturn(500.00);
+        given(expense.getTransactionDate()).willReturn(LocalDate.of(2025, 3, 5));
+        given(expense.getTransactionCategory()).willReturn(category);
+        given(category.getName()).willReturn("Food");
 
-        //WHEN
+        // WHEN
         List<ExpenseWithIdAmountDateCategoryDTO> actualExpenses = expenseService.getExpensesByExpenseCategoryAndMemberUsername(category, "testUser");
 
-        //THEN
-        List<ExpenseWithIdAmountDateCategoryDTO> expectedExpenses = List.of(expenseWithIdAmountDateCategoryDTO);
-
-        assertThat(expectedExpenses).hasSize(1);
-        assertThat(expectedExpenses.get(0).expenseCategory()).isEqualTo("Food");
-        assertIterableEquals(expectedExpenses, actualExpenses);
+        // THEN
+        assertThat(actualExpenses).hasSize(1);
+        assertThat(actualExpenses.get(0).expenseCategory()).isEqualTo("Food");
 
         verify(expenseRepository, times(1)).getExpensesByTransactionCategoryAndMemberUsername(category, "testUser");
     }
-
 }

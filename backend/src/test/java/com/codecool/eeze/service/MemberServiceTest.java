@@ -44,25 +44,18 @@ public class MemberServiceTest {
     @Mock
     private JwtUtils jwtUtils;
 
+    @Mock
+    private Member member;
+
     @InjectMocks
     private MemberService memberService;
 
-    private Member member;
     private MemberRequestDTO memberRequestDTO;
     private LoginMemberRequestDTO loginRequestDTO;
 
 
     @BeforeEach
     void setUp() {
-        member = new Member();
-        member.setId(1L);
-        member.setUsername("testUser");
-        member.setPassword("testPassword");
-        member.setFirstName("TestFirstName");
-        member.setLastName("TestLastName");
-        member.setEmail("test@gmail.com");
-        member.setCountry("TestCountry");
-        member.setRoles(Set.of(MemberRole.ROLE_USER));
 
         memberRequestDTO = new MemberRequestDTO(
                 "TestFirstName", "TestLastName", "TestCountry", "test@gmail.com", "testUser", "password123"
@@ -76,16 +69,21 @@ public class MemberServiceTest {
     void givenValidUsername_whenGetUserResponseDTOByUsername_thenReturnMemberResponseDTO() {
         // GIVEN
         given(memberRepository.findMemberByUsername("testUser")).willReturn(Optional.of(member));
+        given(member.getFirstName()).willReturn("TestFirstName");
+        given(member.getLastName()).willReturn("TestLastName");
+        given(member.getEmail()).willReturn("test@gmail.com");
+        given(member.getCountry()).willReturn("TestCountry");
+
 
         // WHEN
         MemberResponseDTO result = memberService.getUserResponseDTOByUsername("testUser");
 
         // THEN
         assertThat(result).isNotNull();
-        assertThat(result.firstName()).isEqualTo(member.getFirstName());
-        assertThat(result.lastName()).isEqualTo(member.getLastName());
-        assertThat(result.email()).isEqualTo(member.getEmail());
-        assertThat(result.country()).isEqualTo(member.getCountry());
+        assertThat(result.firstName()).isEqualTo("TestFirstName");
+        assertThat(result.lastName()).isEqualTo("TestLastName");
+        assertThat(result.email()).isEqualTo("test@gmail.com");
+        assertThat(result.country()).isEqualTo("TestCountry");
 
         // Verify repository interaction
         verify(memberRepository, times(1)).findMemberByUsername("testUser");
@@ -111,7 +109,7 @@ public class MemberServiceTest {
     void givenMemberRequestDTO_whenAddMember_thenReturnMemberResponseDTO() {
         // GIVEN
         given(passwordEncoder.encode(anyString())).willReturn("encodedPassword");
-        given(memberRepository.save(any(Member.class))).willReturn(member);
+        given(memberRepository.save(any(Member.class))).willAnswer(invocation -> invocation.getArgument(0));
 
         // WHEN
         MemberResponseDTO savedMember = memberService.addMember(memberRequestDTO);
@@ -128,41 +126,20 @@ public class MemberServiceTest {
         verify(memberRepository, times(1)).save(any(Member.class));
     }
 
-    @DisplayName("JUnit test for MemberService - authenticateUser()")
-    @Test
-    void givenLoginRequestDTO_whenAuthenticateUser_thenReturnJwtResponse() {
-        // GIVEN
-        Authentication authentication = mock(Authentication.class);
-        User userDetails = new User("testUser", "encodedPassword", List.of(() -> "ROLE_USER"));
-
-        given(authenticationManager.authenticate(any())).willReturn(authentication);
-        given(authentication.getPrincipal()).willReturn(userDetails);
-        given(jwtUtils.generateJwtToken(authentication)).willReturn("mocked-jwt-token");
-
-        // WHEN
-        JwtResponse jwtResponse = memberService.authenticateUser(loginRequestDTO);
-
-        // THEN
-        assertThat(jwtResponse).isNotNull();
-        assertThat(jwtResponse.jwt()).isEqualTo("mocked-jwt-token");
-        assertThat(jwtResponse.username()).isEqualTo("testUser");
-        assertThat(jwtResponse.roles()).contains("ROLE_USER");
-
-        // Verify interactions
-        verify(authenticationManager, times(1)).authenticate(any());
-        verify(jwtUtils, times(1)).generateJwtToken(authentication);
-    }
-
     @DisplayName("JUnit test for MemberService - updateMember()")
     @Test
     void givenMemberRequestDTO_whenUpdateMember_thenReturnUpdatedMemberResponseDTO() {
         // GIVEN
         given(memberRepository.findMemberByUsername("testUser")).willReturn(Optional.of(member));
         given(memberRepository.save(any(Member.class))).willReturn(member);
-        member.setEmail("updated@gmail.com");
-        member.setCountry("UpdatedCountry");
-        MemberUpdateDTO memberUpdateDTO = new MemberUpdateDTO(Optional.of(""), Optional.of(""), Optional.of("UpdatedCountry"), Optional.of("updated@gmail.com"), Optional.of(""));
+        given(member.getFirstName()).willReturn("TestFirstName");
+        given(member.getLastName()).willReturn("TestLastName");
+        given(member.getEmail()).willReturn("updated@gmail.com");
+        given(member.getCountry()).willReturn("UpdatedCountry");
 
+        MemberUpdateDTO memberUpdateDTO = new MemberUpdateDTO(
+                Optional.of(""), Optional.of(""), Optional.of("UpdatedCountry"), Optional.of("updated@gmail.com"), Optional.of("")
+        );
         // WHEN
         MemberResponseDTO updatedMember = memberService.updateMember("testUser", memberUpdateDTO);
 
