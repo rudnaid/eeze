@@ -62,20 +62,20 @@ public class ReportService {
         Map<Integer, MonthlyIncomeExpenseReportDTO> reportMap = new HashMap<>();
 
         for (MonthlyExpenseTotal expense : expenseTotals) {
-            int month = expense.getMonth();
+            int month = expense.month();
 
             reportMap.put(month, new MonthlyIncomeExpenseReportDTO(
                     getMonthName(month),
                     0,
-                    expense.getTotalExpense()
+                    expense.totalExpense()
             ));
         }
 
         for (MonthlyIncomeTotal income : incomeTotals) {
-            int month = income.getMonth();
+            int month = income.month();
 
             reportMap.merge(month,
-                    new MonthlyIncomeExpenseReportDTO(getMonthName(month), income.getTotalIncome(), 0),
+                    new MonthlyIncomeExpenseReportDTO(getMonthName(month), income.totalIncome(), 0),
                     (existing, newValue) -> new MonthlyIncomeExpenseReportDTO(
                             existing.month(),
                             existing.totalIncome() + newValue.totalIncome(),

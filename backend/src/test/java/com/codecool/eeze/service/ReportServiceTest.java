@@ -136,8 +136,8 @@ class ReportServiceTest {
 
         // THEN
         assertThat(result).hasSize(2);
-        assertThat(result.get(0).getCategoryName()).isEqualTo("Food");
-        assertThat(result.get(1).getCategoryName()).isEqualTo("Entertainment");
+        assertThat(result.get(0).categoryName()).isEqualTo("Food");
+        assertThat(result.get(1).categoryName()).isEqualTo("Entertainment");
 
         verify(expenseRepository, times(1)).getMonthlyExpensesByCategory(member, 3, 2025);
     }
