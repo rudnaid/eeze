@@ -31,9 +31,7 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
             "WHERE e.member.username = :username")
     double getTotalExpensesByMemberUsername(@Param("username") String username);
 
-    @Query("SELECT SUM(e.amount) AS totalByCategory," +
-            "e.transactionCategory.name AS categoryName," +
-            "e.transactionCategory.id AS categoryPublicId " +
+    @Query("SELECT new com.codecool.eeze.model.dto.TotalExpenseByTransactionCategoryDTO(e.transactionCategory.name, SUM(e.amount), e.transactionCategory.id) " +
             "FROM Expense e " +
             "WHERE e.member.username = :username " +
             "GROUP BY e.transactionCategory.id, e.transactionCategory.name")

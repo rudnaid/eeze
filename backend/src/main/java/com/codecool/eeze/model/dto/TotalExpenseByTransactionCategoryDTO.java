@@ -1,10 +1,7 @@
 package com.codecool.eeze.model.dto;
 
-public interface TotalExpenseByTransactionCategoryDTO {
-
-    String getCategoryName();
-
-    double getTotalByCategory();
-
-    long getCategoryPublicId();
-}
+public record TotalExpenseByTransactionCategoryDTO(
+        String categoryName,
+        double totalByCategory,
+        long categoryPublicId
+) {}
