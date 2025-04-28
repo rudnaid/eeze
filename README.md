@@ -69,13 +69,26 @@ To get a local copy up and running, follow these steps:
 
 ### Prerequisites
 
-Make sure you have the following installed:
+Depending on how you want to run the application, different tools are required:
 
-- **Java 23**
-- **Node.js 18+**
-- **PostgreSQL 14+**
-- **Maven**
-- **Docker** (*optional*)
+#### If you only want to run the application using Docker, install:
+
+  - #### Docker Desktop
+    ➡️ [https://www.docker.com/products/docker-desktop/](https://www.docker.com/products/docker-desktop/)  
+
+#### If you plan to run the code locally without Docker, install:
+
+  - #### Java 23
+    ➡️ [https://jdk.java.net/23/](https://jdk.java.net/23/)  
+
+  - #### Node.js 18+
+    ➡️ [https://nodejs.org/en/download/](https://nodejs.org/en/download/)  
+  
+  - #### PostgreSQL 14+
+    ➡️ [https://www.postgresql.org/download/](https://www.postgresql.org/download/)  
+
+  - #### Maven 3.9+
+    ➡️ [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi) 
 
 ### Installation Steps
 
@@ -83,7 +96,7 @@ Make sure you have the following installed:
    
 2. **Clone the repository** to your machine by executing the command below in your **terminal**, then proceed with one of the installation options below.
    ```bash
-   git clone https://github.com/rudnaid/spendeeze
+   git clone https://github.com/rudnaid/eeze.git
    ```
 
 To simplify setup, example `.env` files with the necessary **environment variables** are already provided in the **config** directory. You can modify their values to customize the app to your preferences, either by manually editing them or by running the provided **starter scripts**.
@@ -113,11 +126,20 @@ To simplify setup, example `.env` files with the necessary **environment variabl
    - Open your browser and visit:  
      [http://localhost:3000](http://localhost:3000)
 
-5. **Stopping the application**
-   - To remove the containers, execute this command:  
-     ```bash
-       docker-compose down
-     ```
+5. Stopping the application
+
+- If you want to **stop the application** but **keep the database data** for future runs, execute:
+  ```bash
+  docker compose down
+  ```
+  In this case, the database will **persist** between runs, and your data will still be available next time you start the application.
+
+- If you want to **stop the application and delete the database data**, execute:
+  ```bash
+  docker compose down -v
+  ```
+  In this case, the database and all stored data will be completely removed.
+
 
 #### Without Docker
 
