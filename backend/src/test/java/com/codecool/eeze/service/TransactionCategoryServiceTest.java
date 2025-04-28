@@ -32,19 +32,16 @@ public class TransactionCategoryServiceTest {
 
     @BeforeEach
     void setUp() {
-        category1 = new TransactionCategory();
-        category1.setId(1L);
-        category1.setName("Food");
-
-        category2 = new TransactionCategory();
-        category2.setId(2L);
-        category2.setName("Transport");
+        category1 = mock(TransactionCategory.class);
+        category2 = mock(TransactionCategory.class);
     }
 
     @DisplayName("JUnit test for TransactionCategoryService - getAllTransactionCategoryDTOs()")
     @Test
     void givenTransactionCategories_whenGetAllTransactionCategoryDTOs_thenReturnDTOList() {
         // GIVEN
+        given(category1.getName()).willReturn("Food");
+        given(category2.getName()).willReturn("Transport");
         given(transactionCategoryRepository.findAll()).willReturn(List.of(category1, category2));
 
         // WHEN
