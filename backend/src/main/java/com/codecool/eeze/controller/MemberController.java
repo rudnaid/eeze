@@ -19,7 +19,8 @@ public class MemberController {
     }
 
     @GetMapping("/me")
-    public MemberResponseDTO getUser(@RequestParam("username") String username) {
+    public MemberResponseDTO getUser() {
+        String username = authUtil.getUsername();
         return memberService.getUserResponseDTOByUsername(username);
     }
 
