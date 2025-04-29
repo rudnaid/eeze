@@ -20,7 +20,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
-
 @ExtendWith(MockitoExtension.class)
 public class IncomeServiceTest {
 
@@ -51,7 +50,6 @@ public class IncomeServiceTest {
     @DisplayName("JUnit test for IncomeService - addIncome()")
     @Test
     void givenIncomeDTOAndUsername_whenAddIncome_thenReturnSavedIncome() {
-
         // GIVEN
         given(memberRepository.findMemberByUsername("testUsername")).willReturn(Optional.of(member));
         given(incomeRepository.save(any(Income.class))).willAnswer(invocation -> invocation.getArgument(0));
@@ -163,7 +161,6 @@ public class IncomeServiceTest {
     @DisplayName("JUnit test for IncomeService - updateIncome()")
     @Test
     void givenIncomeIdAndUpdatedIncome_whenUpdateIncome_thenReturnUpdatedIncomeDTO() {
-
         //GIVEN
         IncomeDTO updatedIncomeDTO = new IncomeDTO(incomeId, 2000.70, LocalDate.of(2025, 3, 6));
 
@@ -184,13 +181,11 @@ public class IncomeServiceTest {
         //Verify output
         verify(incomeRepository, times(1)).findIncomeByPublicId(incomeId);
         verify(incomeRepository, times(1)).save(any(Income.class));
-
     }
 
     @DisplayName("JUnit test for IncomeService - updateIncome() should throw exception if income not found")
     @Test
     void givenInvalidIncomeId_whenUpdateIncome_thenThrowException() {
-
         //GIVEN
         UUID invalidIncomeId = UUID.randomUUID();
         IncomeDTO updatedIncomeDTO = new IncomeDTO(invalidIncomeId, 2000.70, LocalDate.of(2025, 3, 4));
@@ -207,7 +202,6 @@ public class IncomeServiceTest {
     @DisplayName("JUnit test for IncomeService - updateIncome() should update and return updated income")
     @Test
     void givenValidIncomeIdAndUpdatedIncomeDTO_whenUpdateIncome_thenReturnUpdatedIncome() {
-
         //GIVEN
         IncomeDTO updatedIncomeDTO = new IncomeDTO(incomeId, 2000.70, LocalDate.of(2025, 3, 4));
 
@@ -233,7 +227,6 @@ public class IncomeServiceTest {
     @DisplayName("JUnit test for IncomeService - deleteIncome() should remove income if found")
     @Test
     void givenValidIncomeId_whenDeleteIncome_thenIncomeShouldBeRemoved() {
-
         // GIVEN
         given(incomeRepository.findIncomeByPublicId(incomeId)).willReturn(Optional.of(income));
 
@@ -248,7 +241,6 @@ public class IncomeServiceTest {
     @DisplayName("JUnit test for IncomeService - deleteIncome() should throw exception if income not found")
     @Test
     void givenInvalidIncomeId_whenDeleteIncome_thenThrowException() {
-
         // GIVEN
         UUID invalidIncomeId = UUID.randomUUID();
         given(incomeRepository.findIncomeByPublicId(invalidIncomeId)).willReturn(Optional.empty());
@@ -263,7 +255,6 @@ public class IncomeServiceTest {
     @DisplayName("JUnit test for IncomeService - deleteIncome() should delete income when it exists")
     @Test
     void givenValidIncomeId_whenDeleteIncome_thenDeleteIncomeSuccessfully() {
-
         // GIVEN
         given(incomeRepository.findIncomeByPublicId(incomeId)).willReturn(Optional.of(income));
 
@@ -274,5 +265,4 @@ public class IncomeServiceTest {
         verify(incomeRepository, times(1)).findIncomeByPublicId(incomeId);
         verify(incomeRepository, times(1)).delete(income);
     }
-
 }
