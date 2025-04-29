@@ -128,13 +128,14 @@ To simplify setup, example `.env` files with the necessary **environment variabl
 
 5. Stopping the application
 
-- If you want to **stop the application** but **keep the database data** for future runs, execute:
+- In your **terminal** press `Ctrl + C`
+- If you want to **stop and remove the containers**, but **keep the database data** for future runs, execute:
   ```bash
   docker compose down
   ```
   In this case, the database will **persist** between runs, and your data will still be available next time you start the application.
 
-- If you want to **stop the application and delete the database data**, execute:
+- If you want to **stop, remove the containers and delete the database data**, execute:
   ```bash
   docker compose down -v
   ```
